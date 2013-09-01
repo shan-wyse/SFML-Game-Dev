@@ -33,7 +33,7 @@ void Game::run()
     {
       std::cout << "Time/frame: " << elapsedTime.asMilliseconds() << "ms" << std::endl; // DEBUG ONLY
       std::cout << "FPS: " << (1 / elapsedTime.asSeconds()) << std::endl; // DEBUG ONLY
-      system("cls"); // DEBUG ONLY // TEST CHANGE // ANOTHER TEST TO TEST THE TEST
+      system("cls"); // DEBUG ONLY
       elapsedTime -= FRAME_DURATION;
       processEvents();
       update(FRAME_DURATION);
