@@ -21,9 +21,9 @@ Game::Game()
 
 void Game::run()
 {
-  sf::Clock   clock;
-  sf::Time    elapsedTime = sf::Time::Zero;
-  const static sf::Time FRAME_DURATION = sf::seconds(1.f / 60.f); // CHANGE TO CONFIG FILE
+  sf::Clock               clock;
+  sf::Time                elapsedTime = sf::Time::Zero;
+  const static sf::Time   FRAME_DURATION = sf::seconds(1.f / 60.f); // CHANGE TO CONFIG FILE
 
   while (mWindow.isOpen())
   {
