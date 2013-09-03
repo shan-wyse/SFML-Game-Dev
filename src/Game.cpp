@@ -1,5 +1,5 @@
-#include "Game.hpp"
 #include <iostream> // DEBUG ONLY
+#include "Game.hpp"
 
 Game::Game()
 : mWindow(sf::VideoMode(640, 480), "SFML Application")

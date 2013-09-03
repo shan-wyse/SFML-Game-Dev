@@ -1,4 +1,5 @@
 #include <cassert>
+#include <SFML/Graphics.hpp>
 #include "TextureManager.hpp"
 
 void TextureManager::loadTexture(Textures::ID id, const std::string& filename)

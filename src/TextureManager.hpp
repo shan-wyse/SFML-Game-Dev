@@ -2,7 +2,6 @@
 #define TEXTURE_MANAGER_HPP
 
 #include <memory>
-#include <SFML/Graphics.hpp>
 
 namespace Textures
 {
