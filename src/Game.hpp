@@ -2,6 +2,7 @@
 #define GAME_HPP
 
 #include <SFML/Graphics.hpp>
+#include "TextureManager"
 
 class Game
 {
@@ -18,6 +19,7 @@ private:
 
 	sf::RenderWindow	  mWindow;
   sf::Texture         mTexture;
+  TextureManager      mTextures;
 	sf::Sprite          mPlayer;
 
   bool                mIsMovingUp;
