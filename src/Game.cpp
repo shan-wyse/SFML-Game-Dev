@@ -18,11 +18,11 @@ Game::Game()
   // mPlayer.setTexture(mTexture);
   // mPlayer.setPosition(100.f, 100.f);
 
-  mTextures.loadTexture(Textures::Landscape, "media/textures/landscape.png");
-  mTextures.loadTexture(Textures::Airplane, "media/textures/player.png");
-  mTextures.loadTexture(Textures::Missile, "media/texturs/missile.png");
+  mTextures.loadTexture(Textures::ID::Landscape, "media/textures/landscape.png");
+  mTextures.loadTexture(Textures::ID::Airplane, "media/textures/player.png");
+  mTextures.loadTexture(Textures::ID::Missile, "media/texturs/missile.png");
 
-  mPlayer.setTexture(mTextures.getTexture(Textures::Airplane));
+  mPlayer.setTexture(mTextures.getTexture(Textures::ID::Airplane));
   mPlayer.setPosition(100.f, 100.f);
 }
 

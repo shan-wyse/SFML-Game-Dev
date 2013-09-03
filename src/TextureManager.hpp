@@ -1,11 +1,12 @@
 #ifndef TEXTURE_MANAGER_HPP
 #define TEXTURE_MANAGER_HPP
 
+#include <memory>
 #include <SFML/Graphics.hpp>
 
 namespace Textures
 {
-  enum class ID { Landscape, Airplain, Missile };
+  enum class ID { Landscape, Airplane, Missile };
 }
 
 class TextureManager

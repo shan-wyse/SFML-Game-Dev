@@ -1,3 +1,4 @@
+#include <cassert>
 #include "TextureManager.hpp"
 
 void TextureManager::loadTexture(Textures::ID id, const std::string& filename)
@@ -12,7 +13,7 @@ void TextureManager::loadTexture(Textures::ID id, const std::string& filename)
 
 sf::Texture& TextureManager::getTexture(Textures::ID id)
 {
-  auto texture = mTextureMap.find(id)
-  assert(found != mTextureMap.end());
-  return *found->second;
+  auto texture = mTextureMap.find(id);
+  assert(texture != mTextureMap.end());
+  return *texture->second;
 }
