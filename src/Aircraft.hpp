@@ -1,6 +1,8 @@
 #ifndef AIRCRAFT_HPP
 #define AIRCRAFT_HPP
 
+#include "Entity.hpp"
+
 class Aircraft : public Entity
 {
 public:

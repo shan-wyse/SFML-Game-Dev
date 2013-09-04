@@ -1,3 +1,4 @@
+#include <SFML/Graphics.hpp>
 #include "Entity.hpp"
 
 void Entity::setVelocity(sf::Vector2f velocity)

@@ -1,6 +1,8 @@
 #ifndef RESOURCE_MANAGER_HPP
 #define RESOURCE_MANAGER_HPP
 
+#include <memory>
+
 template <typename Resource, typename Identifier>
 
 class ResourceManager

@@ -18,9 +18,9 @@ Game::Game()
   // mPlayer.setTexture(mTexture);
   // mPlayer.setPosition(100.f, 100.f);
 
-  mTextures.loadTexture(Textures::ID::Landscape, "media/textures/landscape.png");
-  mTextures.loadTexture(Textures::ID::Airplane, "media/textures/player.png");
-  mTextures.loadTexture(Textures::ID::Missile, "media/texturs/missile.png");
+  mTextures.loadTexture(Textures::ID::Landscape, "media/textures/desert.png");
+  mTextures.loadTexture(Textures::ID::Airplane, "media/textures/eagle.png");
+  // mTextures.loadTexture(Textures::ID::Missile, "media/texturs/missile.png");
 
   mPlayer.setTexture(mTextures.getTexture(Textures::ID::Airplane));
   mPlayer.setPosition(100.f, 100.f);
@@ -74,10 +74,10 @@ void Game::update(sf::Time deltaTime)
 {
   sf::Vector2f movement(0.f, 0.f);
 
-  if (mIsMovingUp)      movement.y -= 1.f;
-  if (mIsMovingDown)    movement.y += 1.f;
-  if (mIsMovingLeft)    movement.x -= 1.f;
-  if (mIsMovingRight)   movement.x += 1.f;
+  if (mIsMovingUp)      movement.y -= 100.f;
+  if (mIsMovingDown)    movement.y += 100.f;
+  if (mIsMovingLeft)    movement.x -= 100.f;
+  if (mIsMovingRight)   movement.x += 100.f;
 
   mPlayer.move(movement * deltaTime.asSeconds());
 }
