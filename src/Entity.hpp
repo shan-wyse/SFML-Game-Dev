@@ -1,6 +1,8 @@
 #ifndef ENTITY_HPP
 #define ENTITY_HPP
 
+#include "SceneNode.hpp"
+
 class Entity : public SceneNode
 {
 public:

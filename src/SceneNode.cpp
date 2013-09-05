@@ -1,4 +1,6 @@
 #include <vector>
+#include <cassert>
+#include <SFML/Graphics.hpp>
 #include "SceneNode.hpp"
 
 SceneNode::SceneNode()
@@ -19,7 +21,7 @@ SceneNode::NodePtr SceneNode::detachChild(const SceneNode& node)
   assert (foundNode != mChildren.end());
 
   NodePtr detachedNode = std::move(*foundNode);
-  detachedNode->mParent = nullptr
+  detachedNode->mParent = nullptr;
   mChildren.erase(foundNode);
   return detachedNode;
 }
