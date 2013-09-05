@@ -7,10 +7,12 @@ class Aircraft : public Entity
 {
 public:
   enum Type { Eagle, Raptor };
-  explicit      Aircraft(Type type);
+  explicit          Aircraft(Type type, const TextureManager& textures);
+  virtual void      drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const;
 
 private:
-  Type          mType;  
+  Type              mType;
+  sf::Sprite        mSprite;
 };
 
 #endif

@@ -3,16 +3,20 @@
 
 #include <memory>
 
-class SceneNode
+class SceneNode : public sf::Drawable, public sf::Transformable, private sf::NonCopyable
 {
 public:
   typedef std::unique_ptr<SceneNode>    NodePtr;
+  enum Layer                            { Background, Foreground, LayerCount };
+
   SceneNode();
 
   void                                  attachChild(NodePtr child);
   NodePtr                               detachChild(const SceneNode& node);
 
 private:
+  final virtual void                    draw(sf::RenderTarget& target, sf::RenderStates states) const;
+  virtual void                          drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const;
   std::vector<NodePtr>                  mChildren;
   SceneNode*                            mParent;
 };

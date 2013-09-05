@@ -3,6 +3,13 @@
 
 #include <memory>
 
+typedef ResourceManager<sf::Texture, Textures::ID> TextureManager;
+
+namespace Textures
+{
+  enum ID { Eagle, Raptor };
+}
+
 template <typename Resource, typename Identifier>
 
 class ResourceManager
