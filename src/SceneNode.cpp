@@ -26,6 +26,38 @@ SceneNode::NodePtr SceneNode::detachChild(const SceneNode& node)
   return detachedNode;
 }
 
+void SceneNode::update(sf::Time dt)
+{
+  updateCurrent(dt);
+  updateChildren(dt);
+}
+
+void SceneNode::updateCurrent(sf::Time dt)
+{
+  // empty
+}
+
+void SceneNode::updateChildren(sf::Time dt)
+{
+  for (NodePtr& child : mChildren)
+    child->update(dt)
+}
+
+sf::Tranform SceneNode::getWorldTransform()
+{
+  sf::Transform transform = sf::Transform::Identity;
+
+  for (const SceneNode* node = this; node != nullptr; node = node->mParent)
+    transform = node->getTransform() * transform; // refactor
+
+  return transform;
+}
+
+sf::Vector2 SceneNode::getWorldPosition()
+{
+  return getWorldTransform() * sf::Vector2f();
+}
+
 void SceneNode::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
   states.transform *= getTransform();
