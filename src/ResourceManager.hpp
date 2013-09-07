@@ -1,30 +1,29 @@
 #ifndef RESOURCE_MANAGER_HPP
 #define RESOURCE_MANAGER_HPP
 
+#include <string>
 #include <memory>
-
-typedef ResourceManager<sf::Texture, Textures::ID> TextureManager;
-
-namespace Textures
-{
-  enum ID { Eagle, Raptor };
-}
+#include <map>
+#include <stdexcept>
+#include <cassert>
 
 template <typename Resource, typename Identifier>
-
 class ResourceManager
 {
 public:
+  void                                                loadResource(Identifier id, const std::string& filename);
+
   template <typename Parameter>
-  void                                                loadResource(Indentifier id, const std::string& filename);
-  void                                                loadResource(Indentifier id, const std::string& filename, const Parameter& secondParam);
+  void                                                loadResource(Identifier id, const std::string& filename, const Parameter& secondParam);
+  
   Resource&                                           getResource(Identifier id);
   const Resource&                                     getResource(Identifier id) const;
 
 private:
-  std::map<Identifier, std::unique_ptr<Resource>>     mResourceMap);
+  void                                                insertResource(Identifier id, std::unique_ptr<Resource> resource);
+
+  std::map<Identifier, std::unique_ptr<Resource>>     mResourceMap;
 };
 
-#include ResourceManager.inl
-
-#endif
+#include "ResourceManager.inl"
+#endif // RESOURCE_MANAGER_HPP

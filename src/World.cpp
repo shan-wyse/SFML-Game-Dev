@@ -1,10 +1,15 @@
+#include <SFML/Graphics/RenderWindow.hpp>
 #include "World.hpp"
 
 World::World(sf::RenderWindow& window)
 : mWindow(window)
 , mWorldView(window.getDefaultView())
-, mWorldBounds(0.f, 0.f, mWorldView.getSize().x, 2000.f)
-, mSpawnPosition(mWorldView.getSize().x / 2, mWorldBounds.height - mWorldView.getSize() / 2.f)
+, mTextures()
+, mSceneGraph()
+, mSceneLayers()
+, mWorldBounds(0.f, 0.f, mWorldView.getSize().x, 20000.f)
+, mSpawnPosition(mWorldView.getSize().x / 2, mWorldBounds.height - mWorldView.getSize().y / 2.f)
+, mScrollSpeed(-400.f)
 , mPlayerAircraft(nullptr)
 {
   loadTextures();
@@ -36,33 +41,34 @@ void World::draw()
 
 void World::loadTextures()
 {
-  mTextures.load(Textures::Eagle, "media/textures/eagle.png");
-  mTextures.load(Textures::Raptor, "media/textures/raptor.png");
-  mTextures.load(Textures::Desert, "media/textures/desert.png");
+  mTextures.loadResource(Textures::Eagle, "media/textures/eagle.png");
+  mTextures.loadResource(Textures::Raptor, "media/textures/raptor.png");
+  mTextures.loadResource(Textures::Desert, "media/textures/desert.png");
 }
 
 void World::buildScene()
 {
-  for (SceneNode layer : mSceneLayers) {
-    SceneNode::NodePtr node(new SceneNode());
-    layer = node.get();
+  for (std::size_t i = 0; i < LayerCount; ++i)
+  {
+    SceneNode::NodePtr layer(new SceneNode());
+    mSceneLayers[i] = layer.get();
 
-    mSceneGraph.attachChild(std::move(node));
+    mSceneGraph.attachChild(std::move(layer));
   }
 
-  sf::Texture& texture = mTextures.get(Textures::Desert);
+  sf::Texture& texture = mTextures.getResource(Textures::Desert);
   sf::IntRect textureRect(mWorldBounds);
   texture.setRepeated(true);
 
   std::unique_ptr<SpriteNode> backgroundSprite(new SpriteNode(texture, textureRect));
   backgroundSprite->setPosition(mWorldBounds.left, mWorldBounds.top);
-  mSceneLayers[Layer::Background]->attachChild(std::move(backgroundSprite));
+  mSceneLayers[/*Layer::*/Background]->attachChild(std::move(backgroundSprite));
 
   std::unique_ptr<Aircraft> leader(new Aircraft(Aircraft::Eagle, mTextures));
   mPlayerAircraft = leader.get();
   mPlayerAircraft->setPosition(mSpawnPosition);
   mPlayerAircraft->setVelocity(40.f, mScrollSpeed);
-  mSceneLayers[Layer::Foreground]->attachChild(std::move(leader));
+  mSceneLayers[/*Layer::*/Foreground]->attachChild(std::move(leader));
 
   std::unique_ptr<Aircraft> leftEscort(new Aircraft(Aircraft::Raptor, mTextures));
   leftEscort->setPosition(-80.f, 50.f);

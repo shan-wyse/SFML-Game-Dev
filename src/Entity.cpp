@@ -3,18 +3,18 @@
 
 void Entity::setVelocity(sf::Vector2f velocity)
 {
-  mVelocity       = velocity;
+  mVelocity = velocity;
 }
 
 void Entity::setVelocity(float xVel, float yVel)
 {
-  mVelocity.x     = xVel;
-  mVelocity.y     = yVel;
+  mVelocity.x = xVel;
+  mVelocity.y = yVel;
 }
 
 sf::Vector2f Entity::getVelocity() const
 {
-  return          mVelocity;
+  return  mVelocity;
 }
 
 void Entity::updateCurrent(sf::Time dt)

@@ -1,10 +1,14 @@
-#include <iostream> // DEBUG ONLY
-#include "Game.hpp"
-#include "World.hpp"
+// #include <iostream> // DEBUG ONLY
+#include <SFML/Window/Event.hpp>
 
+#include "Game.hpp"
+
+const sf::Time Game::FRAME_DURATION = sf::seconds(1.f / 60.f);
 Game::Game()
-: mWindow(sf::VideoMode(640, 480), "SFML Application")
+: mWindow(sf::VideoMode(640, 480), "SFML Application", sf::Style::Close)
 , mWorld(mWindow)
+// , FRAME_DURATION(1.f / 60.f)
+{
 /*, mTexture()
 , mPlayer()
 , mIsMovingUp(false) // possibly remove?
@@ -27,48 +31,44 @@ Game::Game()
   mPlayer.setTexture(mTextures.getTexture(Textures::ID::Airplane));
   mPlayer.setPosition(100.f, 100.f);
 }*/
+}
 
 void Game::run()
 {
-  sf::Clock               clock;
-  sf::Time                elapsedTime = sf::Time::Zero;
-  const static sf::Time   FRAME_DURATION = sf::seconds(1.f / 60.f); // CHANGE TO CONFIG FILE
+  sf::Clock clock;
+  sf::Time elapsedTime = sf::Time::Zero;
 
-  while (mWindow.isOpen())
-  {
+  // const static sf::Time   FRAME_DURATION = sf::seconds(1.f / 60.f); // CHANGE TO CONFIG FILE
+
+  while (mWindow.isOpen()) {
     // sf::Time  deltaTime = clock.restart();
-    elapsedTime += clock.restart();
-    while (elapsedTime > FRAME_DURATION)
-    {
-      std::cout << "Time/frame: " << elapsedTime.asMilliseconds() << "ms" << std::endl; // DEBUG ONLY
-      std::cout << "FPS: " << (1 / elapsedTime.asSeconds()) << std::endl; // DEBUG ONLY
-      system("cls"); // DEBUG ONLY
+    // elapsedTime += clock.restart();
+    sf::Time frameTime = clock.restart();
+    elapsedTime += frameTime;
+    while (elapsedTime > FRAME_DURATION) {
+      // std::cout << "Time/frame: " << elapsedTime.asMilliseconds() << "ms" << std::endl; // DEBUG ONLY
+      // std::cout << "FPS: " << (1 / elapsedTime.asSeconds()) << std::endl; // DEBUG ONLY
+      // system("cls"); // DEBUG ONLY
       elapsedTime -= FRAME_DURATION;
-      //processEvents();
-      //update(FRAME_DURATION);
+      processEvents();
+      update(FRAME_DURATION);
 
 
       // new
-      mWindow.clear();
-      mWorld.draw();
-
-      mWindow.setView(mWindow.getDefaultView());
-      // mWindow.draw(mDevText);
-      mWindow.display();
+      
 
     }
 
-    //render();
+    // updateDevOutput();
+    render();
   }
 }
 
-/*void Game::processEvents()
+void Game::processEvents()
 {
   sf::Event event;
-  while (mWindow.pollEvent(event))
-  {
-    switch (event.type)
-    {
+  while (mWindow.pollEvent(event)) {
+    switch (event.type) {
       case sf::Event::KeyPressed:
         handlePlayerInput(event.key.code, true);
         break;
@@ -84,30 +84,34 @@ void Game::run()
 
 void Game::update(sf::Time deltaTime)
 {
-  sf::Vector2f movement(0.f, 0.f);
+  mWorld.update(deltaTime);
+  /*sf::Vector2f movement(0.f, 0.f);
 
   if (mIsMovingUp)      movement.y -= 100.f;
   if (mIsMovingDown)    movement.y += 100.f;
   if (mIsMovingLeft)    movement.x -= 100.f;
   if (mIsMovingRight)   movement.x += 100.f;
 
-  mPlayer.move(movement * deltaTime.asSeconds());
+  mPlayer.move(movement * deltaTime.asSeconds());*/
 }
 
 void Game::render()
 {
   mWindow.clear();
-  mWindow.draw(mPlayer);
+  mWorld.draw();
+
+  mWindow.setView(mWindow.getDefaultView());
+  // mWindow.draw(mDevText);
   mWindow.display();
 }
 
 void Game::handlePlayerInput(sf::Keyboard::Key key, bool isPressed)
 {
-  switch (key)
+  /*switch (key)
   {
     case sf::Keyboard::W: mIsMovingUp       = isPressed; break;
     case sf::Keyboard::S: mIsMovingDown     = isPressed; break;
     case sf::Keyboard::A: mIsMovingLeft     = isPressed; break;
     case sf::Keyboard::D: mIsMovingRight    = isPressed; break;
-  }
-}*/
+  }*/
+}

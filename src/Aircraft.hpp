@@ -1,7 +1,9 @@
 #ifndef AIRCRAFT_HPP
 #define AIRCRAFT_HPP
 
+#include <SFML/Graphics/Sprite.hpp>
 #include "Entity.hpp"
+#include "ResourceIdentifiers.hpp"
 
 class Aircraft : public Entity
 {
@@ -15,4 +17,4 @@ private:
   sf::Sprite        mSprite;
 };
 
-#endif
+#endif // AIRCRAFT_HPP

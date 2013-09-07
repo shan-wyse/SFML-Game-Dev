@@ -16,4 +16,4 @@ private:
   sf::Vector2f    mVelocity;
 };
 
-#endif
+#endif // ENTITY_HPP

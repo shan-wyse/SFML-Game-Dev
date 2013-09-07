@@ -2,6 +2,11 @@
 #define SCENE_NODE_HPP
 
 #include <memory>
+#include <vector>
+#include <SFML/System/NonCopyable.hpp>
+#include <SFML/System/Time.hpp>
+#include <SFML/Graphics/Drawable.hpp>
+#include <SFML/Graphics/Transformable.hpp>
 
 class SceneNode : public sf::Drawable, public sf::Transformable, private sf::NonCopyable
 {
@@ -9,24 +14,26 @@ public:
   typedef std::unique_ptr<SceneNode>    NodePtr;
   enum Layer                            { Background, Foreground, LayerCount };
 
-  SceneNode();
+                                        SceneNode();
 
   void                                  attachChild(NodePtr child);
   NodePtr                               detachChild(const SceneNode& node);
 
   void                                  update(sf::Time dt);
 
+  sf::Vector2f                          getWorldPosition() const;
+  sf::Transform                         getWorldTransform() const;
+
+private:
   virtual void                          updateCurrent(sf::Time dt);
   void                                  updateChildren(sf::Time dt);
 
-  sf::Transform                         getWorldTransform();
-  sf::Vector2f                          getWorldPosition();
-
-private:
   virtual void                          draw(sf::RenderTarget& target, sf::RenderStates states) const final;
   virtual void                          drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const;
-  std::vector<NodePtr>                  mChildren;
+  void                                  drawChildren(sf::RenderTarget& target, sf::RenderStates states) const;
+
   SceneNode*                            mParent;
+  std::vector<NodePtr>                  mChildren;
 };
 
-#endif
+#endif // SCENE_NODE_HPP
