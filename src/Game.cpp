@@ -85,7 +85,7 @@ void Game::updateDevOutput(sf::Time elapsedTime)  // For development purposes on
   if (mDevUpdateTime >= sf::seconds(1.f)) {
     mDevText.setString(
       "WORK IN PROGRESS\n"
-      "Build 0020\n"
+      "Build 0021\n"
       "FPS: " + toString(mDevFrameCount) + "\n" +
       "Frame duration: " + toString(mDevUpdateTime.asMicroseconds() / mDevFrameCount) + "us");
 
