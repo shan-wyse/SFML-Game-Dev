@@ -1,9 +1,11 @@
 #include <iostream> // DEBUG ONLY
 #include "Game.hpp"
+#include "World.hpp"
 
 Game::Game()
 : mWindow(sf::VideoMode(640, 480), "SFML Application")
-, mTexture()
+, mWorld(mWindow)
+/*, mTexture()
 , mPlayer()
 , mIsMovingUp(false) // possibly remove?
 , mIsMovingDown(false)
@@ -24,7 +26,7 @@ Game::Game()
 
   mPlayer.setTexture(mTextures.getTexture(Textures::ID::Airplane));
   mPlayer.setPosition(100.f, 100.f);
-}
+}*/
 
 void Game::run()
 {
@@ -42,15 +44,25 @@ void Game::run()
       std::cout << "FPS: " << (1 / elapsedTime.asSeconds()) << std::endl; // DEBUG ONLY
       system("cls"); // DEBUG ONLY
       elapsedTime -= FRAME_DURATION;
-      processEvents();
-      update(FRAME_DURATION);
+      //processEvents();
+      //update(FRAME_DURATION);
+
+
+      // new
+      mWindow.clear();
+      mWorld.draw();
+
+      mWindow.setView(mWindow.getDefaultView());
+      // mWindow.draw(mDevText);
+      mWindow.display();
 
     }
-    render();
+
+    //render();
   }
 }
 
-void Game::processEvents()
+/*void Game::processEvents()
 {
   sf::Event event;
   while (mWindow.pollEvent(event))
@@ -98,4 +110,4 @@ void Game::handlePlayerInput(sf::Keyboard::Key key, bool isPressed)
     case sf::Keyboard::A: mIsMovingLeft     = isPressed; break;
     case sf::Keyboard::D: mIsMovingRight    = isPressed; break;
   }
-}
+}*/

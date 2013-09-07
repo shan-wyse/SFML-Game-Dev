@@ -2,7 +2,7 @@
 #define GAME_HPP
 
 #include <SFML/Graphics.hpp>
-#include "TextureManager.hpp"
+// #include "TextureManager.hpp"
 
 class Game
 {
@@ -18,14 +18,15 @@ private:
   void                handlePlayerInput(sf::Keyboard::Key key, bool isPressed);
 
 	sf::RenderWindow	  mWindow;
-  sf::Texture         mTexture;
+  World               mWorld;
+  /*sf::Texture         mTexture;
   TextureManager      mTextures;
 	sf::Sprite          mPlayer;
 
   bool                mIsMovingUp;
   bool                mIsMovingDown;
   bool                mIsMovingLeft;
-  bool                mIsMovingRight;
+  bool                mIsMovingRight;*/
 };
 
 #endif
