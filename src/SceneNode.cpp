@@ -17,7 +17,9 @@ void SceneNode::attachChild(NodePtr child)
 
 SceneNode::NodePtr SceneNode::detachChild(const SceneNode& node)
 {
-  auto foundNode = std::find_if(mChildren.begin(), mChildren.end(), [&] (NodePtr& p) -> bool { return p.get() == &node; });
+  auto foundNode = std::find_if(mChildren.begin(), mChildren.end(), [&] (NodePtr& p) -> 
+      bool { return p.get() == &node; });
+
   assert (foundNode != mChildren.end());
 
   NodePtr detachedNode = std::move(*foundNode);
@@ -26,10 +28,10 @@ SceneNode::NodePtr SceneNode::detachChild(const SceneNode& node)
   return detachedNode;
 }
 
-void SceneNode::update(sf::Time dt)
+void SceneNode::update(sf::Time delta)
 {
-  updateCurrent(dt);
-  updateChildren(dt);
+  updateCurrent(delta);
+  updateChildren(delta);
 }
 
 sf::Transform SceneNode::getWorldTransform() const
@@ -37,7 +39,7 @@ sf::Transform SceneNode::getWorldTransform() const
   sf::Transform transform = sf::Transform::Identity;
 
   for (const SceneNode* node = this; node != nullptr; node = node->mParent)
-    transform = node->getTransform() * transform; // refactor
+    transform *= node->getTransform();
 
   return transform;
 }
@@ -47,15 +49,15 @@ sf::Vector2f SceneNode::getWorldPosition() const
   return getWorldTransform() * sf::Vector2f();
 }
 
-void SceneNode::updateCurrent(sf::Time dt)
+void SceneNode::updateCurrent(sf::Time delta)
 {
   // empty
 }
 
-void SceneNode::updateChildren(sf::Time dt)
+void SceneNode::updateChildren(sf::Time delta)
 {
   for (NodePtr& child : mChildren)
-    child->update(dt);
+    child->update(delta);
 }
 
 void SceneNode::draw(sf::RenderTarget& target, sf::RenderStates states) const

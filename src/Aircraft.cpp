@@ -1,19 +1,6 @@
 #include <SFML/Graphics/RenderTarget.hpp>
 #include <SFML/Graphics/RenderStates.hpp>
 #include "Aircraft.hpp"
-#include "ResourceManager.hpp"
-
-Textures::ID toTextureId(Aircraft::Type type)
-{
-  switch (type) {
-    case Aircraft::Eagle:
-      return Textures::Eagle;
-    case Aircraft::Raptor:
-      return Textures::Raptor;
-  }
-
-  return Textures::Eagle; // ???????
-}
 
 Aircraft::Aircraft(Type type, const TextureManager& textures)
 : mType(type)
@@ -26,4 +13,14 @@ Aircraft::Aircraft(Type type, const TextureManager& textures)
 void Aircraft::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const
 {
   target.draw(mSprite, states);
+}
+
+Textures::Id Aircraft::toTextureId(Aircraft::Type type)
+{
+  switch (type) {
+    case Aircraft::Type::Eagle:
+      return Textures::Id::Eagle;
+    case Aircraft::Type::Raptor:
+      return Textures::Id::Raptor;
+  }
 }

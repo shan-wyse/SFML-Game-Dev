@@ -14,11 +14,11 @@ class World : sf::NonCopyable
 {
 public:
   explicit                              World(sf::RenderWindow& window);
-  void                                  update(sf::Time dt);
+  void                                  update(sf::Time delta);
   void                                  draw();
 
 private:
-  enum /*class*/                            Layer { Background, Foreground, LayerCount }; // INVESTIGATE
+  enum                                  Layer { Background, Foreground, LayerCount };
 
   void                                  loadTextures();
   void                                  buildScene();
@@ -27,7 +27,7 @@ private:
   sf::View                              mWorldView;
   TextureManager                        mTextures;
   SceneNode                             mSceneGraph;
-  std::array<SceneNode*, 3>     mSceneLayers; // INVESTIGATE
+  std::array<SceneNode*, LayerCount>    mSceneLayers;
   sf::FloatRect                         mWorldBounds;
   sf::Vector2f                          mSpawnPosition;
   float                                 mScrollSpeed;

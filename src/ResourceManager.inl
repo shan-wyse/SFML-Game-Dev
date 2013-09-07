@@ -10,10 +10,11 @@ void ResourceManager<Resource, Identifier>::loadResource(Identifier id, const st
 
 template <typename Resource, typename Identifier>
 template <typename Parameter>
-void ResourceManager<Resource, Identifier>::loadResource(Identifier id, const std::string& filename, const Parameter& secondParam)
+void ResourceManager<Resource, Identifier>::loadResource(Identifier id, const std::string& filename, 
+    const Parameter& additionalParam)
 {
   std::unique_ptr<Resource> resource(new Resource());
-  if (!resource->loadFromFile(filename, secondParam))
+  if (!resource->loadFromFile(filename, additionalParam))
     throw std::runtime_error("ResourceManager::loadResource - Failed to load " + filename);
 
   insertResource(id, std::move(resource));

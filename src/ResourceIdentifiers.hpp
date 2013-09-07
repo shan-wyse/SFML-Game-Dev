@@ -3,12 +3,12 @@
 
 namespace Textures
 {
-  enum ID { Eagle, Raptor, Desert };
+  enum class Id { Eagle, Raptor, Desert };
 }
 
 template <typename Resource, typename Identifier>
 class ResourceManager;
 
-typedef ResourceManager<sf::Texture, Textures::ID> TextureManager;
+typedef ResourceManager<sf::Texture, Textures::Id> TextureManager;
 
 #endif // RESOURCE_IDENTIFIERS_HPP

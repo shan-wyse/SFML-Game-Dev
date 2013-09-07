@@ -4,17 +4,20 @@
 #include <SFML/Graphics/Sprite.hpp>
 #include "Entity.hpp"
 #include "ResourceIdentifiers.hpp"
+#include "ResourceManager.hpp"
 
 class Aircraft : public Entity
 {
 public:
-  enum Type         { Eagle, Raptor };
-  explicit          Aircraft(Type type, const TextureManager& textures);
-  virtual void      drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const;
+  enum class Type     { Eagle, Raptor };
+  explicit            Aircraft(Type type, const TextureManager& textures);
+  virtual void        drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const;
 
 private:
-  Type              mType;
-  sf::Sprite        mSprite;
+  Textures::Id        toTextureId(Aircraft::Type type);
+
+  Type                mType;
+  sf::Sprite          mSprite;
 };
 
 #endif // AIRCRAFT_HPP

@@ -1,36 +1,24 @@
-// #include <iostream> // DEBUG ONLY
+#include "StringHelper.hpp"
+#include <SFML/System/Time.hpp>
 #include <SFML/Window/Event.hpp>
-
 #include "Game.hpp"
 
+
+// Intialize the game to run at 60 FPS
 const sf::Time Game::FRAME_DURATION = sf::seconds(1.f / 60.f);
+
 Game::Game()
-: mWindow(sf::VideoMode(640, 480), "SFML Application", sf::Style::Close)
+: mWindow(sf::VideoMode(640, 480), "Desert Bloom", sf::Style::Close)
 , mWorld(mWindow)
-// , FRAME_DURATION(1.f / 60.f)
+, mDevFont() // For development purposes only
+, mDevText() // For development purposes only
+, mDevUpdateTime() // For development purposes only
+, mDevFrameCount(0) // For development purposes only
 {
-/*, mTexture()
-, mPlayer()
-, mIsMovingUp(false) // possibly remove?
-, mIsMovingDown(false)
-, mIsMovingLeft(false)
-, mIsMovingRight(false)
-{
-  if (!mTexture.loadFromFile("media/textures/player.png"))
-  {
-    // log error
-  }
-
-  // mPlayer.setTexture(mTexture);
-  // mPlayer.setPosition(100.f, 100.f);
-
-  mTextures.loadTexture(Textures::ID::Landscape, "media/textures/desert.png");
-  mTextures.loadTexture(Textures::ID::Airplane, "media/textures/eagle.png");
-  // mTextures.loadTexture(Textures::ID::Missile, "media/texturs/missile.png");
-
-  mPlayer.setTexture(mTextures.getTexture(Textures::ID::Airplane));
-  mPlayer.setPosition(100.f, 100.f);
-}*/
+  mDevFont.loadFromFile("media/fonts/sansation.ttf"); // For development purposes only
+  mDevText.setFont(mDevFont); // For development purposes only
+  mDevText.setPosition(5.f, 5.f); // For development purposes only
+  mDevText.setCharacterSize(10); // For development purposes only
 }
 
 void Game::run()
@@ -38,28 +26,20 @@ void Game::run()
   sf::Clock clock;
   sf::Time elapsedTime = sf::Time::Zero;
 
-  // const static sf::Time   FRAME_DURATION = sf::seconds(1.f / 60.f); // CHANGE TO CONFIG FILE
-
   while (mWindow.isOpen()) {
-    // sf::Time  deltaTime = clock.restart();
-    // elapsedTime += clock.restart();
-    sf::Time frameTime = clock.restart();
-    elapsedTime += frameTime;
-    while (elapsedTime > FRAME_DURATION) {
-      // std::cout << "Time/frame: " << elapsedTime.asMilliseconds() << "ms" << std::endl; // DEBUG ONLY
-      // std::cout << "FPS: " << (1 / elapsedTime.asSeconds()) << std::endl; // DEBUG ONLY
-      // system("cls"); // DEBUG ONLY
-      elapsedTime -= FRAME_DURATION;
+
+    // Obtain the amount of time that has passed since the previous frame and add it to the counter
+    sf::Time updateTime = clock.restart();
+    elapsedTime += updateTime;
+
+    while (elapsedTime > FRAME_DURATION) { // If more time has passed than the desired frame duration...
+      elapsedTime -= FRAME_DURATION; // Store the overrunning time  // For development purposes only
+
       processEvents();
       update(FRAME_DURATION);
-
-
-      // new
-      
-
     }
 
-    // updateDevOutput();
+    updateDevOutput(elapsedTime); // For development purposes only
     render();
   }
 }
@@ -82,17 +62,9 @@ void Game::processEvents()
   }
 }
 
-void Game::update(sf::Time deltaTime)
+void Game::update(sf::Time frameDuration)
 {
-  mWorld.update(deltaTime);
-  /*sf::Vector2f movement(0.f, 0.f);
-
-  if (mIsMovingUp)      movement.y -= 100.f;
-  if (mIsMovingDown)    movement.y += 100.f;
-  if (mIsMovingLeft)    movement.x -= 100.f;
-  if (mIsMovingRight)   movement.x += 100.f;
-
-  mPlayer.move(movement * deltaTime.asSeconds());*/
+  mWorld.update(frameDuration);
 }
 
 void Game::render()
@@ -101,17 +73,29 @@ void Game::render()
   mWorld.draw();
 
   mWindow.setView(mWindow.getDefaultView());
-  // mWindow.draw(mDevText);
+  mWindow.draw(mDevText);  // For development purposes only
   mWindow.display();
+}
+
+void Game::updateDevOutput(sf::Time elapsedTime)  // For development purposes only
+{
+  mDevUpdateTime += elapsedTime;
+  mDevFrameCount ++;
+
+  if (mDevUpdateTime >= sf::seconds(1.f)) {
+    mDevText.setString(
+      "WORK IN PROGRESS\n"
+      "Build 0017\n"
+      "FPS: " + toString(mDevFrameCount) + "\n" +
+      "Frame duration: " + toString(mDevUpdateTime.asMicroseconds() / mDevFrameCount) + "us");
+
+    mDevUpdateTime -= sf::seconds(1.f);
+    mDevFrameCount = 0;
+  }
 }
 
 void Game::handlePlayerInput(sf::Keyboard::Key key, bool isPressed)
 {
-  /*switch (key)
-  {
-    case sf::Keyboard::W: mIsMovingUp       = isPressed; break;
-    case sf::Keyboard::S: mIsMovingDown     = isPressed; break;
-    case sf::Keyboard::A: mIsMovingLeft     = isPressed; break;
-    case sf::Keyboard::D: mIsMovingRight    = isPressed; break;
-  }*/
+  if (key == sf::Keyboard::Escape)
+    mWindow.close();
 }

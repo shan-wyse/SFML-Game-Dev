@@ -1,4 +1,3 @@
-#include <SFML/Graphics.hpp>
 #include "Entity.hpp"
 
 void Entity::setVelocity(sf::Vector2f velocity)
@@ -17,7 +16,7 @@ sf::Vector2f Entity::getVelocity() const
   return  mVelocity;
 }
 
-void Entity::updateCurrent(sf::Time dt)
+void Entity::updateCurrent(sf::Time delta)
 {
-  move(mVelocity * dt.asSeconds());
+  move(mVelocity * delta.asSeconds());
 }
