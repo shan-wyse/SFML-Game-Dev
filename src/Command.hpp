@@ -2,6 +2,7 @@
 #define COMMAND_HPP
 
 #include <functional>
+#include <cassert>
 #include <SFML/System/Time.hpp>
 
 class SceneNode;
@@ -13,5 +14,15 @@ struct Command
 
   unsigned int category;
 };
+
+template <typename GameObject, typename Function>
+std::function<void(SceneNode&, sf::Time)> derivedAction(Function function)
+{
+  return [=] (SceneNode& node, sf::Time delta)
+  {
+    assert (dynamic_cast<GameObject*>(&node) != nullptr);
+    function (static_cast<GameObject&>(node), delta);
+  };
+}
 
 #endif

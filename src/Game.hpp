@@ -7,6 +7,7 @@
 #include <SFML/Graphics/Font.hpp>
 #include <SFML/Graphics/Text.hpp>
 #include "World.hpp"
+#include "Player.hpp"
 
 class Game : private sf::NonCopyable
 {
@@ -15,7 +16,7 @@ public:
 	void                        run();
 
 private:
-	void				                processEvents();
+	void				                processInput();
 	void				                update(sf::Time frameDuration);
 	void				                render();
 
@@ -30,6 +31,7 @@ private:
 	sf::RenderWindow	          mWindow;
   World                       mWorld;
   bool                        mIsFocused;
+  Player                      mPlayer;
   sf::Image                   mIcon; // For development purposes only
 
   sf::Font                    mDevFont; // For development purposes only

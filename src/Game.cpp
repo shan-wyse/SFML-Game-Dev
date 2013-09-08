@@ -43,7 +43,7 @@ void Game::run()
     while (elapsedTime > FRAME_DURATION) { // If more time has passed than the desired frame duration...
       elapsedTime -= FRAME_DURATION; // Store the overrunning time  // For development purposes only
 
-      processEvents();
+      processInput();
 
       if (mIsFocused)
         update(FRAME_DURATION);
@@ -54,17 +54,17 @@ void Game::run()
   }
 }
 
-void Game::processEvents()
+void Game::processInput()
 {
+  CommandQueue& commands = mWorld.getCommandQueue();
   sf::Event event;
+
+  mPlayer.handleRealtimeInput(commands);
+
   while (mWindow.pollEvent(event)) {
+    mPlayer.handleEvent(event, commands);
+
     switch (event.type) {
-      case sf::Event::KeyPressed:
-        handlePlayerInput(event.key.code, true);
-        break;
-      case sf::Event::KeyReleased:
-        handlePlayerInput(event.key.code, false);
-        break;
       case sf::Event::GainedFocus:
         mIsFocused = true;
         break;
@@ -118,7 +118,7 @@ void Game::updateDevOutput(sf::Time elapsedTime)  // For development purposes on
   if (mDevUpdateTime >= sf::seconds(1.f)) {
     mDevText.setString(
       "WORK IN PROGRESS\n"
-      "Build 0022\n"
+      "Build 0023\n"
       "Compiled with GCC G++ 4.8.0 (rev2)\n"
       "Linked with SFML 2.0\n\n"
       "FPS: " + toString(mDevFrameCount) + "\n" +
