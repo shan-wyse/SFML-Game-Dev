@@ -3,6 +3,7 @@
 
 #include <SFML/Window/Keyboard.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
+#include <SFML/Graphics/Image.hpp>
 #include <SFML/Graphics/Font.hpp>
 #include <SFML/Graphics/Text.hpp>
 #include "World.hpp"
@@ -10,7 +11,7 @@
 class Game : private sf::NonCopyable
 {
 public:
-	                            Game();
+	                            Game(int argc, char* argv[]);
 	void                        run();
 
 private:
@@ -23,8 +24,13 @@ private:
 
   static const sf::Time       FRAME_DURATION;
 
+  int                         mArgC;
+  char**                      mArgV;
+
 	sf::RenderWindow	          mWindow;
   World                       mWorld;
+  bool                        mIsFocused;
+  sf::Image                   mIcon; // For development purposes only
 
   sf::Font                    mDevFont; // For development purposes only
   sf::Text                    mDevText; // For development purposes only

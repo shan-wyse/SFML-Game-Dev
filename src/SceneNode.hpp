@@ -7,6 +7,7 @@
 #include <SFML/System/Time.hpp>
 #include <SFML/Graphics/Drawable.hpp>
 #include <SFML/Graphics/Transformable.hpp>
+#include "Command.hpp"
 
 class SceneNode : public sf::Drawable, public sf::Transformable, private sf::NonCopyable
 {
@@ -23,6 +24,9 @@ public:
 
   sf::Vector2f                          getWorldPosition() const;
   sf::Transform                         getWorldTransform() const;
+
+  virtual unsigned int                  getCategory() const;
+  void                                  onCommand(const Command& command, sf::Time delta);
 
 private:
   virtual void                          updateCurrent(sf::Time delta);

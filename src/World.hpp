@@ -8,6 +8,7 @@
 #include "ResourceManager.hpp"
 #include "SceneNode.hpp"
 #include "SpriteNode.hpp"
+#include "CommandQueue.hpp"
 #include "Aircraft.hpp"
 
 class World : sf::NonCopyable
@@ -16,6 +17,7 @@ public:
   explicit                              World(sf::RenderWindow& window);
   void                                  update(sf::Time delta);
   void                                  draw();
+  CommandQueue&                         getCommandQueue();
 
 private:
   enum                                  Layer { Background, Foreground, LayerCount };
@@ -28,6 +30,7 @@ private:
   TextureManager                        mTextures;
   SceneNode                             mSceneGraph;
   std::array<SceneNode*, LayerCount>    mSceneLayers;
+  CommandQueue                          mCommandQueue;
   sf::FloatRect                         mWorldBounds;
   sf::Vector2f                          mSpawnPosition;
   float                                 mScrollSpeed;

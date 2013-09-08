@@ -1,6 +1,7 @@
 #include <SFML/Graphics/RenderTarget.hpp>
 #include <SFML/Graphics/RenderStates.hpp>
 #include "Aircraft.hpp"
+#include "Category.hpp"
 
 Aircraft::Aircraft(Type type, const TextureManager& textures)
 : mType(type)
@@ -13,6 +14,16 @@ Aircraft::Aircraft(Type type, const TextureManager& textures)
 void Aircraft::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const
 {
   target.draw(mSprite, states);
+}
+
+unsigned int Aircraft::getCategory() const
+{
+  switch (mType) {
+    case Type::Eagle:
+      return Category::PlayerAircraft;
+    default:
+      return Category::EnemyAircraft;
+  }
 }
 
 Textures::Id Aircraft::toTextureId(Aircraft::Type type)

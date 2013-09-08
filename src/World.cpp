@@ -7,9 +7,10 @@ World::World(sf::RenderWindow& window)
 , mTextures()
 , mSceneGraph()
 , mSceneLayers()
+, mCommandQueue()
 , mWorldBounds(0.f, 0.f, mWorldView.getSize().x, 20000.f)
 , mSpawnPosition(mWorldView.getSize().x / 2, mWorldBounds.height - mWorldView.getSize().y / 2.f)
-, mScrollSpeed(-400.f)
+, mScrollSpeed(-600.f)
 , mPlayerAircraft(nullptr)
 {
   loadTextures();
@@ -30,6 +31,9 @@ void World::update(sf::Time delta)
     mPlayerAircraft->setVelocity(velocity);
   }
 
+  while (!mCommandQueue.isEmpty())
+    mSceneGraph.onCommand(mCommandQueue.pop(), delta);
+
   mSceneGraph.update(delta);
 }
 
@@ -37,6 +41,11 @@ void World::draw()
 {
   mWindow.setView(mWorldView);
   mWindow.draw(mSceneGraph);
+}
+
+CommandQueue& World::getCommandQueue()
+{
+  return mCommandQueue;
 }
 
 void World::loadTextures()

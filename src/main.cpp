@@ -6,12 +6,12 @@
 
 #include "Game.hpp"
 
-int main()
+int main(int argc, char** argv)
 {
   try {
 
     // Create a Game object and launch it
-    Game game;
+    Game game(argc, argv);
     game.run();
 
   } catch (std::exception& exc) { // If any fatal exception is thrown...

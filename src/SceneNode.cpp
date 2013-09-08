@@ -1,6 +1,7 @@
 #include <algorithm>
 #include <cassert>
 #include "SceneNode.hpp"
+#include "Category.hpp"
 
 SceneNode::SceneNode()
 : mParent(nullptr)
@@ -17,7 +18,7 @@ void SceneNode::attachChild(NodePtr child)
 
 SceneNode::NodePtr SceneNode::detachChild(const SceneNode& node)
 {
-  auto foundNode = std::find_if(mChildren.begin(), mChildren.end(), [&] (NodePtr& p) -> 
+  auto foundNode = std::find_if(mChildren.begin(), mChildren.end(), [&] (NodePtr& p) ->
       bool { return p.get() == &node; });
 
   assert (foundNode != mChildren.end());
@@ -47,6 +48,20 @@ sf::Transform SceneNode::getWorldTransform() const
 sf::Vector2f SceneNode::getWorldPosition() const
 {
   return getWorldTransform() * sf::Vector2f();
+}
+
+unsigned int SceneNode::getCategory() const
+{
+  return Category::Scene;
+}
+
+void SceneNode::onCommand(const Command& command, sf::Time delta)
+{
+  if (command.category & getCategory()) // possible refactor
+    command.action(*this, delta);
+
+  for (NodePtr& child : mChildren)
+    child->onCommand(command, delta);
 }
 
 void SceneNode::updateCurrent(sf::Time delta)
