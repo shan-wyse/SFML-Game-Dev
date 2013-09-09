@@ -80,7 +80,7 @@ void Game::processInput()
 
 void Game::update(sf::Time frameDuration)
 {
-  sf::Vector2f movement(0.f, 0.f);
+  /*sf::Vector2f movement(0.f, 0.f);
   float mPlayerSpeed = 0.f;
   sf::Sprite mPlayer;
 
@@ -93,7 +93,7 @@ void Game::update(sf::Time frameDuration)
   if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
     movement.x += mPlayerSpeed;
 
-  mPlayer.move(movement * frameDuration.asSeconds());
+  mPlayer.move(movement * frameDuration.asSeconds());*/
   mWorld.update(frameDuration);
 }
 
@@ -118,7 +118,7 @@ void Game::updateDevOutput(sf::Time elapsedTime)  // For development purposes on
   if (mDevUpdateTime >= sf::seconds(1.f)) {
     mDevText.setString(
       "WORK IN PROGRESS\n"
-      "Build 0023\n"
+      "Build 0025\n"
       "Compiled with GCC G++ 4.8.0 (rev2)\n"
       "Linked with SFML 2.0\n\n"
       "FPS: " + toString(mDevFrameCount) + "\n" +

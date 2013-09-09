@@ -24,6 +24,8 @@ private:
 
   void                                  loadTextures();
   void                                  buildScene();
+  void                                  adaptPlayerPosition();
+  void                                  adaptPlayerVelocity();
 
   sf::RenderWindow&                     mWindow;
   sf::View                              mWorldView;
