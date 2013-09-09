@@ -34,5 +34,15 @@ void Player::handleRealtimeInput(CommandQueue& commands)
 
 void Player::handleEvent(const sf::Event& event, CommandQueue& commands)
 {
-  // empty
+  if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::P) {
+    command output;
+    output.category = Category::PlayerAircraft;
+
+    output.action = [ ] (SceneNode& node, sf::Time)
+    {
+      std::cout << node.getPosition().x << "," << node.getPosition().y << std::endl;
+    }
+
+    commands.push(output);
+  }
 }
