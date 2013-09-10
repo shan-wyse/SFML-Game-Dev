@@ -32,7 +32,7 @@ void World::update(sf::Time delta)
   mSceneGraph.update(delta);
   adaptPlayerPosition();
 
-  sf::Vector2f velocity = mPlayerAircraft->getVelocity();
+  /*sf::Vector2f velocity = mPlayerAircraft->getVelocity();
 
   /*if (velocity.x != 0.f && velocity.y != 0.f)
     mPlayerAircraft->setVelocity(velocity / std::sqrt(2.f));
@@ -130,6 +130,5 @@ void World::adaptPlayerVelocity()
     mPlayerAircraft->setVelocity(velocity / std::sqrt(2.f));
 
   // Add scrolling velocity
-  sf::Vector2f vel(0.f, mScrollSpeed);
-  mPlayerAircraft->setVelocity(mPlayerAircraft->getVelocity() + vel); //mPlayerAircraft->accelerate(0.f, mScrollSpeed);
+  mPlayerAircraft->accelerate(0.f, mScrollSpeed);
 }

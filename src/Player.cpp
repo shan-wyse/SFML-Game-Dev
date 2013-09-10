@@ -15,7 +15,7 @@ struct AircraftMover
 
   void operator() (Aircraft& aircraft, sf::Time) const
   {
-    aircraft.setVelocity(aircraft.getVelocity() + velocity); //accelerate(velocity);
+    aircraft.accelerate(velocity);
   }
 
   sf::Vector2f velocity;
@@ -27,6 +27,8 @@ Player::Player()
   mKeyBinding[sf::Keyboard::Down] = Action::MoveDown;
   mKeyBinding[sf::Keyboard::Left] = Action::MoveLeft;
   mKeyBinding[sf::Keyboard::Right] = Action::MoveRight;
+  // investigate
+  mKeyBinding[sf::Keyboard::Escape] = Action::Close;
 
   initializeActions();
 
