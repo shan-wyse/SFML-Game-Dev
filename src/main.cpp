@@ -3,16 +3,17 @@
 #include <fstream>
 #include <chrono>
 #include <ctime>
-
-#include "Game.hpp"
+#include "Application.hpp"
 
 int main(int argc, char** argv)
 {
   try {
 
     // Create a Game object and launch it
-    Game game(argc, argv);
-    game.run();
+    // Game game(argc, argv);
+    // game.run();
+    Application app;
+    app.run();
 
   } catch (std::exception& exc) { // If any fatal exception is thrown...
 

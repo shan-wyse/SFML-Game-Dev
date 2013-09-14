@@ -10,15 +10,6 @@ StateStack::StateStack(State::Context context)
   // empty
 }
 
-template <typename type> // SINGLE VARIADIC?
-void StateStack::registerState(States::Id stateId)
-{
-  mFactories[stateId] = [this] ()
-  {
-    return State::StatePtr(new type(*this, mContext));
-  };
-}
-
 void StateStack::processEvent(const sf::Event& event)
 {
   for (auto itr = mStack.rbegin(); itr != mStack.rend(); ++itr) { // INVESTIGATE
@@ -47,20 +38,20 @@ void StateStack::render()
 
 void StateStack::pushState(States::Id stateId)
 {
-  mPendingList.push_back(PendingChange(Push, stateId));
+  mPendingList.push_back(PendingChange(Action::Push, stateId));
 }
 
 void StateStack::popState()
 {
-  mPendingList.push_back(PendingChange(Pop));
+  mPendingList.push_back(PendingChange(Action::Pop));
 }
 
-void StateStack::clearState()
+void StateStack::clearStates()
 {
-  mPendingList.push_back(PendingChange(Clear));
+  mPendingList.push_back(PendingChange(Action::Clear));
 }
 
-void StateStack::isEmpty() const
+bool StateStack::isEmpty() const
 {
   return mStack.empty();
 }
@@ -75,7 +66,7 @@ StateStack::PendingChange::PendingChange(Action action, States::Id stateId)
 State::StatePtr StateStack::createState(States::Id stateId)
 {
   auto foundState = mFactories.find(stateId);
-  assert (found != mFactories.end());
+  assert (foundState != mFactories.end());
   return foundState->second(); // CHECK
 }
 
@@ -87,7 +78,7 @@ void StateStack::applyPendingChanges()
         mStack.push_back(createState(change.stateId));
         break;
       case Action::Pop:
-        mStack.pop_bacK();
+        mStack.pop_back();
         break;
       case Action::Clear:
         mStack.clear();

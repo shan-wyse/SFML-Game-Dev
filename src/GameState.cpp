@@ -8,10 +8,10 @@ GameState::GameState(StateStack& stack, Context context)
   // empty
 }
 
-void GameState::processEvent(const sf::Event& event)
+bool GameState::processEvent(const sf::Event& event)
 {
   CommandQueue& commands = mWorld.getCommandQueue();
-  mPlayer.processEvent(event, commands);
+  mPlayer.handleEvent(event, commands);
 
   if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape)
     requestStackPush(States::Pause);
@@ -19,12 +19,12 @@ void GameState::processEvent(const sf::Event& event)
   return true;
 }
 
-void GameState::update(sf::Time delta)
+bool GameState::update(sf::Time delta)
 {
   mWorld.update(delta);
 
-  CommandQueue& commands = mWorld.getCommandQueue()
-  mPlayer.handleRealtimeInput(commads);
+  CommandQueue& commands = mWorld.getCommandQueue();
+  mPlayer.handleRealtimeInput(commands);
 
   return true;
 }

@@ -52,4 +52,13 @@ private:
   std::map< States::Id, std::function<State::StatePtr()> >  mFactories;
 };
 
+template <typename type> // SINGLE VARIADIC?
+void StateStack::registerState(States::Id stateId)
+{
+  mFactories[stateId] = [this] ()
+  {
+    return State::StatePtr(new type(*this, mContext));
+  };
+}
+
 #endif // STATE_STACK_HPP

@@ -2,6 +2,7 @@
 #define STATE_HPP
 
 #include <memory>
+#include <SFML/System/Time.hpp>
 #include <SFML/Window/Event.hpp>
 #include "StateIdentifiers.hpp"
 #include "ResourceIdentifiers.hpp"
@@ -15,9 +16,6 @@ class State
 public:
   typedef std::unique_ptr<State>      StatePtr;
 
-                                      State(StateStack& stack, Context context);
-  virtual                             ~State();
-
   struct Context
   {
                                       Context(sf::RenderWindow& window, TextureManager& textures,
@@ -28,6 +26,9 @@ public:
     FontManager*                      fonts;
     Player*                           player;
   };
+
+                                      State(StateStack& stack, Context context);
+  virtual                             ~State();
 
   virtual bool                        processEvent(const sf::Event& event) = 0;
   virtual bool                        update(sf::Time delta) = 0;

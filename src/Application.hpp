@@ -33,7 +33,7 @@ private:
   TextureManager              mTextures;
   FontManager                 mFonts;
   Player                      mPlayer;
-  StateStack*                 mStateStack;
+  StateStack                  mStateStack;
 
   sf::Image                   mIcon; // For development purposes only
 

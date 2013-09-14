@@ -6,6 +6,10 @@
 #include "GameState.hpp"
 #include "PauseState.hpp"
 
+#include "StringHelper.hpp"
+
+const sf::Time Application::FRAME_DURATION = sf::seconds(1.f / 60.f);
+
 Application::Application()
 : mWindow(sf::VideoMode(640, 480), "Desert Bloom 2000", sf::Style::Close)
 , mTextures()
@@ -20,12 +24,12 @@ Application::Application()
   mWindow.setKeyRepeatEnabled(false);
 
   mFonts.loadResource(Fonts::Main, "media/fonts/sansation.ttf");
-  mTextures.loadResource(Textures::TitleScreen, "media/textures/title_screen.png");
+  mTextures.loadResource(Textures::Id::TitleScreen, "media/textures/title_screen.png");
 
   mIcon.loadFromFile("media/textures/mushroom.png"); // For development purposes only
   mWindow.setIcon(mIcon.getSize().x, mIcon.getSize().y, mIcon.getPixelsPtr()); // For development purposes only
 
-  mDevText.setFont(mFonts.get(Fonts::Main)); // For development purposes only
+  mDevText.setFont(mFonts.getResource(Fonts::Main)); // For development purposes only
   mDevText.setPosition(5.f, 5.f); // For development purposes only
   mDevText.setCharacterSize(10u); // For development purposes only
 
@@ -33,7 +37,7 @@ Application::Application()
   mStateStack.pushState(States::Title);
 }
 
-void Game::run()
+void Application::run()
 {
   sf::Clock clock;
   sf::Time elapsedTime = sf::Time::Zero;
@@ -64,7 +68,7 @@ void Application::processInput()
   sf::Event event;
 
   while (mWindow.pollEvent(event)) {
-    mStateStack.processEvent();
+    mStateStack.processEvent(event);
 
     if (event.type == sf::Event::Closed)
       mWindow.close();
@@ -80,7 +84,7 @@ void Application::render()
 {
   mWindow.clear();
 
-  mStateStack.draw();
+  mStateStack.render();
 
   mWindow.setView(mWindow.getDefaultView());
   mWindow.draw(mDevText);

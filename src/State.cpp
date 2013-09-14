@@ -1,18 +1,18 @@
 #include "State.hpp"
-#include "StateStack"
-
-State::State(StateStack& stack, Context context)
-: mStack(&stack)
-, mContext(context)
-{
-  // empty
-}
+#include "StateStack.hpp"
 
 State::Context::Context(sf::RenderWindow& window, TextureManager& textures, FontManager& fonts, Player& player)
 : window(&window)
 , textures(&textures)
 , fonts(&fonts)
 , player(&player)
+{
+  // empty
+}
+
+State::State(StateStack& stack, Context context)
+: mStack(&stack)
+, mContext(context)
 {
   // empty
 }

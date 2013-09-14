@@ -1,7 +1,11 @@
 #ifndef PAUSE_STATE_HPP
 #define PAUSE_STATE_HPP
 
-clase PauseState : public State
+#include <SFML/Graphics/Sprite.hpp>
+#include <SFML/Graphics/Text.hpp>
+#include "State.hpp"
+
+class PauseState : public State
 {
 public:
                     PauseState(StateStack& stack, Context context);
@@ -12,10 +16,8 @@ public:
 
 private:
   sf::Sprite        mBackgroundSprite;
-  sf::Text          mText;
-
-  bool              mShowText;
-  sf::Time          mTextEffectTime;
+  sf::Text          mPausedText;
+  sf::Text          mInstructionText;
 };
 
 #endif // PAUSE_STATE_HPP
