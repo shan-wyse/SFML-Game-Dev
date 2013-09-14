@@ -1,8 +1,8 @@
 #include "Command.hpp"
-#include "Category.hpp"
 
 Command::Command()
-: category(Category::None)
+: action()
+, category(Category::None)
 {
   // empty
 }

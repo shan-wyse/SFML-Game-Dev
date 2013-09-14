@@ -13,7 +13,7 @@ class SceneNode : public sf::Drawable, public sf::Transformable, private sf::Non
 {
 public:
   typedef std::unique_ptr<SceneNode>    NodePtr;
-  enum Layer                            { Background, Foreground, LayerCount };
+  // enum Layer                            { Background, Foreground, LayerCount };
 
                                         SceneNode();
 

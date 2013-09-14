@@ -4,6 +4,7 @@
 #include <SFML/Window/Event.hpp>
 #include "Player.hpp"
 #include "Aircraft.hpp"
+#include "CommandQueue.hpp"
 
 struct AircraftMover
 {
@@ -23,10 +24,10 @@ struct AircraftMover
 
 Player::Player()
 {
-  mKeyBinding[sf::Keyboard::Up] = Action::MoveUp;
-  mKeyBinding[sf::Keyboard::Down] = Action::MoveDown;
-  mKeyBinding[sf::Keyboard::Left] = Action::MoveLeft;
-  mKeyBinding[sf::Keyboard::Right] = Action::MoveRight;
+  mKeyBinding[sf::Keyboard::W] = Action::MoveUp;
+  mKeyBinding[sf::Keyboard::S] = Action::MoveDown;
+  mKeyBinding[sf::Keyboard::A] = Action::MoveLeft;
+  mKeyBinding[sf::Keyboard::D] = Action::MoveRight;
   // investigate
   mKeyBinding[sf::Keyboard::Escape] = Action::Close;
 

@@ -2,6 +2,8 @@
 #include <SFML/Graphics/RenderStates.hpp>
 #include "Aircraft.hpp"
 #include "Category.hpp"
+#include "ResourceManager.hpp"
+
 
 Aircraft::Aircraft(Type type, const TextureManager& textures)
 : mType(type)

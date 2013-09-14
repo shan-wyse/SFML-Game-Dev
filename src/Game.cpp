@@ -64,6 +64,9 @@ void Game::processInput()
   while (mWindow.pollEvent(event)) {
     mPlayer.handleEvent(event, commands);
 
+    if (event.key.code == sf::Keyboard::Escape)
+      mWindow.close();
+
     switch (event.type) {
       case sf::Event::GainedFocus:
         mIsFocused = true;
@@ -118,7 +121,7 @@ void Game::updateDevOutput(sf::Time elapsedTime)  // For development purposes on
   if (mDevUpdateTime >= sf::seconds(1.f)) {
     mDevText.setString(
       "WORK IN PROGRESS\n"
-      "Build 0025\n"
+      "Build 0026\n"
       "Compiled with GCC G++ 4.8.0 (rev2)\n"
       "Linked with SFML 2.0\n\n"
       "FPS: " + toString(mDevFrameCount) + "\n" +
@@ -127,10 +130,4 @@ void Game::updateDevOutput(sf::Time elapsedTime)  // For development purposes on
     mDevUpdateTime -= sf::seconds(1.f);
     mDevFrameCount = 0;
   }
-}
-
-void Game::handlePlayerInput(sf::Keyboard::Key key, bool isPressed)
-{
-  if (key == sf::Keyboard::Escape)
-    mWindow.close();
 }

@@ -2,13 +2,15 @@
 #define PLAYER_HPP
 
 #include <map>
+#include <SFML/Window/Event.hpp>
+#include <SFML/Window/Keyboard.hpp>
 #include "CommandQueue.hpp"
 #include "Category.hpp"
 
 class Player
 {
 public:
-  enum class                              Action { MoveUp, MoveDown, MoveLeft, MoveRight };
+  enum class                              Action { MoveUp, MoveDown, MoveLeft, MoveRight, Close };
                                           Player();
 
   void                                    handleRealtimeInput(CommandQueue& commands);
@@ -25,4 +27,4 @@ private:
   std::map<Action, Command>               mActionBinding;
 };
 
-#endif
+#endif // PLAYER_HPP

@@ -15,4 +15,4 @@ private:
   std::queue<Command>     mQueue;
 };
 
-#endif
+#endif // COMMAND_QUEUE_HPP

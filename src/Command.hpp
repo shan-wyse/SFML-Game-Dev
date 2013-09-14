@@ -4,15 +4,16 @@
 #include <functional>
 #include <cassert>
 #include <SFML/System/Time.hpp>
+#include "Category.hpp" // CHECK
 
 class SceneNode;
 
 struct Command
 {
-  Command();
-  std::function<void(SceneNode&, sf::Time)> action;
+                                                Command();
+  std::function<void(SceneNode&, sf::Time)>     action;
 
-  unsigned int category;
+  unsigned int                                  category;
 };
 
 template <typename GameObject, typename Function>
@@ -25,4 +26,4 @@ std::function<void(SceneNode&, sf::Time)> derivedAction(Function function)
   };
 }
 
-#endif
+#endif // COMMAND_HPP

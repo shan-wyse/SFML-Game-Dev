@@ -1,9 +1,9 @@
 #ifndef GAME_HPP
 #define GAME_HPP
 
-#include <SFML/Window/Keyboard.hpp>
+#include <SFML/System/Time.hpp> // For development purposes only
 #include <SFML/Graphics/RenderWindow.hpp>
-#include <SFML/Graphics/Image.hpp>
+#include <SFML/Graphics/Image.hpp> // For development purposes only
 #include <SFML/Graphics/Font.hpp>
 #include <SFML/Graphics/Text.hpp>
 #include "World.hpp"
@@ -21,7 +21,6 @@ private:
 	void				                render();
 
   void                        updateDevOutput(sf::Time elapsedTime);
-  void                        handlePlayerInput(sf::Keyboard::Key key, bool isPressed);
 
   static const sf::Time       FRAME_DURATION;
 
