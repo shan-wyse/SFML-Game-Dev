@@ -9,7 +9,7 @@ MenuState::MenuState(StateStack& stack, Context context)
 , mOptionIndex(0)
 {
   sf::Texture& texture = context.textures->getResource(Textures::Id::TitleScreen);
-  sf::Font& font = context.fonts->getResource(Fonts::Main);
+  sf::Font& font = context.fonts->getResource(Fonts::Id::Main);
 
   mBackgroundSprite.setTexture(texture);
 
@@ -24,7 +24,7 @@ MenuState::MenuState(StateStack& stack, Context context)
   exitOption.setFont(font);
   exitOption.setString("Exit");
   exitOption.setOrigin(exitOption.getLocalBounds().width / 2.f, exitOption.getLocalBounds().height / 2.f);
-  exitOption.setPosition(exitOption.getPosition() + sf::Vector2f(0.f, 30.f));
+  exitOption.setPosition(playOption.getPosition() + sf::Vector2f(0.f, 30.f));
   mOptions.push_back(exitOption);
 
   updateOptionText();
@@ -35,26 +35,33 @@ bool MenuState::processEvent(const sf::Event& event)
   if (event.type != sf::Event::KeyPressed)
     return false;
 
-  if (event.key.code == sf::Keyboard::W) { // SWITCH
-    if (mOptionIndex > 0) // TERNARY
-      mOptionIndex--;
-    else
-      mOptionIndex = mOptions.size() - 1;
+  switch (event.key.code) {
 
-    updateOptionText();
-  } else if (event.key.code == sf::Keyboard::S) {
-    if (mOptionIndex < mOptions.size() - 1)
-      mOptionIndex++;
-    else
-      mOptionIndex = 0;
+    case sf::Keyboard::Escape:
+      requestStackPop();
+      break;
 
-    updateOptionText();
-  } else if (event.key.code == sf::Keyboard::Return) {
-    if (true) {//mOptions[mOptionIndex] == "Play") { // REFACTOR
-      requestStackPop();
-      requestStackPush(States::Game);
-    } else if (false) //mOptions[mOptionIndex] == "Exit")
-      requestStackPop();
+    case sf::Keyboard::Return:
+    case sf::Keyboard::Space:
+      if (mOptions[mOptionIndex].getString() == "Play") {
+        requestStackPop();
+        requestStackPush(States::Game);
+      } else if (mOptions[mOptionIndex].getString() == "Exit")
+        requestStackPop();
+      break;
+
+    case sf::Keyboard::W:
+    case sf::Keyboard::Up:
+      mOptionIndex > 0 ? mOptionIndex-- : mOptionIndex = mOptions.size() - 1;
+      updateOptionText();
+      break;
+
+    case sf::Keyboard::S:
+    case sf::Keyboard::Down:
+      mOptionIndex < mOptions.size() - 1 ? mOptionIndex++ : mOptionIndex = 0;
+      updateOptionText();
+      break;
+
   }
 
   return true;

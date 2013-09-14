@@ -10,8 +10,10 @@
 
 const sf::Time Application::FRAME_DURATION = sf::seconds(1.f / 60.f);
 
-Application::Application()
-: mWindow(sf::VideoMode(640, 480), "Desert Bloom 2000", sf::Style::Close)
+Application::Application(int argc, char** argv)
+: mArgC(argc)
+, mArgV(argv)
+, mWindow(sf::VideoMode(640, 480), "Desert Bloom 2000", sf::Style::Close)
 , mTextures()
 , mFonts()
 , mPlayer()
@@ -23,13 +25,13 @@ Application::Application()
 {
   mWindow.setKeyRepeatEnabled(false);
 
-  mFonts.loadResource(Fonts::Main, "media/fonts/sansation.ttf");
+  mFonts.loadResource(Fonts::Id::Main, "media/fonts/sansation.ttf");
   mTextures.loadResource(Textures::Id::TitleScreen, "media/textures/title_screen.png");
 
   mIcon.loadFromFile("media/textures/mushroom.png"); // For development purposes only
   mWindow.setIcon(mIcon.getSize().x, mIcon.getSize().y, mIcon.getPixelsPtr()); // For development purposes only
 
-  mDevText.setFont(mFonts.getResource(Fonts::Main)); // For development purposes only
+  mDevText.setFont(mFonts.getResource(Fonts::Id::Main)); // For development purposes only
   mDevText.setPosition(5.f, 5.f); // For development purposes only
   mDevText.setCharacterSize(10u); // For development purposes only
 
@@ -58,7 +60,7 @@ void Application::run()
         mWindow.close();
     }
 
-    updateDevOutput(updateTime); // For development purposes only
+    updateDevOutput(elapsedTime); // For development purposes only
     render();
   }
 }
@@ -75,19 +77,19 @@ void Application::processInput()
   }
 }
 
-void Application::update(sf::Time delta)
+void Application::update(sf::Time frameDuration)
 {
-  mStateStack.update(delta);
+  mStateStack.update(frameDuration);
 }
 
 void Application::render()
 {
   mWindow.clear();
-
   mStateStack.render();
 
   mWindow.setView(mWindow.getDefaultView());
-  mWindow.draw(mDevText);
+  if (!(mArgC >= 2 && std::string(mArgV[1]) == "-nodev")) // For development purposes only
+    mWindow.draw(mDevText); // For development purposes only
 
   mWindow.display();
 }
@@ -108,7 +110,7 @@ void Application::updateDevOutput(sf::Time elapsedTime)  // For development purp
   if (mDevUpdateTime >= sf::seconds(1.f)) {
     mDevText.setString(
       "WORK IN PROGRESS\n"
-      "Build 0027\n"
+      "Build 0028\n"
       "Compiled with GCC G++ 4.8.0 (rev2)\n"
       "Linked with SFML 2.0\n\n"
       "FPS: " + toString(mDevFrameCount) + "\n" +

@@ -10,7 +10,7 @@ namespace Textures
 
 namespace Fonts
 {
-  enum Id { Main }; // CHANGE
+  enum class Id { Main }; // CHANGE
 }
 
 template <typename Resource, typename Identifier>

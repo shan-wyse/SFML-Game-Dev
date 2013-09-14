@@ -11,13 +11,13 @@
 class Application
 {
 public:
-                              Application();
+                              Application(int argc, char** argv);
   void                        run();
 
 private:
 
   void                        processInput();
-  void                        update(sf::Time delta);
+  void                        update(sf::Time frameDuration);
   void                        render();
 
   void                        registerStates();

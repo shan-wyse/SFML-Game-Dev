@@ -10,7 +10,7 @@ PauseState::PauseState(StateStack& stack, Context context)
 , mPausedText()
 , mInstructionText()
 {
-  sf::Font& font = context.fonts->getResource(Fonts::Main);
+  sf::Font& font = context.fonts->getResource(Fonts::Id::Main);
   sf::Vector2f viewSize = context.window->getView().getSize();
 
   mPausedText.setFont(font);
@@ -27,12 +27,15 @@ PauseState::PauseState(StateStack& stack, Context context)
 
 bool PauseState::processEvent(const sf::Event& event)
 {
+  if (event.type != sf::Event::KeyPressed)
+    return false;
+
   switch (event.key.code) {
     case sf::Keyboard::Escape:
       requestStackPop();
       break;
     case sf::Keyboard::BackSpace:
-      requestStackClear();
+      requestStateClear();
       requestStackPush(States::Menu);
       break;
   }

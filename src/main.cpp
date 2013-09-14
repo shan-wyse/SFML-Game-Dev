@@ -12,7 +12,7 @@ int main(int argc, char** argv)
     // Create a Game object and launch it
     // Game game(argc, argv);
     // game.run();
-    Application app;
+    Application app(argc, argv);
     app.run();
 
   } catch (std::exception& exc) { // If any fatal exception is thrown...

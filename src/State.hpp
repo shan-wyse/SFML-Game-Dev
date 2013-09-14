@@ -37,7 +37,7 @@ public:
 protected:
   void                                requestStackPush(States::Id stateId);
   void                                requestStackPop();
-  void                                requestStackClear();
+  void                                requestStateClear();
 
   Context                             getContext() const;
 
