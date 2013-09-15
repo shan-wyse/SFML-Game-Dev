@@ -31,28 +31,6 @@ void World::update(sf::Time delta)
 
   mSceneGraph.update(delta);
   adaptPlayerPosition();
-
-  /*sf::Vector2f velocity = mPlayerAircraft->getVelocity();
-
-  /*if (velocity.x != 0.f && velocity.y != 0.f)
-    mPlayerAircraft->setVelocity(velocity / std::sqrt(2.f));
-
-  sf::Vector2f vel(0.f, mScrollSpeed);
-  mPlayerAircraft->setVelocity(mPlayerAircraft->getVelocity() + vel); //accelerate(0.f, mScrollSpeed);
-
-  mSceneGraph.update(delta);
-
-  sf::FloatRect viewBounds(mWorldView.getCenter() - mWorldView.getSize() / 2.f, mWorldView.getSize());
-  const float borderDistance = 40.f;
-
-  sf::Vector2f position = mPlayerAircraft->getPosition();
-
-  position.x = std::max(position.x, viewBounds.left + borderDistance);
-  position.x = std::min(position.x, viewBounds.left - borderDistance);
-  position.x = std::max(position.y, viewBounds.top + borderDistance);
-  position.x = std::min(position.y, viewBounds.top - borderDistance);
-
-  mPlayerAircraft->setPosition(position);*/
 }
 
 void World::draw()
@@ -93,16 +71,7 @@ void World::buildScene()
   std::unique_ptr<Aircraft> leader(new Aircraft(Aircraft::Type::Eagle, mTextures));
   mPlayerAircraft = leader.get();
   mPlayerAircraft->setPosition(mSpawnPosition);
-  // mPlayerAircraft->setVelocity(40.f, mScrollSpeed);
   mSceneLayers[Foreground]->attachChild(std::move(leader));
-
-  /*std::unique_ptr<Aircraft> leftEscort(new Aircraft(Aircraft::Type::Raptor, mTextures));
-  leftEscort->setPosition(-80.f, 50.f);
-  mPlayerAircraft->attachChild(std::move(leftEscort));
-
-  std::unique_ptr<Aircraft> rightEscort(new Aircraft(Aircraft::Type::Raptor, mTextures));
-  rightEscort->setPosition(80.f, 50.f);
-  mPlayerAircraft->attachChild(std::move(rightEscort));*/
 }
 
 // CHNAGE BELOW

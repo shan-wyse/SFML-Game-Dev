@@ -45,7 +45,7 @@ bool MenuState::processEvent(const sf::Event& event)
     case sf::Keyboard::Space:
       if (mOptions[mOptionIndex].getString() == "Play") {
         requestStackPop();
-        requestStackPush(States::Game);
+        requestStackPush(States::Loading);
       } else if (mOptions[mOptionIndex].getString() == "Exit")
         requestStackPop();
       break;
