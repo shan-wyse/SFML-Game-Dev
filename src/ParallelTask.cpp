@@ -2,14 +2,14 @@
 
 ParallelTask::ParallelTask()
 : mThread(&ParallelTask::launchTask, this)
-, mFinished(false)
+, mComplete(false)
 {
   // empty
 }
 
 void ParallelTask::launch()
 {
-  mFinished = false;
+  mComplete = false;
   mElapsedTime.restart();
   mThread.launch();
 }
@@ -17,13 +17,13 @@ void ParallelTask::launch()
 float ParallelTask::getCompletion()
 {
   sf::Lock lock(mMutex);
-  return mElapsedTime.getElapsedTime().asSeconds() / 10.f;
+  return mElapsedTime.getElapsedTime().asSeconds() / 1.f;
 }
 
-bool ParallelTask::isFinished()
+bool ParallelTask::isComplete()
 {
   sf::Lock lock(mMutex);
-  return mFinished;
+  return mComplete;
 }
 
 void ParallelTask::launchTask()
@@ -32,12 +32,12 @@ void ParallelTask::launchTask()
 
   while (!ended) {
     sf::Lock lock(mMutex);
-    if (mElapsedTime.getElapsedTime().asSeconds() >= 10.f)
+    if (mElapsedTime.getElapsedTime().asSeconds() >= 1.f)
       ended = true;
   }
 
   { // release lock ASAP
     sf::Lock lock(mMutex);
-    mFinished = true;
+    mComplete = true;
   }
 }

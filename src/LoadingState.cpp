@@ -33,7 +33,7 @@ bool LoadingState::processEvent(const sf::Event& event)
 
 bool LoadingState::update(sf::Time delta)
 {
-  if (mLoadingTask.isFinished()) {
+  if (mLoadingTask.isComplete()) {
     requestStackPop();
     requestStackPush(States::Game);
   } else

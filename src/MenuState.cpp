@@ -5,20 +5,19 @@
 
 MenuState::MenuState(StateStack& stack, Context context)
 : State(stack, context)
-, mOptions()
-, mOptionIndex(0)
+, mGuiContainer()
 {
   sf::Texture& texture = context.textures->getResource(Textures::Id::TitleScreen);
   sf::Font& font = context.fonts->getResource(Fonts::Id::Main);
 
   mBackgroundSprite.setTexture(texture);
 
-  sf::Text playOption;
-  playOption.setFont(font);
-  playOption.setString("Play");
-  playOption.setOrigin(playOption.getLocalBounds().width / 2.f, playOption.getLocalBounds().height / 2.f);
-  playOption.setPosition(context.window->getView().getSize() / 2.f);
-  mOptions.push_back(playOption);
+  // sf::Text playOption;
+  // playOption.setFont(font);
+  // playOption.setString("Play");
+  // playOption.setOrigin(playOption.getLocalBounds().width / 2.f, playOption.getLocalBounds().height / 2.f);
+  // playOption.setPosition(context.window->getView().getSize() / 2.f);
+  // mOptions.push_back(playOption);
 
   sf::Text exitOption;
   exitOption.setFont(font);
@@ -28,43 +27,23 @@ MenuState::MenuState(StateStack& stack, Context context)
   mOptions.push_back(exitOption);
 
   updateOptionText();
+
+  auto playButton = std::make_shared<Gui::Button> (*context.textures, *context.fonts);
+  playButton->setPosition(100, 250);
+  playButton->setText("Play");
+  playButton->setCallback([this] ()
+  {
+    requestStackPop();
+    requestStackPush(States::Game);
+  });
+
+  mGuiContainer.pack(playButton);
 }
 
 bool MenuState::processEvent(const sf::Event& event)
 {
-  if (event.type != sf::Event::KeyPressed)
-    return false;
-
-  switch (event.key.code) {
-
-    case sf::Keyboard::Escape:
-      requestStackPop();
-      break;
-
-    case sf::Keyboard::Return:
-    case sf::Keyboard::Space:
-      if (mOptions[mOptionIndex].getString() == "Play") {
-        requestStackPop();
-        requestStackPush(States::Loading);
-      } else if (mOptions[mOptionIndex].getString() == "Exit")
-        requestStackPop();
-      break;
-
-    case sf::Keyboard::W:
-    case sf::Keyboard::Up:
-      mOptionIndex > 0 ? mOptionIndex-- : mOptionIndex = mOptions.size() - 1;
-      updateOptionText();
-      break;
-
-    case sf::Keyboard::S:
-    case sf::Keyboard::Down:
-      mOptionIndex < mOptions.size() - 1 ? mOptionIndex++ : mOptionIndex = 0;
-      updateOptionText();
-      break;
-
-  }
-
-  return true;
+  mGuiContainer.processEvent(event);
+  return false;
 }
 
 bool MenuState::update(sf::Time delta)
@@ -75,12 +54,9 @@ bool MenuState::update(sf::Time delta)
 void MenuState::render()
 {
   sf::RenderWindow& window = *getContext().window;
-
   window.setView(window.getDefaultView());
   window.draw(mBackgroundSprite);
-
-  for (const sf::Text& text : mOptions)
-    window.draw(text);
+  window.draw(mGuiContainer);
 }
 
 void MenuState::updateOptionText()

@@ -13,13 +13,13 @@ public:
 
   void              launch();
   float             getCompletion();
-  bool              isFinished();
+  bool              isComplete();
 
 private:
   void              launchTask();
 
   sf::Thread        mThread;
-  bool              mFinished;
+  bool              mComplete;
   sf::Clock         mElapsedTime;
   sf::Mutex         mMutex;
 };
