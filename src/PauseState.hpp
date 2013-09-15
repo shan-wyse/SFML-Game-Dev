@@ -19,8 +19,6 @@ private:
   sf::Sprite        mBackgroundSprite;
   sf::Text          mPausedText;
   Gui::Container    mGuiContainer;
-
-  sf::Text mInstructionText; // REMOVE
 };
 
 #endif // PAUSE_STATE_HPP

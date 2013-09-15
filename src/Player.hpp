@@ -10,7 +10,7 @@
 class Player
 {
 public:
-  enum                                    Action { MoveUp, MoveDown, MoveLeft, MoveRight, Close, ActionCount };
+  enum                                    Action { MoveUp, MoveDown, MoveLeft, MoveRight, ActionCount };
                                           Player();
 
   void                                    handleRealtimeInput(CommandQueue& commands);

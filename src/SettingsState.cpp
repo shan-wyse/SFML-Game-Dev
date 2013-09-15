@@ -9,50 +9,25 @@ SettingsState::SettingsState(StateStack& stack, Context context)
 {
   mBackgroundSprite.setTexture(context.textures->getResource(Textures::Id::TitleScreen));
 
-  addButtonLabel(Player::MoveUp,    150.f, "MoveUp",    context);
-  addButtonLabel(Player::MoveDown,  200.f, "MoveDown",  context);
-  addButtonLabel(Player::MoveLeft,  250.f, "MoveLeft",  context);
-  addButtonLabel(Player::MoveRight, 300.f, "MoveRight", context);
-
-  updateLabels();
-
-
-  // // possible typedef
-  // mBindingButtons[Player::Action::MoveUp] = std::make_shared<Gui::Button>();
-  // mBindingButtons[Player::Action::MoveDown] = std::make_shared<Gui::Button>();
-  // mBindingButtons[Player::Action::MoveLeft] = std::make_shared<Gui::Button>();
-  // mBindingButtons[Player::Action::MoveRight] = std::make_shared<Gui::Button>();
-
-  // mBindingLabels[Player::Action::MoveUp] = std::make_shared<Gui::Label>();
-  // mBindingLabels[Player::Action::MoveDown] = std::make_shared<Gui::Label>();
-  // mBindingLabels[Player::Action::MoveLeft] = std::make_shared<Gui::Label>();
-  // mBindingLabels[Player::Action::MoveRight] = std::make_shared<Gui::Label>();
-
-  // updateLabels();
+  addButtonLabel(Player::MoveUp,    150.f, "Move Up",     context);
+  addButtonLabel(Player::MoveDown,  200.f, "Move Down",   context);
+  addButtonLabel(Player::MoveLeft,  250.f, "Move Left",   context);
+  addButtonLabel(Player::MoveRight, 300.f, "Move Right",  context);
 
   auto backButton = std::make_shared<Gui::Button>(*context.textures, *context.fonts);
-  backButton->setPosition(100, 375);
+  backButton->setPosition(80.f, 375.f);
   backButton->setText("Back");
-  backButton->setCallback([this] () { requestStackPop(); });
-
-  // mGuiContainer.pack(mBindingButtons[Player::Action::MoveUp]);
-  // mGuiContainer.pack(mBindingButtons[Player::Action::MoveDown]);
-  // mGuiContainer.pack(mBindingButtons[Player::Action::MoveLeft]);
-  // mGuiContainer.pack(mBindingButtons[Player::Action::MoveRight]);
-
-  // mGuiContainer.pack(mBindingLabels[Player::Action::MoveUp]);
-  // mGuiContainer.pack(mBindingLabels[Player::Action::MoveDown]);
-  // mGuiContainer.pack(mBindingLabels[Player::Action::MoveLeft]);
-  // mGuiContainer.pack(mBindingLabels[Player::Action::MoveRight]);
+  backButton->setCallback(std::bind(&SettingsState::requestStackPop, this));
 
   mGuiContainer.pack(backButton);
+  updateLabels();
 }
 
 bool SettingsState::processEvent(const sf::Event& event)
 {
   bool isKeyBinding = false;
 
-  for (std::size_t action = 0; action < Player::Action::ActionCount; ++action) {
+  for (std::size_t action = 0; action < Player::ActionCount; ++action) {
     if (mBindingButtons[action]->isActive()) {
       isKeyBinding = true;
 
@@ -75,7 +50,7 @@ bool SettingsState::processEvent(const sf::Event& event)
 
 bool SettingsState::update(sf::Time delta)
 {
-  // empty
+  return true;
 }
 
 void SettingsState::render()
@@ -90,7 +65,7 @@ void SettingsState::updateLabels()
 {
   Player& player = *getContext().player;
 
-  for (std::size_t i = 0; i < Player::Action::ActionCount; ++i) {
+  for (std::size_t i = 0; i < Player::ActionCount; ++i) {
     sf::Keyboard::Key key = player.getAssignedKey(static_cast<Player::Action>(i));
     mBindingLabels[i]->setText(toString(key));
   }

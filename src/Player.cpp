@@ -28,8 +28,6 @@ Player::Player()
   mKeyBinding[sf::Keyboard::S] = MoveDown;
   mKeyBinding[sf::Keyboard::A] = MoveLeft;
   mKeyBinding[sf::Keyboard::D] = MoveRight;
-  // investigate
-  mKeyBinding[sf::Keyboard::Escape] = Action::Close;
 
   initializeActions();
 
