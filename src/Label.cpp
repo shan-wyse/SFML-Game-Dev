@@ -6,7 +6,7 @@ namespace Gui
 {
 
 Label::Label(const std::string& text, const FontManager& fonts)
-: mText(text, fonts.getResource(Fonts::Main), 16);
+: mText(text, fonts.getResource(Fonts::Id::Main), 16)
 {
   // empty
 }

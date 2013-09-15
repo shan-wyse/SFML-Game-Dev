@@ -1,5 +1,5 @@
 #include <SFML/Window/Event.hpp>
-#include <SFML/Graphics/RenderTarger.hpp>
+#include <SFML/Graphics/RenderTarget.hpp>
 #include <SFML/Graphics/RenderStates.hpp>
 #include "Button.hpp"
 
@@ -12,7 +12,7 @@ Button::Button(const TextureManager& textures, const FontManager& fonts)
 , mSelectedTexture(textures.getResource(Textures::Id::ButtonSelected))
 , mPressedTexture(textures.getResource(Textures::Id::ButtonPressed))
 , mSprite()
-, mText("", fonts.getResource(Fonts::Main), 16)
+, mText("", fonts.getResource(Fonts::Id::Main), 16)
 , mIsToggle(false)
 {
   mSprite.setTexture(mDeselectedTexture);
@@ -37,7 +37,7 @@ void Button::setSelected(bool selected)
 
 void Button::setActive(bool active)
 {
-  Component::activate(active);
+  Component::setActive(active);
 
   if (active) {
     if (mIsToggle)
@@ -77,7 +77,7 @@ void Button::setToggle(bool toggle)
   mIsToggle = toggle;
 }
 
-void Button::draw(sf::RenderTarger& target, sf::RenderStates states) const
+void Button::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
   states.transform *= getTransform();
   target.draw(mSprite, states);

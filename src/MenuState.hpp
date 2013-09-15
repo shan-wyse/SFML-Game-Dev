@@ -4,6 +4,7 @@
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/Text.hpp>
 #include "State.hpp"
+#include "Container.hpp"
 
 class MenuState : public State
 {
@@ -14,15 +15,9 @@ public:
   virtual bool              update(sf::Time delta);
   virtual void              render();
 
-  void                      updateOptionText();
-
 private:
-  enum class                MenuOptions { Play, Exit };
-
   sf::Sprite                mBackgroundSprite;
-
-  std::vector<sf::Text>     mOptions;
-  std::size_t               mOptionIndex;
+  Gui::Container            mGuiContainer;
 };
 
 #endif // MENU_STATE_HPP

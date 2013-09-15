@@ -10,7 +10,7 @@ Component::Component()
   // empty
 }
 
-Component::~Component();
+Component::~Component()
 {
   // empty
 }

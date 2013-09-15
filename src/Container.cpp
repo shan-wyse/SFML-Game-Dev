@@ -18,7 +18,7 @@ void Container::pack(Component::ComponentPtr component)
   mChildren.push_back(component);
 
   if (!hasSelection() && component->isSelectable())
-    select(mChildren.size() - 1);
+    setSelected(mChildren.size() - 1);
 }
 
 bool Container::isSelectable() const
@@ -40,7 +40,7 @@ void Container::processEvent(const sf::Event& event)
       case sf::Keyboard::Return:
       case sf::Keyboard::Space:
         if (hasSelection())
-          mChildren[mSelectedChild]->activate();
+          mChildren[mSelectedChild]->setActive(true);
         break;
 
       case sf::Keyboard::W:
@@ -60,8 +60,8 @@ void Container::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
   states.transform *= getTransform();
 
-  for (const Component::ComponentPtr child, mChildren)
-    target.draw(child, states);
+  for (const Component::ComponentPtr child : mChildren)
+    target.draw(*child, states);
 }
 
 bool Container::hasSelection() const
@@ -73,16 +73,16 @@ void Container::setSelected(std::size_t index)
 {
   if (mChildren[index]->isSelectable()) {
     if (hasSelection())
-      mChildren[mSelectedChild]->deselect();
+      mChildren[mSelectedChild]->setSelected(false);
 
-    mChildren[index]->select();
+    mChildren[index]->setSelected(true);
     mSelectedChild = index;
   }
 }
 
 void Container::selectPrevious()
 {
-  if (!hasSelection)
+  if (!hasSelection())
     return;
 
   int prev = mSelectedChild;
@@ -91,7 +91,7 @@ void Container::selectPrevious()
     prev = (prev + mChildren.size() - 1) % mChildren.size();
   while (!mChildren[prev]->isSelectable());
 
-  select(prev);
+  setSelected(prev);
 }
 
 void Container::selectNext()
@@ -105,7 +105,7 @@ void Container::selectNext()
     next = (next + 1) % mChildren.size();
   while (!mChildren[next]->isSelectable());
 
-  select(next);
+  setSelected(next);
 }
 
 }

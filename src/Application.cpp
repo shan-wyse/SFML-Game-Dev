@@ -3,6 +3,7 @@
 #include "StateIdentifiers.hpp"
 #include "TitleState.hpp"
 #include "MenuState.hpp"
+#include "SettingsState.hpp"
 #include "LoadingState.hpp"
 #include "GameState.hpp"
 #include "PauseState.hpp"
@@ -28,6 +29,10 @@ Application::Application(int argc, char** argv)
 
   mFonts.loadResource(Fonts::Id::Main, "media/fonts/sansation.ttf");
   mTextures.loadResource(Textures::Id::TitleScreen, "media/textures/title_screen.png");
+
+  mTextures.loadResource(Textures::Id::ButtonDeselected,    "media/textures/button_deselected.png");
+  mTextures.loadResource(Textures::Id::ButtonSelected,      "media/textures/button_selected.png");
+  mTextures.loadResource(Textures::Id::ButtonPressed,       "media/textures/button_pressed.png");
 
   mIcon.loadFromFile("media/textures/mushroom.png"); // For development purposes only
   mWindow.setIcon(mIcon.getSize().x, mIcon.getSize().y, mIcon.getPixelsPtr()); // For development purposes only
@@ -99,6 +104,7 @@ void Application::registerStates()
 {
   mStateStack.registerState<TitleState>     (States::Title);
   mStateStack.registerState<MenuState>      (States::Menu);
+  mStateStack.registerState<SettingsState>  (States::Settings);
   mStateStack.registerState<LoadingState>   (States::Loading);
   mStateStack.registerState<GameState>      (States::Game);
   mStateStack.registerState<PauseState>     (States::Pause);

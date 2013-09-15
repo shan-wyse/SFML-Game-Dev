@@ -6,7 +6,7 @@
 #include <SFML/Graphics/Drawable.hpp>
 #include <SFML/Graphics/Transformable.hpp>
 
-namspace sf { class Event; }
+namespace sf { class Event; }
 
 namespace Gui
 {

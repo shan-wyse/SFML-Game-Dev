@@ -26,7 +26,7 @@ public:
   virtual void                        setSelected(bool selected);
   virtual void                        setActive(bool active);
 
-  virtual void                        processEvent(const sf::Event event);
+  virtual void                        processEvent(const sf::Event& event);
 
   void                                setCallback(Callback callback);
   void                                setText(const std::string& text);

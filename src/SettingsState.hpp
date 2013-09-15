@@ -26,8 +26,8 @@ public:
     sf::Sprite        mBackgroundSprite;
     Gui::Container    mGuiContainer;
 
-    std::array<Gui::Button::ButtonPtr, Player::Action::ActionCount>     mBindingButtons;
-    std::array<Gui::Label::LabelPtr, Player::Action::ActionCount>       mBindingLabels;
+    std::array<Gui::Button::ButtonPtr, Player::ActionCount>     mBindingButtons;
+    std::array<Gui::Label::LabelPtr, Player::ActionCount>       mBindingLabels;
 };
 
 #endif // SETTINGS_STATE_HPP

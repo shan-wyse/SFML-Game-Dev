@@ -1,3 +1,4 @@
+#include <cmath>
 #include <SFML/Graphics/RenderWindow.hpp>
 #include "World.hpp"
 

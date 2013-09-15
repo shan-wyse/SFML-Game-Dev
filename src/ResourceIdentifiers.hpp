@@ -5,7 +5,7 @@ namespace sf { class Texture; class Font; }
 
 namespace Textures
 {
-  enum class Id { Eagle, Raptor, Desert, TitleScreen };
+  enum class Id { Eagle, Raptor, Desert, TitleScreen, ButtonDeselected, ButtonSelected, ButtonPressed };
 }
 
 namespace Fonts

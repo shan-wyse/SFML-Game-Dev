@@ -24,10 +24,10 @@ struct AircraftMover
 
 Player::Player()
 {
-  mKeyBinding[sf::Keyboard::W] = Action::MoveUp;
-  mKeyBinding[sf::Keyboard::S] = Action::MoveDown;
-  mKeyBinding[sf::Keyboard::A] = Action::MoveLeft;
-  mKeyBinding[sf::Keyboard::D] = Action::MoveRight;
+  mKeyBinding[sf::Keyboard::W] = MoveUp;
+  mKeyBinding[sf::Keyboard::S] = MoveDown;
+  mKeyBinding[sf::Keyboard::A] = MoveLeft;
+  mKeyBinding[sf::Keyboard::D] = MoveRight;
   // investigate
   mKeyBinding[sf::Keyboard::Escape] = Action::Close;
 
@@ -84,19 +84,19 @@ void Player::initializeActions()
 {
   const float playerSpeed = 200.f;
 
-  mActionBinding[Action::MoveUp].action     = derivedAction<Aircraft>(AircraftMover(0.f, -playerSpeed));
-  mActionBinding[Action::MoveDown].action   = derivedAction<Aircraft>(AircraftMover(0.f, +playerSpeed));
-  mActionBinding[Action::MoveLeft].action   = derivedAction<Aircraft>(AircraftMover(-playerSpeed, 0.f));
-  mActionBinding[Action::MoveRight].action  = derivedAction<Aircraft>(AircraftMover(+playerSpeed, 0.f));
+  mActionBinding[MoveUp].action     = derivedAction<Aircraft>(AircraftMover(0.f, -playerSpeed));
+  mActionBinding[MoveDown].action   = derivedAction<Aircraft>(AircraftMover(0.f, +playerSpeed));
+  mActionBinding[MoveLeft].action   = derivedAction<Aircraft>(AircraftMover(-playerSpeed, 0.f));
+  mActionBinding[MoveRight].action  = derivedAction<Aircraft>(AircraftMover(+playerSpeed, 0.f));
 }
 
 bool Player::isRealtimeAction(Action action)
 {
   switch (action) {
-    case Action::MoveUp:
-    case Action::MoveDown:
-    case Action::MoveLeft:
-    case Action::MoveRight:
+    case MoveUp:
+    case MoveDown:
+    case MoveLeft:
+    case MoveRight:
       return true;
     default:
       return false;
