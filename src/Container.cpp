@@ -52,6 +52,9 @@ void Container::processEvent(const sf::Event& event)
       case sf::Keyboard::Down:
         selectNext();
         break;
+
+      default:
+        break;
     }
   }
 }

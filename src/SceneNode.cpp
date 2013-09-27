@@ -93,3 +93,57 @@ void SceneNode::drawChildren(sf::RenderTarget& target, sf::RenderStates states) 
   for (const NodePtr& child : mChildren)
     child->draw(target, states);
 }
+
+void SceneNode::checkCollisionPair(SceneNode& node, std::set<Pair>& collisionPair)
+{
+  if (this != &node && collision(*this, node) && !isDestroyed() && !node.isDestroyed())
+    collisionPairs.insert(std::minmax(this, &node));
+
+  for (NodePtr child : mChildren)
+    child.checkNodeCollision(node, collisionPairs);
+}
+
+void SceneNode::checkSceneCollision(SceneNode& sceneGraph, std::set<Pair>& collisionPairs)
+{
+  checkNodeCollision(sceneGraph, collisionPairs)
+
+  for (NodePtr child, sceneGraph.mChildren)
+    checkSceneCollision(child, collisionPairs);
+}
+
+bool SceneNode::isDestroyed() const
+{
+  return false;
+}
+
+bool SceneNode::isMarkedForRemoval() const
+{
+  return isDestroyed();
+}
+
+void SceneNode::removeWrecks()
+{
+  auto wreckfieldBegin = std::remove_if(mChildren.begin(), mChildren.end(), std::mem_fn(&SceneNode::isMarkedForRemoval));
+  mChildren.erase(wreckfieldBegin, mChildren.end());
+
+  std::for_each(mChildren.begin(), mChildren.end(), std::mem_fn(&SceneNode::removeWrecks));
+}
+
+bool collision(const SceneNode& a, const SceneNode& b)
+{
+  return a.getBoundingRect().intersects(b.getBoundingRect());
+}
+
+bool matchesCategories(SceneNode::Pair& colliders, Category::Type typeA, Category::Type typeB)
+{
+  unsigned int categoryA = colliders.first->getCategory();
+  unsigned int categoryB = colliders.second->getCategory();
+
+  if (typeA & categoryA && typeB & categoryB)
+    return true
+  else if (typeA & categoryB && typeB & categoryA) {
+    std::swap(colliders.first, colliders.second)
+    return true;
+  } else
+    return false;
+}

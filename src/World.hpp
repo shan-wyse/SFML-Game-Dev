@@ -27,6 +27,10 @@ private:
   void                                  adaptPlayerPosition();
   void                                  adaptPlayerVelocity();
 
+  void                                  spawnEnemies();
+  sf::FloatRect                         getSpawnBounds();
+  void                                  addEnemies();
+
   sf::RenderWindow&                     mWindow;
   sf::View                              mWorldView;
   TextureManager                        mTextures;
@@ -37,6 +41,8 @@ private:
   sf::Vector2f                          mSpawnPosition;
   float                                 mScrollSpeed;
   Aircraft*                             mPlayerAircraft;
+
+  std::vector<SpawnPoint>               mEnemySpawnPoints;
 };
 
 #endif // WORLD_HPP

@@ -25,10 +25,17 @@ void World::update(sf::Time delta)
   mWorldView.move(0.f, mScrollSpeed * delta.asSeconds());
   mPlayerAircraft->setVelocity(0.f, 0.f);
 
+  destroyEntitiesOutsideView();
+  guideMissiles();
+
   while (!mCommandQueue.isEmpty())
     mSceneGraph.onCommand(mCommandQueue.pop(), delta);
 
   adaptPlayerVelocity();
+
+  processCollisions();
+  mSceneGraph.removeWrecks();
+  spawnEnemies();
 
   mSceneGraph.update(delta);
   adaptPlayerPosition();
@@ -101,4 +108,107 @@ void World::adaptPlayerVelocity()
 
   // Add scrolling velocity
   mPlayerAircraft->accelerate(0.f, mScrollSpeed);
+}
+
+void World::spawnEnemies()
+{
+  while (!mEnemySpawnPoints.empty() && mEnemySpawnPoints.back().y > getSpawnBounds().top) {
+    SpawnPoint spawn = mEnemySpawnPoints.back();
+
+    std::unique_ptr<Aircraft> enemy(new Aircraft(spawn.type, mTextures, mFonts));
+    enemy->setPosition(spawn.x, spawn.y);
+    enemy->setRepeated(180.f);
+
+    mSceneLayers[Foreground]->attachChild(std::move(enemy));
+    mEnemySpawnPoints.pop_back();
+  }
+}
+
+void World::addEnemies()
+{
+  addEnemy(Aircraft::Raptor,    0.f,    500.f);
+  addEnemy(Aircraft::Avenger, -70.f,   1400.f);
+
+  std::sort(mEnemySpawnPoints.begin(), mEnemySpawnPoints.end(), [] (SpawnPoint a, SpawnPoint b)
+  {
+    return a.y < b.y;
+  });
+}
+
+void World::guideMissiles()
+{
+  Command enemyCollector;
+  enemyCollector.category = Category::EnemyAircraft;
+  enemyCollector.action = derivedAction<Aircraft> ([this] (Aircraft& enemy, sf::Time)
+  {
+    if (!enemy.isDestroyed()) mActiveEnemies.push_back(&enemy);
+  } );
+
+  Command missileGuider;
+  missileGuider.category = Projectile::AilliedProjectile;
+  missileGuider.action = derivedAction<Projectile>([this] (Projectile& missile, sf::Time)
+  {
+    if (!missile.isGuided()) return;
+
+    float minDistance = std::numeric_limits<float>::max();
+    Aircraft* closestEnemy = nullptr;
+
+    for (Aircraft* enemy : mActiveEnemies) {
+      float enemyDistance = distance(missile, *enemy);
+
+      if (enemyDistance < minDistance) {
+        closestEnemy = enemy;
+        minDistance = enemyDistance;
+      }
+    }
+
+    if (closestEnemy)
+      missile.guideTowards(closestEnemy->getWorldPosition());
+  } );
+
+  mCommandQueue.push(enemyCollector);
+  mCommandQueue.push(missileGuider);
+  mActiveEnemies.clear();
+}
+
+void World::processCollisions()
+{
+  std::set<SceneNode::Pair> collisionPairs;
+  mSceneGraph.checkSceneCollision(mSceneGraph, collisionPairs);
+
+  for (SceneNode::Pair pair : collision pairs) {
+    if (matchesCategories(pair, Category::PlayerAircraft, Category::EnemyAircraft)) {
+      auto& player = static_cast<Aircraft&> (*pair.first);
+      aito& enemy = static_cast<Aircraft&> (*pair.second);
+
+      player.modifyHitpoints(enemy.getHitpoints());
+      enemy.destroy();
+    }
+  } else if (matchesCategories(pair, Category::PlayerAircraft, Category::Pickup)) {
+    auto& player = static_cast<Aircraft&> (*pair.first);
+    auto& pickup = static_cast<Pickup&> (*pair.second);
+
+    pickup.apply(player);
+    pickup.destroy();
+  } else if (matchesCategories(pair, Category::EnemyAircraft, Category::AilliedProjectile) ||
+             matchesCategories(pair, Category::PlayerAircraft, Category::EnemyProjectile)) {
+    auto& aircraft = static_cast<Aircraft&> (*pair.first);
+    auto& projectile = static_cast<Projectile&> (*pair.second);
+
+    aircraft.modifyHitpoints(-projectile.getDamage());
+    projectile.destory();
+  }
+}
+
+void World::destroyEntitiesOutsideView()
+{
+  Command command;
+  command.category = Category::Projectile | Category::EnemyAircraft;
+  command.action = derivedAction<Entity> ([this] (Entity& entity, sf::Time)
+  {
+    if (!getBattlefieldBounds().intersects(entity.getBoundingRect()))
+      entity.destory();
+  } );
+
+  mCommandQueue.push(command);
 }
