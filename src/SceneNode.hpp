@@ -18,7 +18,7 @@ class SceneNode : public sf::Drawable, public sf::Transformable, private sf::Non
 {
 public:
   typedef std::unique_ptr<SceneNode>          NodePtr;
-  typedef std::pair<SceneNode*< SceneNode*>   NodePair;
+  typedef std::pair<SceneNode*, SceneNode*>   NodePair;
   // enum Layer                            { Background, Foreground, LayerCount };
 
   explicit                                    SceneNode();

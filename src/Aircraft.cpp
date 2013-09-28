@@ -1,10 +1,13 @@
+#include <cmath>
 #include <SFML/Graphics/RenderTarget.hpp>
 #include <SFML/Graphics/RenderStates.hpp>
 #include "Aircraft.hpp"
 #include "DataTables.hpp"
-#include "Category.hpp"
+// #include "Category.hpp"
+#include "Pickup.hpp"
+#include "CommandQueue.hpp"
 #include "ResourceManager.hpp"
-#include "TextNode.hpp"
+// #include "TextNode.hpp"
 #include "StringHelper.hpp"
 
 namespace { const std::vector<AircraftData> Table = initializeAircraftData(); }
@@ -13,9 +16,22 @@ Aircraft::Aircraft(Type type, const TextureManager& textures)
 : Entity(Table[type].hitpoints)
 , mType(type)
 , mSprite(textures.getResource(toTextureId(type)))
+, mFireCommand()
+, mMissileCommand()
+, mFireCountdown(sf::Time::Zero)
+, bFiring(false)
+, bLaunchingMissile(false)
+, bMarkedForRemoval(false)
+, mFireRateLevel(1)
+, mSpreadLevel(1)
+, mMissileAmmo(2)
+, mDropPickupCommand()
+, mTravelledDistance(0.f)
+, mDirectionIndex(0)
+, mMissileDisplay(nullptr)
 {
-  sf::FloatRect bounds = mSprite.getLocalBounds();
-  mSprite.setOrigin(bounds.width / 2.f, bounds.height / 2.f);
+  // sf::FloatRect bounds = mSprite.getLocalBounds();
+  mSprite.setOrigin(mSprite.getLocalBounds().width / 2.f, mSprite.getLocalBounds().height / 2.f);
 
   std::unique_ptr<TextNode> healthDisplay(new TextNode(*getContext().fonts, ""));
   mHealthDisplay = healthDisplay.get();
@@ -26,13 +42,34 @@ Aircraft::Aircraft(Type type, const TextureManager& textures)
   mMissileCommand.category = Category::SceneAirLayer;
   mMissileCommand.action = [this, &textures] (SceneNode& node, sf::Time) // FIX
     { createProjectile(node, Projectile::Missile, 0.f, 0.5f, textures); }
+  mDropPickupCommand.category = Category::SceneAirLayer;
+  mDropPickupCommand.action = [this, &texture] (SceneNode& node, sf::Time) { createPickup(node, textures) };
+
+  if (getCategory() == Category::PlayerAircraft) {
+    std::unique_ptr<TextNode> missileDisplay(new TextNode(fonts, ""));
+    missileDisplay->setPosition(0, 70)
+    mMissileDisplay = missileDisplay.get();
+    attachChild(std::move(missileDisplay));
+  }
+
+  updateTexts();
 }
 
-void Aircraft::update(sf::Time delta)
+void Aircraft::updateCurrent(sf::Time delta, CommandQueue& commands)
 {
-  mHealthDisplay->setString(toString(getHitpoints()) + "HP");
-  mHealthDisplay->setPosition(0.f, 50.f);
-  mHealthDisplay->setRotation(-getRotation());
+  // mHealthDisplay->setString(toString(getHitpoints()) + "HP");
+  // mHealthDisplay->setPosition(0.f, 50.f);
+  // mHealthDisplay->setRotation(-getRotation());
+
+  if (isDestroyed()) {
+    checkPickupDrop(commands);
+    bMarkedForRemoval = true;
+    return;
+  }
+
+  checkProjectileLaunch(delta,commands);
+  updateMovementPattern(delta);
+  updateTexts();
 }
 
 void Aircraft::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const
@@ -42,11 +79,30 @@ void Aircraft::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) co
 
 unsigned int Aircraft::getCategory() const
 {
-  switch (mType) {
-    case Type::Eagle:
-      return Category::PlayerAircraft;
-    default:
-      return Category::EnemyAircraft;
+  if (isAllied())
+    return Category::PlayerAircraft;
+  else
+    return Category::EnemyAircraft;
+  }
+}
+
+bool Aircraft::isAllied() const { return mType == Eagle; }
+
+float Aircraft::getMaxSpeed() const { Table[mType].speed; }
+
+void Aircraft::increaseFireRate() { if (mFireRateLevel < 3) ++ mFireRateLevel; }
+
+void Aircraft::incereaseSpread() { if (mSpreadLevel < 3) ++mSpreadLevel; }
+
+void Aircraft::collectMissiles(unsigned int count) { mMissileAmmo += count; }
+
+void Aircraft::fire() { if (mType[mType].fireInterval != sf::Time::Zero) bFiring = true; }
+
+void Aircraft::launchMissile()
+{
+  if (mMissileAmmo > 0) { // possible decrement?
+    bLaunchingMissile = true;
+    --mMissileAmmo;
   }
 }
 
@@ -68,6 +124,12 @@ void Aircraft::updateMovementPattern(sf::Time delta)
     setVelocity(xVel, yVel);
     mTravelledDistance += getMaxSpeed() * delta.asSeconds();
   }
+}
+
+void Aircraft::checkPickupDrop)CommandQueue& commands)
+{
+  if (!isAllied() && randomInt(3) == 0)
+    commands.push(mDropPickupCommand);
 }
 
 Textures::Id Aircraft::toTextureId(Aircraft::Type type)
@@ -136,7 +198,28 @@ sf::FloatRect Aircraft::getBoundingRect() const
   return getWorldTransform().transformRect(mSprite.getGlobalBounds());
 }
 
-bool Aircraft::isMarkedForRemoval() const
+bool Aircraft::isMarkedForRemoval() const { return bMarkedForRemoval; }
+
+void Aircraft::createPickup(SceneNode& node, const TextureManager& textures) const
 {
-  return bMarkedForRemoval;
+  auto type = static_cast<Pickup::Type> (randomInt(Pickup::Count));
+
+  std::unique_ptr<Pickup> pickup(new Pickup(type, textures));
+  pickup->setPosition(getWorldPosition());
+  pickup->setVelocity(0.f, 1.f);
+  noce.attachChild(std::move(pickup));
+}
+
+void Aircraft::updateTexts()
+{
+  mHealthDisplay->setString(toString(getHitpoints()) + " HP");
+  mHealthDisplay->setPosition(0.f, 50.f);
+  mHealthDisplay->setRotation(-getRotation());
+
+  if (mMissileDisplay) {
+    if (mMissileAmmo == 0)
+      mMissileDisplay->setString("");
+    else
+      mMissileDisplay->setString("M: " + toString(mMissileAmmo));
+  }
 }

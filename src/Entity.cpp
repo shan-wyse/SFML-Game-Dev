@@ -1,3 +1,4 @@
+#include <cassert>
 #include "Entity.hpp"
 
 Entity::Entity(int hitpoints)
@@ -40,20 +41,27 @@ void Entity::modifyHitpoints(int hitpoints)
   mHitpoints += hitpoints;
 }
 
+void Entity::repair(int hitpoints)
+{
+  assert (hitpoints > 0);
+  mHitpoints += hitpoints;
+}
+
+void Entity::damage(int hitpoints)
+{
+  assert (hitpoints > 0);
+  mHitpoints -= hitpoints;
+}
+
 void Entity::destroy()
 {
   mHitpoints = 0;
 }
 
 int Entity::getHitpoints() const { return mHitpoints; }
-bool Entity::isDestroyed() const { return bDestroyed; }
+bool Entity::isDestroyed() const { return mHitpoints <= 0; }
 
-void Entity::updateCurrent(sf::Time delta)
+void Entity::updateCurrent(sf::Time delta, CommandQueue&)
 {
   move(mVelocity * delta.asSeconds());
-}
-
-bool Entity::isDestroyed() const
-{
-  return mHitpoints <= 0;
 }
