@@ -16,7 +16,7 @@ World::World(sf::RenderWindow& window, FontManager& fonts)
 , mSceneLayers()
 , mCommandQueue()
 , mWorldBounds(0.f, 0.f, mWorldView.getSize().x, 20000.f)
-, mSpawnPosition(mWorldView.getSize().x / 2, mWorldBounds.height - mWorldView.getSize().y / 2.f)
+, mSpawnPosition(mWorldView.getSize().x / 2.f, mWorldBounds.height - mWorldView.getSize().y / 2.f)
 , mScrollSpeed(-600.f)
 , mPlayerAircraft(nullptr)
 , mEnemySpawnPoints()
@@ -275,4 +275,12 @@ sf::FloatRect World::getBattlefieldBounds() const
   bounds.height += 100.f;
 
   return bounds;
+}
+
+World::SpawnPoint::SpawnPoint(Aircraft::Type type, float xPos, float yPos)
+: type(type)
+, xPos(xPos)
+, yPos(yPos)
+{
+  // empty
 }

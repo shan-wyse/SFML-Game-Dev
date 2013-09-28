@@ -55,7 +55,7 @@ private:
   sf::RenderWindow&                     mWindow;
   sf::View                              mWorldView;
   TextureManager                        mTextures;
-  FontManager                           mFonts;
+  FontManager&                          mFonts;
 
   SceneNode                             mSceneGraph;
   std::array<SceneNode*, LayerCount>    mSceneLayers;

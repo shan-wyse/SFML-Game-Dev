@@ -87,7 +87,7 @@ unsigned int Aircraft::getCategory() const
 
 bool Aircraft::isAllied() const { return mType == Eagle; }
 
-float Aircraft::getMaxSpeed() const { Table[mType].speed; }
+float Aircraft::getMaxSpeed() const { return Table[mType].speed; }
 
 void Aircraft::increaseFireRate() { if (mFireRateLevel < 3) ++ mFireRateLevel; }
 
@@ -138,6 +138,10 @@ Textures::Id Aircraft::toTextureId(Aircraft::Type type)
       return Textures::Id::Eagle;
     case Aircraft::Type::Raptor:
       return Textures::Id::Raptor;
+    case Aircraft::Type::Avenger:
+      return Textures::Id::Avenger;
+    default:
+      return Textures::Id::Bullet; // CHANGE
   }
 }
 

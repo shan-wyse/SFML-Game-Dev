@@ -3,9 +3,12 @@
 
 #include <map>
 #include <SFML/Window/Event.hpp>
-#include <SFML/Window/Keyboard.hpp>
-#include "CommandQueue.hpp"
-#include "Category.hpp"
+#include "Command.hpp"
+// #include <SFML/Window/Keyboard.hpp>
+// #include "CommandQueue.hpp"
+// #include "Category.hpp"
+
+class CommandQueue;
 
 class Player
 {

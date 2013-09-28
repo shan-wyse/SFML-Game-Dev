@@ -6,6 +6,8 @@
 #include "Aircraft.hpp"
 #include "CommandQueue.hpp"
 
+using namespace std::placeholders;
+
 struct AircraftMover
 {
   AircraftMover(float xVel, float yVel)
