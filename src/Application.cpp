@@ -43,7 +43,7 @@ Application::Application(int argc, char** argv)
   mDevText.setCharacterSize(10u); // For development purposes only
 
   registerStates();
-  mStateStack.pushState(States::Title);
+  mStateStack.pushState(States::Game); //Title);
 }
 
 void Application::run()

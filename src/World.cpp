@@ -98,10 +98,10 @@ void World::buildScene()
   backgroundSprite->setPosition(mWorldBounds.left, mWorldBounds.top);
   mSceneLayers[Background]->attachChild(std::move(backgroundSprite));
 
-  std::unique_ptr<Aircraft> leader(new Aircraft(Aircraft::Type::Eagle, mTextures, mFonts));
-  mPlayerAircraft = leader.get();
+  std::unique_ptr<Aircraft> player(new Aircraft(Aircraft::Type::Eagle, mTextures, mFonts));
+  mPlayerAircraft = player.get();
   mPlayerAircraft->setPosition(mSpawnPosition);
-  mSceneLayers[Foreground]->attachChild(std::move(leader));
+  mSceneLayers[Foreground]->attachChild(std::move(player));
 
   addEnemies();
 }

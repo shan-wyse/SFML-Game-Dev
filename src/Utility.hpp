@@ -23,6 +23,4 @@ public:
   static sf::Vector2f     unitVector(sf::Vector2f vector);
 };
 
-#include "Utility.cpp"
-
 #endif // UTILITY_HPP
