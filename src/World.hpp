@@ -17,7 +17,7 @@
 class World : sf::NonCopyable
 {
 public:
-  explicit                              World(sf::RenderWindow& window);
+  explicit                              World(sf::RenderWindow& window, FontManager& fonts);
   void                                  update(sf::Time delta);
   void                                  draw(); // render
   CommandQueue&                         getCommandQueue();

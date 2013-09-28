@@ -1,11 +1,15 @@
 #include <algorithm>
+#include <cmath>
 #include <cassert>
+#include <SFML/Graphics/RenderTarget.hpp>
+#include <SFML/Graphics/RectangleShape.hpp>
 #include "SceneNode.hpp"
-#include "Category.hpp"
+#include "Command.hpp"
 
 SceneNode::SceneNode()
 : mParent(nullptr)
 , mChildren()
+, mDefaultCategory(category)
 {
   // empty
 }
@@ -18,9 +22,8 @@ void SceneNode::attachChild(NodePtr child)
 
 SceneNode::NodePtr SceneNode::detachChild(const SceneNode& node)
 {
-  auto foundNode = std::find_if(mChildren.begin(), mChildren.end(), [&] (NodePtr& p) ->
-      bool { return p.get() == &node; });
-
+  auto foundNode = std::find_if(mChildren.begin(), mChildren.end(), [&] (NodePtr& p) { return p.get() == &node; } );
+      // bool { return p.get() == &node; });
   assert (foundNode != mChildren.end());
 
   NodePtr detachedNode = std::move(*foundNode);
@@ -29,10 +32,10 @@ SceneNode::NodePtr SceneNode::detachChild(const SceneNode& node)
   return detachedNode;
 }
 
-void SceneNode::update(sf::Time delta)
+void SceneNode::update(sf::Time delta, CommandQueue& commands)
 {
-  updateCurrent(delta);
-  updateChildren(delta);
+  updateCurrent(delta, commands);
+  updateChildren(delta, commands);
 }
 
 sf::Transform SceneNode::getWorldTransform() const
@@ -69,10 +72,10 @@ void SceneNode::updateCurrent(sf::Time delta)
   // empty
 }
 
-void SceneNode::updateChildren(sf::Time delta)
+void SceneNode::updateChildren(sf::Time delta, CommandQueue& commands)
 {
   for (NodePtr& child : mChildren)
-    child->update(delta);
+    child->update(delta, commands);
 }
 
 void SceneNode::draw(sf::RenderTarget& target, sf::RenderStates states) const
@@ -94,13 +97,27 @@ void SceneNode::drawChildren(sf::RenderTarget& target, sf::RenderStates states) 
     child->draw(target, states);
 }
 
-void SceneNode::checkCollisionPair(SceneNode& node, std::set<Pair>& collisionPair)
+void SceneNode::checkNodeCollision(SceneNode& node, std::set<Pair>& collisionPair)
 {
   if (this != &node && collision(*this, node) && !isDestroyed() && !node.isDestroyed())
     collisionPairs.insert(std::minmax(this, &node));
 
   for (NodePtr child : mChildren)
     child.checkNodeCollision(node, collisionPairs);
+}
+
+void SceneNode::drawBoundingRect(sf::RenderTarget& target, sf::RenderStates) const
+{
+  sf::FloatRect rect = getBoundingRect();
+
+  sf::RectangleShape shape;
+  shape.setPosition(sf::Vector2f(rect.left, rect.top));
+  shape.setSize(sf::Vector2f(rect.width, rect.height));
+  shape.setFillColor(sf::Color::Transparent);
+  shape.setOutlineColor(sf::Color::Green);
+  shape.setOutlineThickness(1.f);
+
+  target.draw(shape);
 }
 
 void SceneNode::checkSceneCollision(SceneNode& sceneGraph, std::set<Pair>& collisionPairs)
@@ -121,6 +138,8 @@ bool SceneNode::isMarkedForRemoval() const
   return isDestroyed();
 }
 
+sf::FloatRect SceneNode::getBoundingRect() const { return sf::FloatRect(); }
+
 void SceneNode::removeWrecks()
 {
   auto wreckfieldBegin = std::remove_if(mChildren.begin(), mChildren.end(), std::mem_fn(&SceneNode::isMarkedForRemoval));
@@ -134,16 +153,21 @@ bool collision(const SceneNode& a, const SceneNode& b)
   return a.getBoundingRect().intersects(b.getBoundingRect());
 }
 
-bool matchesCategories(SceneNode::Pair& colliders, Category::Type typeA, Category::Type typeB)
+float distance(const SceneNode& a, const SceneNode& b)
 {
-  unsigned int categoryA = colliders.first->getCategory();
-  unsigned int categoryB = colliders.second->getCategory();
-
-  if (typeA & categoryA && typeB & categoryB)
-    return true
-  else if (typeA & categoryB && typeB & categoryA) {
-    std::swap(colliders.first, colliders.second)
-    return true;
-  } else
-    return false;
+  return length(a.getWorldPosition() - b.getWorldPosition());
 }
+
+// bool matchesCategories(SceneNode::Pair& colliders, Category::Type typeA, Category::Type typeB)
+// {
+//   unsigned int categoryA = colliders.first->getCategory();
+//   unsigned int categoryB = colliders.second->getCategory();
+
+//   if (typeA & categoryA && typeB & categoryB)
+//     return true
+//   else if (typeA & categoryB && typeB & categoryA) {
+//     std::swap(colliders.first, colliders.second)
+//     return true;
+//   } else
+//     return false;
+// }

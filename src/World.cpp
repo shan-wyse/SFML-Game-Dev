@@ -1,9 +1,15 @@
 #include <cmath>
+#include <algorithm>
+#include <limits>
 #include <SFML/Graphics/RenderWindow.hpp>
 #include "World.hpp"
+#include "Projectile.hpp"
+#include "Pickup.hpp"
+#include "TextNode.hpp"
 
-World::World(sf::RenderWindow& window)
+World::World(sf::RenderWindow& window, FontManager& fonts)
 : mWindow(window)
+, mFonts(fonts)
 , mWorldView(window.getDefaultView())
 , mTextures()
 , mSceneGraph()
@@ -13,6 +19,8 @@ World::World(sf::RenderWindow& window)
 , mSpawnPosition(mWorldView.getSize().x / 2, mWorldBounds.height - mWorldView.getSize().y / 2.f)
 , mScrollSpeed(-600.f)
 , mPlayerAircraft(nullptr)
+, mEnemySpawnPoints()
+, mActiveEnemies()
 {
   loadTextures();
   buildScene();
@@ -52,16 +60,30 @@ CommandQueue& World::getCommandQueue()
   return mCommandQueue;
 }
 
+bool World::hasAlivePlayer() const { return !mPlayerAircraft->isMarkedForRemoval(); }
+
+bool World::hasPlayerReachedEnd() const { return !mWorldBounds.contains(mPlayerAircraft->getPosition()); }
+
 void World::loadTextures()
 {
   mTextures.loadResource(Textures::Id::Eagle, "media/textures/eagle.png");
   mTextures.loadResource(Textures::Id::Raptor, "media/textures/raptor.png");
+  mTextures.loadResource(Textures::Id::Avenger, "media/textures/avenger.png");
   mTextures.loadResource(Textures::Id::Desert, "media/textures/desert.png");
+
+  mTextures.loadResource(Textures::Id::Bullet, "media/textures/bullet.png");
+  mTextures.loadResource(Textures::Id::missile, "media/textures/missile.png");
+
+  mTextures.loadResource(Textures::Id::HealthRefill, "media/textures/health_refill.png");
+  mTextures.loadResource(Textures::Id::MissileRefill, "media/textures/missile_refill.png");
+  mTextures.loadResource(Textures::Id::FireSpread, "media/textures/fire_spread.png");
+  mTextures.loadResource(Textures::Id::FireRate, "media/textures/fire_rate.png");
 }
 
 void World::buildScene()
 {
   for (std::size_t i = 0; i < LayerCount; i++) {
+    Category::Type category = (i == Air) ? Category::SceneAirLayer : Category::None;
     SceneNode::NodePtr layer(new SceneNode());
     mSceneLayers[i] = layer.get();
 
@@ -80,6 +102,31 @@ void World::buildScene()
   mPlayerAircraft = leader.get();
   mPlayerAircraft->setPosition(mSpawnPosition);
   mSceneLayers[Foreground]->attachChild(std::move(leader));
+
+  addEnemies();
+}
+
+void World::addEnemies()
+{
+  addEnemy(Aircraft::Raptor,    0.f,  500.f);
+  addEnemy(Aircraft::Raptor,    0.f, 1000.f);
+  addEnemy(Aircraft::Raptor, +100.f, 1100.f);
+  addEnemy(Aircraft::Raptor, -100.f, 1100.f);
+  addEnemy(Aircraft::Avenger,  -70.f, 1400.f);
+  addEnemy(Aircraft::Avenger,  -70.f, 1600.f);
+  addEnemy(Aircraft::Avenger,  -70.f, 1400.f);
+  addEnemy(Aircraft::Avenger,  -70.f, 1600.f);
+
+  std::sort(mEnemySpawnPoints.begin(), mEnemySpawnPoints.end() [] (SpawnPoint a, SpawnPoint b)
+  {
+    return a.y < b.y;
+  } );
+}
+
+void World::addEnemy(Aircraft::Type type, float relX, float relY)
+{
+  SpawnPoint spawn(type, mSpawnPosition.x + relX, mSpawnPosition.y - relY);
+  mEnemySpawnPoints.push_back(spawn);
 }
 
 // CHNAGE BELOW
@@ -108,6 +155,20 @@ void World::adaptPlayerVelocity()
 
   // Add scrolling velocity
   mPlayerAircraft->accelerate(0.f, mScrollSpeed);
+}
+
+bool matchesCategories(SceneNode::Pair& colliders, Category::Type typeA, Category::Type typeB)
+{
+  unsigned int categoryA = colliders.first->getCategory();
+  unsigned int categoryB = colliders.second->getCategory();
+
+  if (typeA & categoryA && typeB & categoryB)
+    return true
+  else if (typeA & categoryB && typeB & categoryA) {
+    std::swap(colliders.first, colliders.second)
+    return true;
+  } else
+    return false;
 }
 
 void World::spawnEnemies()
@@ -211,4 +272,18 @@ void World::destroyEntitiesOutsideView()
   } );
 
   mCommandQueue.push(command);
+}
+
+sf::FloatRect World::getViewBounds() const
+{
+  return sf::FloatRect(mWorldView.getCenter() - mWorldView.getSize() / 2.f, mWorldView.getSize());
+}
+
+sf::FloatRect World::getBattlefieldBounds() const
+{
+  sf::FloatRect bounds = getViewBounds();
+  bounds.top -= 100.f;
+  bounds.height += 100.f;
+
+  return bounds;
 }

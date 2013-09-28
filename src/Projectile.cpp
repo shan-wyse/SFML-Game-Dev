@@ -1,9 +1,18 @@
+#include <cmath>
+#include <cassert>
+#include <SFML/Graphics/RenderTarget.hpp>
+#include <SFML/Graphics/RenderStates.hpp>
 #include "Projectile.hpp"
+#include "DataTables.hpp"
+#include "ResourceManager.hpp"
+
+namespace { const std::vector<ProjectileData> Table = initializeProjectileData(); }
 
 Projectile::Projectile(Type type, const TextureManager& textures)
 : Entity(1)
 , mType(type)
 , mSprite(textures.getResource(Table[type].texture))
+, mTargetDirection()
 {
   mSprite.setCenter(mSprite.getLocalBounds() / 2.f, mSprite.getLocalBounds() / 2.f);
 }
@@ -23,6 +32,28 @@ void Projectile::updateCurrent(sf::Time delta, CommandQueue& commands)
 
   Entity::updateCurrent(delta, commands);
 }
+
+void Projectile::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const
+{
+  target.draw(mSprite, states);
+}
+
+unsigned int Projectile::getCategory() const
+{
+  if (mType == EnemyBullet)
+    return Category::EnemyProjectile;
+  else
+    return Category::AlliedProjectile;
+}
+
+sf::FloatRect Projectile::getBoudningRect() const
+{
+  return getWorldTransform().transformRect(mSprite.getGlobalBounds());
+}
+
+float Projectile::getMaxSpeed() const { return Table[mType].speed; }
+
+int Projectile::getDamage() const { return Table[mType].damage; }
 
 bool Projectile::isGuided() const { return mType == Missile; }
 
