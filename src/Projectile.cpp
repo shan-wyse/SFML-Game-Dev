@@ -5,6 +5,7 @@
 #include "Projectile.hpp"
 #include "DataTables.hpp"
 #include "ResourceManager.hpp"
+#include "Utility.hpp"
 
 namespace { const std::vector<ProjectileData> Table = initializeProjectileData(); }
 
@@ -14,20 +15,20 @@ Projectile::Projectile(Type type, const TextureManager& textures)
 , mSprite(textures.getResource(Table[type].texture))
 , mTargetDirection()
 {
-  mSprite.setCenter(mSprite.getLocalBounds() / 2.f, mSprite.getLocalBounds() / 2.f);
+  mSprite.setOrigin(mSprite.getLocalBounds().width / 2.f, mSprite.getLocalBounds().height / 2.f);
 }
 
 void Projectile::updateCurrent(sf::Time delta, CommandQueue& commands)
 {
-  if (isGuided) {
+  if (isGuided()) {
     const float approachRate = 200.f;
 
-    sf::Vecot2f newVelocity = unitVector(approachRate * delta.asSeconds() * mTargetDirection + getVelocity());
+    sf::Vector2f newVelocity = Utility::unitVector(approachRate * delta.asSeconds() * mTargetDirection + getVelocity());
     newVelocity *= getMaxSpeed();
     setVelocity(newVelocity);
 
     float angle = std::atan2(newVelocity.y, newVelocity.x);
-    setRotation(toDegree(angle) + 90.f);
+    setRotation((180.f / 3.141592653589793238462643383f * angle + 90.f)); //toDegree(angle) + 90.f);
   }
 
   Entity::updateCurrent(delta, commands);
@@ -46,7 +47,7 @@ unsigned int Projectile::getCategory() const
     return Category::AlliedProjectile;
 }
 
-sf::FloatRect Projectile::getBoudningRect() const
+sf::FloatRect Projectile::getBoundingRect() const
 {
   return getWorldTransform().transformRect(mSprite.getGlobalBounds());
 }
@@ -60,5 +61,5 @@ bool Projectile::isGuided() const { return mType == Missile; }
 void Projectile::guideTowards(sf::Vector2f position)
 {
   assert (isGuided());
-  mTargetDirection = unitVector(position - getWorldPosition());
+  mTargetDirection = Utility::unitVector(position - getWorldPosition());
 }

@@ -2,9 +2,9 @@
 #include "Entity.hpp"
 
 Entity::Entity(int hitpoints)
+
 : mVelocity()
 , mHitpoints(hitpoints)
-, bDestroyed(false)
 {
   // empty
 }

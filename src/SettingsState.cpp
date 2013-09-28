@@ -27,7 +27,7 @@ bool SettingsState::processEvent(const sf::Event& event)
 {
   bool isKeyBinding = false;
 
-  for (std::size_t action = 0; action < Player::ActionCount; ++action) {
+  for (std::size_t action = 0; action < Player::Count; ++action) {
     if (mBindingButtons[action]->isActive()) {
       isKeyBinding = true;
 
@@ -65,7 +65,7 @@ void SettingsState::updateLabels()
 {
   Player& player = *getContext().player;
 
-  for (std::size_t i = 0; i < Player::ActionCount; ++i) {
+  for (std::size_t i = 0; i < Player::Count; ++i) {
     sf::Keyboard::Key key = player.getAssignedKey(static_cast<Player::Action>(i));
     mBindingLabels[i]->setText(toString(key));
   }

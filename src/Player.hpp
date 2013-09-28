@@ -27,7 +27,7 @@ public:
                                             MissionInProgress,
                                             MissionSuccess,
                                             MissionFailure
-                                          }
+                                          };
 
                                           Player();
 
@@ -37,7 +37,7 @@ public:
   void                                    setAssignedKey(Action action, sf::Keyboard::Key key);
   sf::Keyboard::Key                       getAssignedKey(Action action) const;
 
-  void                                    setMissionStatus(MissionStatus status)
+  void                                    setMissionStatus(MissionStatus status);
   MissionStatus                           getMissionStatus() const;
 
 private:

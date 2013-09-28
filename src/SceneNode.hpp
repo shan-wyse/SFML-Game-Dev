@@ -21,7 +21,7 @@ public:
   typedef std::pair<SceneNode*, SceneNode*>   NodePair;
   // enum Layer                            { Background, Foreground, LayerCount };
 
-  explicit                                    SceneNode();
+  explicit                                    SceneNode(Category::Type category = Category::None);
 
   void                                        attachChild(NodePtr child);
   NodePtr                                     detachChild(const SceneNode& node);
@@ -57,6 +57,6 @@ private:
 };
 
 bool                                          collision(const SceneNode& a, const SceneNode& b);
-bool                                          distance(const SceneNode& a, const SceneNode& b);
+float                                         distance(const SceneNode& a, const SceneNode& b);
 
 #endif // SCENE_NODE_HPP

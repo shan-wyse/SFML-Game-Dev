@@ -10,16 +10,16 @@ GameOverState::GameOverState(StateStack& stack, Context context)
 , mGameOverText()
 , mElapsedTime(sf::Time::Zero)
 {
-  mGameOverText.setFont(context.fonts->getResource(Fonts::Main));
+  mGameOverText.setFont(context.fonts->getResource(Fonts::Id::Main));
 
   if (context.player->getMissionStatus() == Player::MissionFailure)
     mGameOverText.setString("Mission failed!");
   else
     mGameOverText.setString("Mission successful!");
 
-  mGameOverText.getCharacterSize(70);
+  mGameOverText.setCharacterSize(70);
   mGameOverText.setOrigin(mGameOverText.getLocalBounds().width, mGameOverText.getLocalBounds().height / 2.f);
-  mGameOverText.setPosition(0.5f * context.window->getSize().x, 0.4f * context.window-getSize().y);
+  mGameOverText.setPosition(0.5f * context.window->getSize().x, 0.4f * context.window->getSize().y);
 }
 
 bool GameOverState::processEvent(const sf::Event&)

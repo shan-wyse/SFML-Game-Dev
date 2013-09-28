@@ -12,7 +12,7 @@ namespace Category
     EnemyAircraft     = 1 << 3,
     Pickup            = 1 << 4,
     AlliedProjectile  = 1 << 5,
-    EnemyProjectile   = 1 << 6
+    EnemyProjectile   = 1 << 6,
 
     Aircraft          = PlayerAircraft | AlliedAircraft | EnemyAircraft,
     Projectile        = AlliedProjectile | EnemyProjectile

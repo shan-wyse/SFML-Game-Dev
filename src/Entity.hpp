@@ -23,8 +23,10 @@ public:
   int             getHitpoints() const;
   bool            isDestroyed() const;
 
-private:
+protected:
   virtual void    updateCurrent(sf::Time delta, CommandQueue& commands);
+
+private:
 
   sf::Vector2f    mVelocity;
   int             mHitpoints;

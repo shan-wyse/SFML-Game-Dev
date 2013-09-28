@@ -7,6 +7,7 @@
 #include "LoadingState.hpp"
 #include "GameState.hpp"
 #include "PauseState.hpp"
+#include "GameOverState.hpp"
 
 #include "StringHelper.hpp"
 
@@ -108,6 +109,7 @@ void Application::registerStates()
   mStateStack.registerState<LoadingState>   (States::Loading);
   mStateStack.registerState<GameState>      (States::Game);
   mStateStack.registerState<PauseState>     (States::Pause);
+  mStateStack.registerState<GameOverState>  (States::GameOver);
 }
 
 void Application::updateDevOutput(sf::Time elapsedTime)  // For development purposes only

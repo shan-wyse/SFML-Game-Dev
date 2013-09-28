@@ -40,6 +40,6 @@ struct PickupData
 
 std::vector<AircraftData>               initializeAircraftData();
 std::vector<ProjectileData>             initializeProjectileData();
-std::vector<PickupData>                 initializePickupDate();
+std::vector<PickupData>                 initializePickupData();
 
 #endif // DATA_TABLES_HPP

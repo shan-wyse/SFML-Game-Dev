@@ -12,7 +12,7 @@ Pickup::Pickup(Type type, const TextureManager& textures)
 , mType(type)
 , mSprite(textures.getResource(Table[type].texture))
 {
-  mSprite.setCenter(mSprite.getLocalBounds() / 2.f, mSprite.getLocalBounds() / 2.f);
+  mSprite.setOrigin(mSprite.getLocalBounds().width / 2.f, mSprite.getLocalBounds().height / 2.f);
 }
 
 unsigned int Pickup::getCategory() const { return Category::Pickup; }

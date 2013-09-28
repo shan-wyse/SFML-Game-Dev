@@ -6,7 +6,7 @@
 #include "SceneNode.hpp"
 #include "Command.hpp"
 
-SceneNode::SceneNode()
+SceneNode::SceneNode(Category::Type category)
 : mParent(nullptr)
 , mChildren()
 , mDefaultCategory(category)
@@ -55,7 +55,7 @@ sf::Vector2f SceneNode::getWorldPosition() const
 
 unsigned int SceneNode::getCategory() const
 {
-  return Category::Scene;
+  return mDefaultCategory;
 }
 
 void SceneNode::onCommand(const Command& command, sf::Time delta)
@@ -67,7 +67,7 @@ void SceneNode::onCommand(const Command& command, sf::Time delta)
     child->onCommand(command, delta);
 }
 
-void SceneNode::updateCurrent(sf::Time delta)
+void SceneNode::updateCurrent(sf::Time, CommandQueue&)
 {
   // empty
 }
@@ -97,13 +97,13 @@ void SceneNode::drawChildren(sf::RenderTarget& target, sf::RenderStates states) 
     child->draw(target, states);
 }
 
-void SceneNode::checkNodeCollision(SceneNode& node, std::set<Pair>& collisionPair)
+void SceneNode::checkNodeCollision(SceneNode& node, std::set<NodePair>& collisionPairs)
 {
   if (this != &node && collision(*this, node) && !isDestroyed() && !node.isDestroyed())
     collisionPairs.insert(std::minmax(this, &node));
 
-  for (NodePtr child : mChildren)
-    child.checkNodeCollision(node, collisionPairs);
+  for (NodePtr& child : mChildren)
+    child->checkNodeCollision(node, collisionPairs);
 }
 
 void SceneNode::drawBoundingRect(sf::RenderTarget& target, sf::RenderStates) const
@@ -120,12 +120,12 @@ void SceneNode::drawBoundingRect(sf::RenderTarget& target, sf::RenderStates) con
   target.draw(shape);
 }
 
-void SceneNode::checkSceneCollision(SceneNode& sceneGraph, std::set<Pair>& collisionPairs)
+void SceneNode::checkSceneCollision(SceneNode& sceneGraph, std::set<NodePair>& collisionPairs)
 {
-  checkNodeCollision(sceneGraph, collisionPairs)
+  checkNodeCollision(sceneGraph, collisionPairs);
 
-  for (NodePtr child, sceneGraph.mChildren)
-    checkSceneCollision(child, collisionPairs);
+  for (NodePtr& child : sceneGraph.mChildren)
+    checkSceneCollision(*child, collisionPairs);
 }
 
 bool SceneNode::isDestroyed() const
@@ -155,7 +155,7 @@ bool collision(const SceneNode& a, const SceneNode& b)
 
 float distance(const SceneNode& a, const SceneNode& b)
 {
-  return length(a.getWorldPosition() - b.getWorldPosition());
+  return std::sqrt((a.getWorldPosition() - b.getWorldPosition()).x * (a.getWorldPosition() - b.getWorldPosition()).x) + ((a.getWorldPosition() - b.getWorldPosition()).y + (a.getWorldPosition() - b.getWorldPosition()).y); //length((a.getWorldPosition() - b.getWorldPosition()));
 }
 
 // bool matchesCategories(SceneNode::Pair& colliders, Category::Type typeA, Category::Type typeB)

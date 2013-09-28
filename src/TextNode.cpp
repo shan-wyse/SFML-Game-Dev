@@ -1,3 +1,4 @@
+#include <SFML/Graphics/RenderTarget.hpp>
 #include "TextNode.hpp"
 
 TextNode::TextNode(const std::string& text, const FontManager& fonts)
@@ -8,7 +9,7 @@ TextNode::TextNode(const std::string& text, const FontManager& fonts)
   mText.setCharacterSize(20);
 }
 
-TextNode::setString(const std::string& text)
+void TextNode::setString(const std::string& text)
 {
   mText.setString(text);
   mText.setOrigin(mText.getLocalBounds().width / 2.f, mText.getLocalBounds().height / 2.f);
