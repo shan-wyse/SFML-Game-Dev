@@ -19,16 +19,26 @@ public:
                                             Fire,
                                             LaunchMissile,
 
-                                            ActionCount
+                                            Count
                                           };
+
+  enum                                    MissionStatus
+                                          {
+                                            MissionInProgress,
+                                            MissionSuccess,
+                                            MissionFailure
+                                          }
 
                                           Player();
 
-  void                                    handleRealtimeInput(CommandQueue& commands);
+  void                                    handleRealtimeInput(CommandQueue& commands); // process
   void                                    handleEvent(const sf::Event& event, CommandQueue& commands);
 
   void                                    setAssignedKey(Action action, sf::Keyboard::Key key);
   sf::Keyboard::Key                       getAssignedKey(Action action) const;
+
+  void                                    setMissionStatus(MissionStatus status)
+  MissionStatus                           getMissionStatus() const;
 
 private:
   void                                    initializeActions();
@@ -36,6 +46,7 @@ private:
 
   std::map<sf::Keyboard::Key, Action>     mKeyBinding;
   std::map<Action, Command>               mActionBinding;
+  MissionStatus                           mCurrentMissionStatus;
 };
 
 #endif // PLAYER_HPP

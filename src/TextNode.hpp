@@ -2,7 +2,9 @@
 #define TEXT_NODE_CPP
 
 #include <SFML/Graphics/Text.hpp>
+#include <SFML/Graphics/Font.hpp>
 #include "SceneNode.hpp"
+#include "ResourceManager.hpp"
 #include "ResourceIdentifiers.hpp"
 
 class TextNode : public SceneNode

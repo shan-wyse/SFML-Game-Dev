@@ -1,7 +1,9 @@
 #ifndef PROJECTILE_HPP
 #define PROJECTILE_HPP
 
+#include <SFML/Graphics/Sprite.hpp>
 #include "Entity.hpp"
+#include "ResourceIdentifiers.hpp"
 
 class Projectile : public Entity
 {

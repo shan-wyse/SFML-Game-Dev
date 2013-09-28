@@ -16,17 +16,18 @@ public:
   sf::Vector2f    getVelocity() const;
 
   void            modifyHitpoints(int hitpoints);
+  void            repair(int hitpoints);
+  void            damage(int hitpoints);
   void            destroy();
 
   int             getHitpoints() const;
   bool            isDestroyed() const;
 
 private:
-  virtual void    updateCurrent(sf::Time delta);
+  virtual void    updateCurrent(sf::Time delta, CommandQueue& commands);
 
   sf::Vector2f    mVelocity;
   int             mHitpoints;
-  bool            bDestroyed;
 };
 
 #endif // ENTITY_HPP

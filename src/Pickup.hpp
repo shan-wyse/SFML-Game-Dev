@@ -1,7 +1,12 @@
 #ifndef PICKUP_HPP
 #define PICKUP_HPP
 
+#include <SFML/Graphics/Sprite.hpp>
 #include "Entity.hpp"
+#include "Command.hpp"
+#include "ResourceIdentifiers.hpp"
+
+class Aircraft;
 
 class Pickup : public Entity
 {
