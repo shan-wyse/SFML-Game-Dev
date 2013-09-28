@@ -43,7 +43,7 @@ Application::Application(int argc, char** argv)
   mDevText.setCharacterSize(10u); // For development purposes only
 
   registerStates();
-  mStateStack.pushState(States::Game); //Title);
+  mStateStack.pushState(States::Title); //Title);
 }
 
 void Application::run()
@@ -120,7 +120,7 @@ void Application::updateDevOutput(sf::Time elapsedTime)  // For development purp
   if (mDevUpdateTime >= sf::seconds(1.f)) {
     mDevText.setString(
       "WORK IN PROGRESS\n"
-      "Build 0030\n"
+      "Build 0031\n"
       "Compiled with GCC G++ 4.8.0 (rev2)\n"
       "Linked with SFML 2.0\n\n"
       "FPS: " + toString(mDevFrameCount) + "\n" +
