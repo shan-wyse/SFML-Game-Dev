@@ -84,7 +84,7 @@ void World::buildScene()
 {
   for (std::size_t i = 0; i < LayerCount; i++) {
     Category::Type category = (i == Foreground) ? Category::SceneAirLayer : Category::None;
-    SceneNode::NodePtr layer(new SceneNode());
+    SceneNode::NodePtr layer(new SceneNode(category));
     mSceneLayers[i] = layer.get();
 
     mSceneGraph.attachChild(std::move(layer));
@@ -231,7 +231,7 @@ void World::processCollisions()
       auto& player = static_cast<Aircraft&> (*pair.first);
       auto& enemy = static_cast<Aircraft&> (*pair.second);
 
-      player.modifyHitpoints(enemy.getHitpoints());
+      player.modifyHitpoints(-enemy.getHitpoints());
       enemy.destroy();
     } else if (matchesCategories(pair, Category::PlayerAircraft, Category::Pickup)) {
       auto& player = static_cast<Aircraft&> (*pair.first);

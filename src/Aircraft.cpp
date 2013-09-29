@@ -35,17 +35,19 @@ Aircraft::Aircraft(Type type, const TextureManager& textures, const FontManager&
   // sf::FloatRect bounds = mSprite.getLocalBounds();
   mSprite.setOrigin(mSprite.getLocalBounds().width / 2.f, mSprite.getLocalBounds().height / 2.f);
 
-  std::unique_ptr<TextNode> healthDisplay(new TextNode("", fonts));
-  mHealthDisplay = healthDisplay.get();
-  attachChild(std::move(healthDisplay));
-
   mFireCommand.category = Category::SceneAirLayer;
   mFireCommand.action = [this, &textures] (SceneNode& node, sf::Time) { createBullets(node, textures); };
+
   mMissileCommand.category = Category::SceneAirLayer;
   mMissileCommand.action = [this, &textures] (SceneNode& node, sf::Time) // FIX
     { createProjectile(node, Projectile::Missile, 0.f, 0.5f, textures); };
+
   mDropPickupCommand.category = Category::SceneAirLayer;
   mDropPickupCommand.action = [this, &textures] (SceneNode& node, sf::Time) { createPickup(node, textures); };
+
+  std::unique_ptr<TextNode> healthDisplay(new TextNode("", fonts));
+  mHealthDisplay = healthDisplay.get();
+  attachChild(std::move(healthDisplay));
 
   if (getCategory() == Category::PlayerAircraft) {
     std::unique_ptr<TextNode> missileDisplay(new TextNode("", fonts));
@@ -190,7 +192,7 @@ void Aircraft::createProjectile(SceneNode& node, Projectile::Type type, float xO
 {
   std::unique_ptr<Projectile> projectile(new Projectile(type, textures));
 
-  sf::Vector2f offset(xOffset * mSprite.getLocalBounds().width, yOffset * mSprite.getLocalBounds().height);
+  sf::Vector2f offset(xOffset * mSprite.getGlobalBounds().width, yOffset * mSprite.getGlobalBounds().height);
   sf::Vector2f velocity(0, projectile->getMaxSpeed());
 
   float sign = isAllied() ? -1.f : +1.f;

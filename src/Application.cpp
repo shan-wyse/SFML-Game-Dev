@@ -16,7 +16,7 @@ const sf::Time Application::FRAME_DURATION = sf::seconds(1.f / 60.f);
 Application::Application(int argc, char** argv)
 : mArgC(argc)
 , mArgV(argv)
-, mWindow(sf::VideoMode(1024, 768), "Desert Bloom 2000", sf::Style::Close)
+, mWindow(sf::VideoMode(640, 720), "Desert Bloom 2000", sf::Style::Close)
 , mTextures()
 , mFonts()
 , mPlayer()
@@ -120,7 +120,7 @@ void Application::updateDevOutput(sf::Time elapsedTime)  // For development purp
   if (mDevUpdateTime >= sf::seconds(1.f)) {
     mDevText.setString(
       "WORK IN PROGRESS\n"
-      "Build 0031\n"
+      "Build 0032\n"
       "Compiled with GCC G++ 4.8.0 (rev2)\n"
       "Linked with SFML 2.0\n\n"
       "FPS: " + toString(mDevFrameCount) + "\n" +

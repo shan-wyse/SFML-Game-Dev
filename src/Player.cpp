@@ -93,9 +93,9 @@ void Player::initializeActions()
 {
   // const float playerSpeed = 200.f;
 
-  mActionBinding[MoveUp].action           = derivedAction<Aircraft>(AircraftMover( 0, -100));
-  mActionBinding[MoveDown].action         = derivedAction<Aircraft>(AircraftMover( 0, +100));
-  mActionBinding[MoveLeft].action         = derivedAction<Aircraft>(AircraftMover(-100,  0));
+  mActionBinding[MoveUp].action           = derivedAction<Aircraft>(AircraftMover( 0, -1));
+  mActionBinding[MoveDown].action         = derivedAction<Aircraft>(AircraftMover( 0, +1));
+  mActionBinding[MoveLeft].action         = derivedAction<Aircraft>(AircraftMover(-1,  0));
   mActionBinding[MoveRight].action        = derivedAction<Aircraft>(AircraftMover(+1,  0));
 
   mActionBinding[Fire].action             = derivedAction<Aircraft>([] (Aircraft& a, sf::Time) { a.fire(); } );
