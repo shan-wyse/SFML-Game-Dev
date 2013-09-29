@@ -6,20 +6,13 @@ namespace sf { class Texture; class Font; }
 namespace Textures
 {
   enum class Id {
-    Eagle,
-    Raptor,
-    Avenger,
-    Desert,
+    Entities,
+    Jungle,
     TitleScreen,
-    ButtonDeselected,
-    ButtonSelected,
-    ButtonPressed,
-    Bullet,
-    Missile,
-    HealthRefill,
-    MissileRefill,
-    FireSpread,
-    FireRate
+    Buttons,
+    Explosion,
+    Particle,
+    FinishLine
   };
 }
 

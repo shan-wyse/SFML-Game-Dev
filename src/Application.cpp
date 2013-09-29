@@ -31,9 +31,7 @@ Application::Application(int argc, char** argv)
   mFonts.loadResource(Fonts::Id::Main, "media/fonts/sansation.ttf");
   mTextures.loadResource(Textures::Id::TitleScreen, "media/textures/title_screen.png");
 
-  mTextures.loadResource(Textures::Id::ButtonDeselected,    "media/textures/button_deselected.png");
-  mTextures.loadResource(Textures::Id::ButtonSelected,      "media/textures/button_selected.png");
-  mTextures.loadResource(Textures::Id::ButtonPressed,       "media/textures/button_pressed.png");
+  mTextures.loadResource(Textures::Id::Buttons, "media/textures/buttons.png");
 
   mIcon.loadFromFile("media/textures/mushroom.png"); // For development purposes only
   mWindow.setIcon(mIcon.getSize().x, mIcon.getSize().y, mIcon.getPixelsPtr()); // For development purposes only
@@ -120,7 +118,7 @@ void Application::updateDevOutput(sf::Time elapsedTime)  // For development purp
   if (mDevUpdateTime >= sf::seconds(1.f)) {
     mDevText.setString(
       "WORK IN PROGRESS\n"
-      "Build 0032\n"
+      "Build 0033\n"
       "Compiled with GCC G++ 4.8.0 (rev2)\n"
       "Linked with SFML 2.0\n\n"
       "FPS: " + toString(mDevFrameCount) + "\n" +

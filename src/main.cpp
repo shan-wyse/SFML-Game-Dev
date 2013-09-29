@@ -25,7 +25,7 @@ int main(int argc, char** argv)
 
     // Open the error log in append mode
     std::ofstream errorLog;
-    errorLog.open("error_log.log", std::ostream::out | std::ostream::app);
+    errorLog.open("errorlog.log", std::ostream::out | std::ostream::app);
     // Write the exception and the time it was caught to file in a nice format
     errorLog
     << "\n== " << std::ctime(&outputTime)

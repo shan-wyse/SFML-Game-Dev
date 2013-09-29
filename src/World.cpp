@@ -15,9 +15,9 @@ World::World(sf::RenderWindow& window, FontManager& fonts)
 , mSceneGraph()
 , mSceneLayers()
 , mCommandQueue()
-, mWorldBounds(0.f, 0.f, mWorldView.getSize().x, 2000.f)
+, mWorldBounds(0.f, 0.f, mWorldView.getSize().x, 20000.f)
 , mSpawnPosition(mWorldView.getSize().x / 2.f, mWorldBounds.height - mWorldView.getSize().y / 2.f)
-, mScrollSpeed(-50.f)
+, mScrollSpeed(-200.f)
 , mPlayerAircraft(nullptr)
 , mEnemySpawnPoints()
 , mActiveEnemies()
@@ -66,18 +66,11 @@ bool World::hasPlayerReachedEnd() const { return !mWorldBounds.contains(mPlayerA
 
 void World::loadTextures()
 {
-  mTextures.loadResource(Textures::Id::Eagle, "media/textures/eagle.png");
-  mTextures.loadResource(Textures::Id::Raptor, "media/textures/raptor.png");
-  mTextures.loadResource(Textures::Id::Avenger, "media/textures/avenger.png");
-  mTextures.loadResource(Textures::Id::Desert, "media/textures/desert.png");
-
-  mTextures.loadResource(Textures::Id::Bullet, "media/textures/bullet.png");
-  mTextures.loadResource(Textures::Id::Missile, "media/textures/missile.png");
-
-  mTextures.loadResource(Textures::Id::HealthRefill, "media/textures/health_refill.png");
-  mTextures.loadResource(Textures::Id::MissileRefill, "media/textures/missile_refill.png");
-  mTextures.loadResource(Textures::Id::FireSpread, "media/textures/fire_spread.png");
-  mTextures.loadResource(Textures::Id::FireRate, "media/textures/fire_rate.png");
+  mTextures.loadResource(Textures::Id::Entities, "media/textures/entities.png");
+  mTextures.loadResource(Textures::Id::Jungle, "media/textures/jungle.png");
+  mTextures.loadResource(Textures::Id::Explosion, "media/textures/explosion.png");
+  mTextures.loadResource(Textures::Id::Particle, "media/textures/particle.png");
+  mTextures.loadResource(Textures::Id::FinishLine, "media/textures/finish_line.png");
 }
 
 void World::buildScene()
@@ -90,7 +83,7 @@ void World::buildScene()
     mSceneGraph.attachChild(std::move(layer));
   }
 
-  sf::Texture& texture = mTextures.getResource(Textures::Id::Desert);
+  sf::Texture& texture = mTextures.getResource(Textures::Id::Jungle);
   sf::IntRect textureRect(mWorldBounds);
   texture.setRepeated(true);
 
@@ -112,10 +105,21 @@ void World::addEnemies()
   addEnemy(Aircraft::Raptor,    0.f, 1000.f);
   addEnemy(Aircraft::Raptor, +100.f, 1100.f);
   addEnemy(Aircraft::Raptor, -100.f, 1100.f);
-  addEnemy(Aircraft::Avenger,  -70.f, 1400.f);
-  addEnemy(Aircraft::Avenger,  -70.f, 1600.f);
-  addEnemy(Aircraft::Avenger,  -70.f, 1400.f);
-  addEnemy(Aircraft::Avenger,  -70.f, 1600.f);
+  addEnemy(Aircraft::Avenger, -70.f, 1400.f);
+  addEnemy(Aircraft::Avenger, -70.f, 1600.f);
+  addEnemy(Aircraft::Avenger, -70.f, 1400.f);
+  addEnemy(Aircraft::Avenger, -70.f, 1600.f);
+
+  for (int i = 0; i < 20000; i = i + 1000) {
+    addEnemy(Aircraft::Raptor,    0.f,  500.f + i);
+    addEnemy(Aircraft::Raptor,    0.f, 1000.f + i);
+    addEnemy(Aircraft::Raptor, +100.f, 1100.f + i);
+    addEnemy(Aircraft::Raptor, -100.f, 1100.f + i);
+    addEnemy(Aircraft::Avenger,  -70.f, 1400.f + i);
+    addEnemy(Aircraft::Avenger,  -70.f, 1600.f + i);
+    addEnemy(Aircraft::Avenger,  -70.f, 1400.f + i);
+    addEnemy(Aircraft::Avenger,  -70.f, 1600.f + i);
+  }
 
   std::sort(mEnemySpawnPoints.begin(), mEnemySpawnPoints.end(), [] (SpawnPoint a, SpawnPoint b)
   {

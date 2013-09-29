@@ -16,7 +16,7 @@ namespace { const std::vector<AircraftData> Table = initializeAircraftData(); }
 Aircraft::Aircraft(Type type, const TextureManager& textures, const FontManager& fonts)
 : Entity(Table[type].hitpoints)
 , mType(type)
-, mSprite(textures.getResource(Table[type].texture))
+, mSprite(textures.getResource(Table[type].texture), Table[type].textureRect)
 , mFireCommand()
 , mMissileCommand()
 , mFireCountdown(sf::Time::Zero)
@@ -138,7 +138,7 @@ void Aircraft::checkPickupDrop(CommandQueue& commands)
 
 Textures::Id Aircraft::toTextureId(Aircraft::Type type)
 {
-  switch (type) {
+  /*switch (type) {
     case Aircraft::Type::Eagle:
       return Textures::Id::Eagle;
     case Aircraft::Type::Raptor:
@@ -147,7 +147,7 @@ Textures::Id Aircraft::toTextureId(Aircraft::Type type)
       return Textures::Id::Avenger;
     default:
       return Textures::Id::Bullet; // CHANGE
-  }
+  }*/
 }
 
 void Aircraft::checkProjectileLaunch(sf::Time delta, CommandQueue& commands)

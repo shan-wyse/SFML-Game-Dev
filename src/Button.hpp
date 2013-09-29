@@ -20,6 +20,8 @@ public:
   typedef std::shared_ptr<Button>     ButtonPtr;
   typedef std::function<void()>       Callback;
 
+  enum                                Type { Deselected, Selected, Pressed, Count };
+
                                       Button(const TextureManager& textures, const FontManager& fonts);
 
   virtual bool                        isSelectable() const;
@@ -34,11 +36,12 @@ public:
 
 private:
   virtual void                        draw(sf::RenderTarget& target, sf::RenderStates states) const;
+  void                                changeTexture(Type buttonType);
 
   Callback                            mCallback;
-  const sf::Texture&                  mDeselectedTexture;
-  const sf::Texture&                  mSelectedTexture;
-  const sf::Texture&                  mPressedTexture;
+  // const sf::Texture&                  mDeselectedTexture;
+  // const sf::Texture&                  mSelectedTexture;
+  // const sf::Texture&                  mPressedTexture;
   sf::Sprite                          mSprite;
   sf::Text                            mText;
   bool                                mIsToggle;

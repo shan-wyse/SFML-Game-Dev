@@ -10,7 +10,7 @@ namespace { const std::vector<PickupData> Table = initializePickupData(); }
 Pickup::Pickup(Type type, const TextureManager& textures)
 : Entity(1)
 , mType(type)
-, mSprite(textures.getResource(Table[type].texture))
+, mSprite(textures.getResource(Table[type].texture), Table[type].textureRect)
 {
   mSprite.setOrigin(mSprite.getLocalBounds().width / 2.f, mSprite.getLocalBounds().height / 2.f);
 }
