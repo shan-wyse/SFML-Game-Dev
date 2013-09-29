@@ -16,7 +16,7 @@ namespace { const std::vector<AircraftData> Table = initializeAircraftData(); }
 Aircraft::Aircraft(Type type, const TextureManager& textures, const FontManager& fonts)
 : Entity(Table[type].hitpoints)
 , mType(type)
-, mSprite(textures.getResource(toTextureId(type)))
+, mSprite(textures.getResource(Table[type].texture))
 , mFireCommand()
 , mMissileCommand()
 , mFireCountdown(sf::Time::Zero)
@@ -29,6 +29,7 @@ Aircraft::Aircraft(Type type, const TextureManager& textures, const FontManager&
 , mDropPickupCommand()
 , mTravelledDistance(0.f)
 , mDirectionIndex(0)
+, mHealthDisplay(nullptr)
 , mMissileDisplay(nullptr)
 {
   // sf::FloatRect bounds = mSprite.getLocalBounds();
@@ -70,6 +71,7 @@ void Aircraft::updateCurrent(sf::Time delta, CommandQueue& commands)
 
   checkProjectileLaunch(delta,commands);
   updateMovementPattern(delta);
+  Entity::updateCurrent(delta, commands);
   updateTexts();
 }
 
@@ -90,7 +92,7 @@ bool Aircraft::isAllied() const { return mType == Eagle; }
 
 float Aircraft::getMaxSpeed() const { return Table[mType].speed; }
 
-void Aircraft::increaseFireRate() { if (mFireRateLevel < 3) ++ mFireRateLevel; }
+void Aircraft::increaseFireRate() { if (mFireRateLevel < 10) ++ mFireRateLevel; }
 
 void Aircraft::increaseSpread() { if (mSpreadLevel < 3) ++mSpreadLevel; }
 
