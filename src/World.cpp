@@ -15,9 +15,9 @@ World::World(sf::RenderWindow& window, FontManager& fonts)
 , mSceneGraph()
 , mSceneLayers()
 , mCommandQueue()
-, mWorldBounds(0.f, 0.f, mWorldView.getSize().x, 20000.f)
+, mWorldBounds(0.f, 0.f, mWorldView.getSize().x, 2000.f)
 , mSpawnPosition(mWorldView.getSize().x / 2.f, mWorldBounds.height - mWorldView.getSize().y / 2.f)
-, mScrollSpeed(-600.f)
+, mScrollSpeed(-50.f)
 , mPlayerAircraft(nullptr)
 , mEnemySpawnPoints()
 , mActiveEnemies()
@@ -40,8 +40,8 @@ void World::update(sf::Time delta)
     mSceneGraph.onCommand(mCommandQueue.pop(), delta);
 
   adaptPlayerVelocity();
-
   processCollisions();
+
   mSceneGraph.removeWrecks();
   spawnEnemies();
 
@@ -134,7 +134,7 @@ void World::addEnemy(Aircraft::Type type, float relX, float relY)
 void World::adaptPlayerPosition()
 {
   // Keep player's position inside the screen bounds, at least borderDistance units from the border
-  sf::FloatRect viewBounds(mWorldView.getCenter() - mWorldView.getSize() / 2.f, mWorldView.getSize());
+  sf::FloatRect viewBounds = getViewBounds();
   const float borderDistance = 40.f;
 
   sf::Vector2f position = mPlayerAircraft->getPosition();

@@ -9,13 +9,15 @@ SettingsState::SettingsState(StateStack& stack, Context context)
 {
   mBackgroundSprite.setTexture(context.textures->getResource(Textures::Id::TitleScreen));
 
-  addButtonLabel(Player::MoveUp,    150.f, "Move Up",     context);
-  addButtonLabel(Player::MoveDown,  200.f, "Move Down",   context);
-  addButtonLabel(Player::MoveLeft,  250.f, "Move Left",   context);
-  addButtonLabel(Player::MoveRight, 300.f, "Move Right",  context);
+  addButtonLabel(Player::MoveUp,        300.f, "Move Up",     context);
+  addButtonLabel(Player::MoveDown,      350.f, "Move Down",   context);
+  addButtonLabel(Player::MoveLeft,      400.f, "Move Left",   context);
+  addButtonLabel(Player::MoveRight,     450.f, "Move Right",  context);
+  addButtonLabel(Player::Fire,          500.f, "Fire",        context);
+  addButtonLabel(Player::LaunchMissile, 550.f, "Missile",     context);
 
   auto backButton = std::make_shared<Gui::Button>(*context.textures, *context.fonts);
-  backButton->setPosition(80.f, 375.f);
+  backButton->setPosition(80.f, 620.f);
   backButton->setText("Back");
   backButton->setCallback(std::bind(&SettingsState::requestStackPop, this));
 

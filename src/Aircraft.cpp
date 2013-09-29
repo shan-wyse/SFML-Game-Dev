@@ -8,6 +8,7 @@
 #include "CommandQueue.hpp"
 #include "ResourceManager.hpp"
 // #include "TextNode.hpp"
+#include "Utility.hpp"
 #include "StringHelper.hpp"
 
 namespace { const std::vector<AircraftData> Table = initializeAircraftData(); }
@@ -117,7 +118,7 @@ void Aircraft::updateMovementPattern(sf::Time delta)
       mTravelledDistance = 0.f;
     }
 
-    float radians = (directions[mDirectionIndex].angle + 90.f) * 0.0174532925; // to radians
+    float radians = Utility::toRadian(directions[mDirectionIndex].angle + 90.f);
     float xVel = getMaxSpeed() * std::cos(radians);
     float yVel = getMaxSpeed() * std::sin(radians);
     setVelocity(xVel, yVel);
@@ -127,7 +128,7 @@ void Aircraft::updateMovementPattern(sf::Time delta)
 
 void Aircraft::checkPickupDrop(CommandQueue& commands)
 {
-  if (!isAllied())// && randomInt(3) == 0)
+  if (!isAllied() && Utility::randomInt(3) == 0)
     commands.push(mDropPickupCommand);
 }
 
@@ -190,7 +191,7 @@ void Aircraft::createProjectile(SceneNode& node, Projectile::Type type, float xO
   sf::Vector2f offset(xOffset * mSprite.getLocalBounds().width, yOffset * mSprite.getLocalBounds().height);
   sf::Vector2f velocity(0, projectile->getMaxSpeed());
 
-  float sign = isAllied() ? -1.f : + 1.f;
+  float sign = isAllied() ? -1.f : +1.f;
   projectile->setPosition(getWorldPosition() + offset * sign);
   projectile->setVelocity(velocity * sign);
   node.attachChild(std::move(projectile));
@@ -205,7 +206,7 @@ bool Aircraft::isMarkedForRemoval() const { return bMarkedForRemoval; }
 
 void Aircraft::createPickup(SceneNode& node, const TextureManager& textures) const
 {
-  auto type = static_cast<Pickup::Type> (1); //(randomInt(Pickup::Count));
+  auto type = static_cast<Pickup::Type> (Utility::randomInt(Pickup::Count));
 
   std::unique_ptr<Pickup> pickup(new Pickup(type, textures));
   pickup->setPosition(getWorldPosition());

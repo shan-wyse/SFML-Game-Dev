@@ -5,7 +5,7 @@ GameState::GameState(StateStack& stack, Context context)
 , mWorld(*context.window, *context.fonts)
 , mPlayer(*context.player)
 {
-  // empty
+  mPlayer.setMissionStatus(Player::MissionInProgress);
 }
 
 bool GameState::processEvent(const sf::Event& event)
@@ -22,6 +22,14 @@ bool GameState::processEvent(const sf::Event& event)
 bool GameState::update(sf::Time delta)
 {
   mWorld.update(delta);
+
+  if (!mWorld.hasAlivePlayer()) {
+    mPlayer.setMissionStatus(Player::MissionFailure);
+    requestStackPush(States::GameOver);
+  } else if (mWorld.hasPlayerReachedEnd()) {
+    mPlayer.setMissionStatus(Player::MissionSuccess);
+    requestStackPush(States::GameOver);
+  }
 
   CommandQueue& commands = mWorld.getCommandQueue();
   mPlayer.handleRealtimeInput(commands);

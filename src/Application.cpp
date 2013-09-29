@@ -16,7 +16,7 @@ const sf::Time Application::FRAME_DURATION = sf::seconds(1.f / 60.f);
 Application::Application(int argc, char** argv)
 : mArgC(argc)
 , mArgV(argv)
-, mWindow(sf::VideoMode(640, 480), "Desert Bloom 2000", sf::Style::Close)
+, mWindow(sf::VideoMode(1024, 768), "Desert Bloom 2000", sf::Style::Close)
 , mTextures()
 , mFonts()
 , mPlayer()
