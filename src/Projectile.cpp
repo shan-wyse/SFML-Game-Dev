@@ -3,6 +3,7 @@
 #include <SFML/Graphics/RenderTarget.hpp>
 #include <SFML/Graphics/RenderStates.hpp>
 #include "Projectile.hpp"
+#include "EmitterNode.hpp"
 #include "DataTables.hpp"
 #include "ResourceManager.hpp"
 #include "Utility.hpp"
@@ -16,6 +17,16 @@ Projectile::Projectile(Type type, const TextureManager& textures)
 , mTargetDirection()
 {
   mSprite.setOrigin(mSprite.getLocalBounds().width / 2.f, mSprite.getLocalBounds().height / 2.f);
+
+  if (isGuided()) {
+    std::unique_ptr<EmitterNode> smoke(new EmitterNode(Particle::Smoke));
+    smoke->setPosition(0.f, getBoundingRect().height / 2.f);
+    attachChild(std::move(smoke));
+
+    std::unique_ptr<EmitterNode> propellant(new EmitterNode(Particle::Propellant));
+    propellant->setPosition(0.f, getBoundingRect().height / 2.f);
+    attachChild(std::move(propellant));
+  }
 }
 
 void Projectile::updateCurrent(sf::Time delta, CommandQueue& commands)

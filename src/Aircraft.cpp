@@ -25,7 +25,7 @@ Aircraft::Aircraft(Type type, const TextureManager& textures, const FontManager&
 , bMarkedForRemoval(false)
 , mFireRateLevel(1)
 , mSpreadLevel(1)
-, mMissileAmmo(2)
+, mMissileAmmo(20)
 , mDropPickupCommand()
 , mTravelledDistance(0.f)
 , mDirectionIndex(0)

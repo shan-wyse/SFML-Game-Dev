@@ -6,6 +6,7 @@
 #include "Projectile.hpp"
 #include "Pickup.hpp"
 #include "TextNode.hpp"
+#include "ParticleNode.hpp"
 
 World::World(sf::RenderWindow& window, FontManager& fonts)
 : mWindow(window)
@@ -17,11 +18,13 @@ World::World(sf::RenderWindow& window, FontManager& fonts)
 , mCommandQueue()
 , mWorldBounds(0.f, 0.f, mWorldView.getSize().x, 20000.f)
 , mSpawnPosition(mWorldView.getSize().x / 2.f, mWorldBounds.height - mWorldView.getSize().y / 2.f)
-, mScrollSpeed(-200.f)
+, mScrollSpeed(-100.f)
 , mPlayerAircraft(nullptr)
 , mEnemySpawnPoints()
 , mActiveEnemies()
 {
+  // mSceneTexture.create(mTarget.getSize().x, mTarget.getSize().y);
+
   loadTextures();
   buildScene();
 
@@ -83,13 +86,27 @@ void World::buildScene()
     mSceneGraph.attachChild(std::move(layer));
   }
 
-  sf::Texture& texture = mTextures.getResource(Textures::Id::Jungle);
-  sf::IntRect textureRect(mWorldBounds);
-  texture.setRepeated(true);
+  sf::Texture& jungleSprite = mTextures.getResource(Textures::Id::Jungle);
+  jungleSprite.setRepeated(true);
 
-  std::unique_ptr<SpriteNode> backgroundSprite(new SpriteNode(texture, textureRect));
-  backgroundSprite->setPosition(mWorldBounds.left, mWorldBounds.top);
+  float viewHeight = mWorldView.getSize().y;
+  sf::IntRect textureRect(mWorldBounds);
+  textureRect.height += static_cast<int> (viewHeight);
+
+  std::unique_ptr<SpriteNode> backgroundSprite(new SpriteNode(jungleSprite, textureRect));
+  backgroundSprite->setPosition(mWorldBounds.left, mWorldBounds.top - viewHeight);
   mSceneLayers[Background]->attachChild(std::move(backgroundSprite));
+
+  sf::Texture& finishLineTexture = mTextures.getResource(Textures::Id::FinishLine);
+  std::unique_ptr<SpriteNode> finishLineSprite(new SpriteNode(finishLineTexture));
+  finishLineSprite->setPosition(0.f, -76.f);
+  mSceneLayers[Background]->attachChild(std::move(finishLineSprite));
+
+  std::unique_ptr<ParticleNode> smokeNode(new ParticleNode(Particle::Smoke, mTextures));
+  mSceneLayers[Foreground]->attachChild(std::move(smokeNode)); // lower foreground
+
+  std::unique_ptr<ParticleNode> propellantNode(new ParticleNode(Particle::Propellant, mTextures));
+  mSceneLayers[Foreground]->attachChild(std::move(propellantNode)); // lower foreground
 
   std::unique_ptr<Aircraft> player(new Aircraft(Aircraft::Type::Eagle, mTextures, mFonts));
   mPlayerAircraft = player.get();

@@ -61,7 +61,7 @@ std::vector<ProjectileData> initializeProjectileData()
   data[Projectile::EnemyBullet].textureRect = sf::IntRect(178, 64, 3, 14);
 
   data[Projectile::Missile].damage = 200;
-  data[Projectile::Missile].speed = 450.f;
+  data[Projectile::Missile].speed = 150.f;
   data[Projectile::Missile].texture = Textures::Id::Entities;
   data[Projectile::Missile].textureRect = sf::IntRect(160, 64, 15, 32);
 
@@ -95,7 +95,11 @@ std::vector<ParticleData> initializeParticleData()
 {
   std::vector<ParticleData> data(Particle::Count);
 
-  // data[Particle::Propellant].color = sf::Color::Blue;
+  data[Particle::Propellant].color = sf::Color(255, 255, 50);
+  data[Particle::Propellant].lifetime = sf::seconds(0.6f);
+
+  data[Particle::Smoke].color = sf::Color(50, 50, 50);
+  data[Particle::Smoke].lifetime = sf::seconds(4.f);
 
   return data;
 }

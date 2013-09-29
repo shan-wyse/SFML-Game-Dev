@@ -9,7 +9,11 @@ namespace { const std::vector<ParticleData> Table = initializeParticleData(); }
 
 ParticleNode::ParticleNode(Particle::Type type, const TextureManager& textures)
 : SceneNode()
+, mParticles()
 , mTexture(textures.getResource(Textures::Id::Particle))
+, mType(type)
+, mVertexArray(sf::Quads)
+, bRequiresVertexUpdate(true)
 {
   // empty
 }
@@ -64,10 +68,10 @@ void ParticleNode::computeVertices() const
     float ratio = particle.lifetime.asSeconds() / Table[mType].lifetime.asSeconds();
     color.a = static_cast<sf::Uint8> (255 * std::max(ratio, 0.f));
 
-    addVertex(position.x - half.x, position.y - half.y, 0.f, 0.f, color);
-    addVertex(position.x + half.x, position.y - half.y, 0.f, 0.f, color);
-    addVertex(position.x + half.x, position.y + half.y, 0.f, 0.f, color);
-    addVertex(position.x - half.x, position.y + half.y, 0.f, 0.f, color);
+    addVertex(position.x - half.x, position.y - half.y, 0.f,    0.f,    color);
+    addVertex(position.x + half.x, position.y - half.y, size.x, 0.f,    color);
+    addVertex(position.x + half.x, position.y + half.y, size.x, size.y, color);
+    addVertex(position.x - half.x, position.y + half.y, 0.f,    size.y, color);
   }
 }
 
