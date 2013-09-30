@@ -1,7 +1,7 @@
 #ifndef AIRCRAFT_HPP
 #define AIRCRAFT_HPP
 
-#include <memory>
+// #include <memory>
 #include <SFML/Graphics/Sprite.hpp>
 #include "Entity.hpp"
 #include "ResourceIdentifiers.hpp"
@@ -66,6 +66,7 @@ private:
 
   bool                    bFiring;
   bool                    bLaunchingMissile;
+  bool                    mSpawnedPickup;
   // bool                    bMarkedForRemoval;
 
   int                     mFireRateLevel;

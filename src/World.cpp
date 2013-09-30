@@ -2,6 +2,7 @@
 #include <algorithm>
 #include <limits>
 #include <SFML/Graphics/RenderWindow.hpp>
+#include <SFML/Graphics/RenderTarget.hpp>
 #include "World.hpp"
 #include "Projectile.hpp"
 #include "Pickup.hpp"
@@ -10,6 +11,8 @@
 
 World::World(sf::RenderWindow& window, FontManager& fonts)
 : mWindow(window)
+, mTarget()
+, mSceneTexture()
 , mFonts(fonts)
 , mWorldView(window.getDefaultView())
 , mTextures()

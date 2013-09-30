@@ -1,5 +1,17 @@
 #include "BloomEffect.hpp"
 
+BloomEffect::BloomEffect()
+: mShaders()
+, mBrightnessTexture()
+, mFirstPassTextures()
+, mSecondPassTextures()
+{
+  mShaders.loadResource(Shaders::BrightnessPass,    "media/shaders/fullpass.vert", "media/shaders/brightness.frag");
+  mShaders.loadResource(Shaders::DownSamplePass,    "media/shaders/fullpass.vert", "media/shaders/down_sample.frag");
+  mShaders.loadResource(Shaders::GuassianBlurPass,  "media/shaders/fullpass.vert", "media/shaders/guassian_blur.frag");
+  mShaders.loadResource(Shaders::AddPass        ,   "media/shaders/fullpass.vert", "media/shaders/add.frag");
+}
+
 void BloomEffect::apply(const sf::RenderTexture& input, sf::RenderTarget& output)
 {
   prepareTextures(input.getSize());

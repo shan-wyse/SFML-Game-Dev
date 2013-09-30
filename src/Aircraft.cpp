@@ -17,11 +17,14 @@ Aircraft::Aircraft(Type type, const TextureManager& textures, const FontManager&
 : Entity(Table[type].hitpoints)
 , mType(type)
 , mSprite(textures.getResource(Table[type].texture), Table[type].textureRect)
+, mExplosion(textures.get(Textures::Explosion))
 , mFireCommand()
 , mMissileCommand()
 , mFireCountdown(sf::Time::Zero)
 , bFiring(false)
 , bLaunchingMissile(false)
+, bShowExplosion(true)
+, mSpawnedPickup(false)
 // , bMarkedForRemoval(false)
 , mFireRateLevel(1)
 , mSpreadLevel(1)
@@ -61,6 +64,7 @@ Aircraft::Aircraft(Type type, const TextureManager& textures, const FontManager&
   mExplosion.setFrameSize(sf::Vector2i(256, 256));
   mExplosion.setFrameCount(16);
   mExplosion.setDuration(sf::seconds(1));
+  mExplosion.setCenter(mExplosion.getLocalBounds().width / 2.f, mExplosion.getLocalBounds().height / 2.f);
 
 
 }
@@ -70,6 +74,8 @@ void Aircraft::updateCurrent(sf::Time delta, CommandQueue& commands)
   // mHealthDisplay->setString(toString(getHitpoints()) + "HP");
   // mHealthDisplay->setPosition(0.f, 50.f);
   // mHealthDisplay->setRotation(-getRotation());
+  updateTexts();
+  updateRollAnimation();
 
   if (isDestroyed()) {
     checkPickupDrop(commands);
@@ -81,7 +87,6 @@ void Aircraft::updateCurrent(sf::Time delta, CommandQueue& commands)
   checkProjectileLaunch(delta,commands);
   updateMovementPattern(delta);
   Entity::updateCurrent(delta, commands);
-  updateTexts();
 }
 
 void Aircraft::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const
@@ -98,6 +103,12 @@ unsigned int Aircraft::getCategory() const
     return Category::PlayerAircraft;
   else
     return Category::EnemyAircraft;
+}
+
+void Aircraft::remove()
+{
+  Entity::remove();
+  bShowExplosion = false;
 }
 
 bool Aircraft::isAllied() const { return mType == Eagle; }

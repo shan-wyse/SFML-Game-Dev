@@ -13,6 +13,9 @@
 #include "Command.hpp"
 #include "CommandQueue.hpp"
 #include "Aircraft.hpp"
+#include "BloomEffect.hpp"
+
+namespace sf { class RenderTarget; }
 
 class World : sf::NonCopyable
 {
@@ -53,6 +56,8 @@ private:
   sf::FloatRect                         getBattlefieldBounds() const;
 
   sf::RenderWindow&                     mWindow;
+  sf::RenderTarget&                     mTarget;
+  sf::RenderTexture                     mSceneTexture;
   sf::View                              mWorldView;
   TextureManager                        mTextures;
   FontManager&                          mFonts; // remove this & for fun times
@@ -68,6 +73,8 @@ private:
 
   std::vector<SpawnPoint>               mEnemySpawnPoints;
   std::vector<Aircraft*>                mActiveEnemies;
+
+  BloomEffect                           mBloomEffect;
 };
 
 #endif // WORLD_HPP

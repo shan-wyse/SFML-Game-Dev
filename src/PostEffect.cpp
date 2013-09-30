@@ -1,4 +1,12 @@
+#include <SFML/Graphics/RenderTarget.hpp>
+#include <SFML/Graphics/Shader.hpp>
+#include <SFML/Graphics/VertexArray.hpp>
 #include "PostEffect.hpp"
+
+PostEffect::~PostEffect()
+{
+  // empty
+}
 
 void PostEffect::applyShader(const sf::Shader& shader, sf::RenderTarget& output)
 {
@@ -15,4 +23,9 @@ void PostEffect::applyShader(const sf::Shader& shader, sf::RenderTarget& output)
   states.blendMode = sf::BlendNone;
 
   output.draw(vertices, states);
+}
+
+bool PostEffect::isSupported()
+{
+  return sf::Shader::isAvailable();
 }

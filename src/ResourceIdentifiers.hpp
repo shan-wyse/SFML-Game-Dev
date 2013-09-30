@@ -16,6 +16,16 @@ namespace Textures
   };
 }
 
+namespace Shaders
+{
+  enum Id {
+    BrightnessPass,
+    DownSamplePass,
+    GaussianBlurPass,
+    AddPass
+  };
+}
+
 namespace Fonts
 {
   enum class Id { Main }; // CHANGE
@@ -25,6 +35,7 @@ template <typename Resource, typename Identifier>
 class ResourceManager;
 
 typedef ResourceManager<sf::Texture, Textures::Id> TextureManager;
+typedef ResourceManager<sf::Shader, Shaders::Id> ShaderManager;
 typedef ResourceManager<sf::Font, Fonts::Id> FontManager;
 
 #endif // RESOURCE_IDENTIFIERS_HPP

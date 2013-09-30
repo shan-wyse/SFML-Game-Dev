@@ -1,6 +1,15 @@
 #ifndef POST_EFFECT_HPP
 #define POST_EFFECT_HPP
 
+#include <SFML/System/NonCopyable.hpp>
+
+namespace sf
+{
+  class RenderTarget;
+  class RenderTexture;
+  class Shader;
+}
+
 class PostEffect
 {
 public:
