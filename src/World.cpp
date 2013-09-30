@@ -23,7 +23,7 @@ World::World(sf::RenderWindow& window, FontManager& fonts)
 , mEnemySpawnPoints()
 , mActiveEnemies()
 {
-  // mSceneTexture.create(mTarget.getSize().x, mTarget.getSize().y);
+  mSceneTexture.create(mTarget.getSize().x, mTarget.getSize().y);
 
   loadTextures();
   buildScene();
@@ -54,8 +54,16 @@ void World::update(sf::Time delta)
 
 void World::draw()
 {
-  mWindow.setView(mWorldView);
-  mWindow.draw(mSceneGraph);
+  if (PostEffect::isSupported()) {
+    mSceneTexture.clear();
+    mSceneTexture.setView(mWorldView);
+    mSceneTexture.draw(mSceneGraph);
+    mSceneTexture.display();
+    mBloomEffect.apply(mSceneTexture, mTarget);
+  } else {
+    mWindow.setView(mWorldView);
+    mWindow.draw(mSceneGraph);
+  }
 }
 
 CommandQueue& World::getCommandQueue()

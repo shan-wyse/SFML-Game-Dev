@@ -8,6 +8,7 @@
 #include "Command.hpp"
 #include "Projectile.hpp"
 #include "TextNode.hpp"
+#include "Animation.hpp"
 
 // struct Direction
 // {
@@ -52,6 +53,7 @@ private:
   void                    createPickup(SceneNode& node, const TextureManager& textures) const;
 
   void                    updateTexts();
+  void                    updateRollAnimation();
 
   Textures::Id            toTextureId(Aircraft::Type type);
 
@@ -64,7 +66,7 @@ private:
 
   bool                    bFiring;
   bool                    bLaunchingMissile;
-  bool                    bMarkedForRemoval;
+  // bool                    bMarkedForRemoval;
 
   int                     mFireRateLevel;
   int                     mSpreadLevel;
@@ -76,6 +78,9 @@ private:
   size_t                  mDirectionIndex;
   TextNode*               mHealthDisplay;
   TextNode*               mMissileDisplay;
+
+  Animation               mExplosion;
+  bool                    bShowExplosion;
 };
 
 // struct SpawnPoint

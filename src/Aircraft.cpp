@@ -22,7 +22,7 @@ Aircraft::Aircraft(Type type, const TextureManager& textures, const FontManager&
 , mFireCountdown(sf::Time::Zero)
 , bFiring(false)
 , bLaunchingMissile(false)
-, bMarkedForRemoval(false)
+// , bMarkedForRemoval(false)
 , mFireRateLevel(1)
 , mSpreadLevel(1)
 , mMissileAmmo(20)
@@ -57,6 +57,12 @@ Aircraft::Aircraft(Type type, const TextureManager& textures, const FontManager&
   }
 
   updateTexts();
+
+  mExplosion.setFrameSize(sf::Vector2i(256, 256));
+  mExplosion.setFrameCount(16);
+  mExplosion.setDuration(sf::seconds(1));
+
+
 }
 
 void Aircraft::updateCurrent(sf::Time delta, CommandQueue& commands)
@@ -67,7 +73,8 @@ void Aircraft::updateCurrent(sf::Time delta, CommandQueue& commands)
 
   if (isDestroyed()) {
     checkPickupDrop(commands);
-    bMarkedForRemoval = true;
+    mExplosion.update(delta);
+    // bMarkedForRemoval = true;
     return;
   }
 
@@ -79,7 +86,10 @@ void Aircraft::updateCurrent(sf::Time delta, CommandQueue& commands)
 
 void Aircraft::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const
 {
-  target.draw(mSprite, states);
+  if (isDestroyed() && bShowExplosion)
+    target.draw(mExplosion, states);
+  else
+    target.draw(mSprite, states);
 }
 
 unsigned int Aircraft::getCategory() const
@@ -134,20 +144,6 @@ void Aircraft::checkPickupDrop(CommandQueue& commands)
 {
   if (!isAllied() && Utility::randomInt(3) == 0)
     commands.push(mDropPickupCommand);
-}
-
-Textures::Id Aircraft::toTextureId(Aircraft::Type type)
-{
-  /*switch (type) {
-    case Aircraft::Type::Eagle:
-      return Textures::Id::Eagle;
-    case Aircraft::Type::Raptor:
-      return Textures::Id::Raptor;
-    case Aircraft::Type::Avenger:
-      return Textures::Id::Avenger;
-    default:
-      return Textures::Id::Bullet; // CHANGE
-  }*/
 }
 
 void Aircraft::checkProjectileLaunch(sf::Time delta, CommandQueue& commands)
@@ -206,7 +202,7 @@ sf::FloatRect Aircraft::getBoundingRect() const
   return getWorldTransform().transformRect(mSprite.getGlobalBounds());
 }
 
-bool Aircraft::isMarkedForRemoval() const { return bMarkedForRemoval; }
+bool Aircraft::isMarkedForRemoval() const { return isDestroyed() && (mExplosion.isFinished() || !bShowExplosion); }
 
 void Aircraft::createPickup(SceneNode& node, const TextureManager& textures) const
 {
@@ -229,5 +225,19 @@ void Aircraft::updateTexts()
       mMissileDisplay->setString("");
     else
       mMissileDisplay->setString("M: " + toString(mMissileAmmo));
+  }
+}
+
+void Aircraft::updateRollAnimation()
+{
+  if (Table[mType].hasRollAnimation) {
+    sf::IntRect textureRect = Table[mType].textureRect;
+
+    if (getVelocity().x < 0.f)
+      textureRect.left += textureRect.width;
+    else if (getVelocity().x > 0.f)
+      textureRect.left += 2 * textureRect.width;
+
+    mSprite.setTextureRect(textureRect);
   }
 }
