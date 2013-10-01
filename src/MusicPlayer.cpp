@@ -1,4 +1,5 @@
 #include "MusicPlayer.hpp"
+#include <iostream>
 
 MusicPlayer::MusicPlayer()
 : mMusic()
@@ -7,18 +8,19 @@ MusicPlayer::MusicPlayer()
 {
   mFilenames[Music::MenuTheme]    = "media/music/menu_theme.ogg";
   mFilenames[Music::MissionTheme] = "media/music/mission_theme.ogg";
+  // std::cout << "HIEY";
 }
 
 void MusicPlayer::play(Music::Id theme)
 {
-  std::string filename = mFilenames[theme];
+  // std::string filename = mFilenames[theme];
 
-  if (!mMusic.openFromFile(filename))
-    throw std::runtime_error("Music theme " + filename + " could not be loaded.");
+  if (!mMusic.openFromFile("media/music/mission_theme.ogg"))
+    {}//throw std::runtime_error("Music theme " + filename + " could not be loaded.");
 
-  mMusic.setVolume(mVolume);
-  mMusic.setLoop(true);
-  mMusic.play();
+  // mMusic.setVolume(mVolume);
+  // mMusic.setLoop(true);
+  // mMusic.play();
 }
 
 void MusicPlayer::stop()
@@ -32,4 +34,9 @@ void MusicPlayer::setPaused(bool pause)
     mMusic.pause();
   else
     mMusic.play();
+}
+
+void MusicPlayer::setVolume(float volume)
+{
+  mVolume = volume;
 }
