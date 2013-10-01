@@ -3,6 +3,7 @@
 #include <SFML/Graphics/RectangleShape.hpp>
 #include "PauseState.hpp"
 #include "ResourceManager.hpp"
+#include "MusicPlayer.hpp"
 #include "Button.hpp"
 
 PauseState::PauseState(StateStack& stack, Context context)
@@ -11,6 +12,7 @@ PauseState::PauseState(StateStack& stack, Context context)
 , mPausedText()
 , mGuiContainer()
 {
+  getContext().music->setPaused(true);
   sf::Font& font = context.fonts->getResource(Fonts::Id::Main);
   sf::Vector2f windowSize(context.window->getSize());
 
@@ -32,6 +34,11 @@ PauseState::PauseState(StateStack& stack, Context context)
 
   mGuiContainer.pack(returnButton);
   mGuiContainer.pack(backToMenuButton);
+}
+
+PauseState::~PauseState()
+{
+  getContext().music->setPaused(false);
 }
 
 bool PauseState::processEvent(const sf::Event& event)

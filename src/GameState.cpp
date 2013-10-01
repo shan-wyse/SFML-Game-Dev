@@ -1,5 +1,6 @@
 #include <SFML/Graphics/RenderWindow.hpp>
 #include "GameState.hpp"
+#include "MusicPlayer.hpp"
 
 GameState::GameState(StateStack& stack, Context context)
 : State(stack, context)
@@ -7,6 +8,7 @@ GameState::GameState(StateStack& stack, Context context)
 , mPlayer(*context.player)
 {
   mPlayer.setMissionStatus(Player::MissionInProgress);
+  getContext().music->play(Music::MissionTheme);
 }
 
 bool GameState::processEvent(const sf::Event& event)

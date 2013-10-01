@@ -10,6 +10,7 @@ class PauseState : public State
 {
 public:
                     PauseState(StateStack& stack, Context context);
+                    ~PauseState();
 
   virtual bool      processEvent(const sf::Event& event);
   virtual bool      update(sf::Time delta);

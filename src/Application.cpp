@@ -20,7 +20,8 @@ Application::Application(int argc, char** argv)
 , mTextures()
 , mFonts()
 , mPlayer()
-, mStateStack(State::Context(mWindow, mTextures, mFonts, mPlayer))
+, mMusic()
+, mStateStack(State::Context(mWindow, mTextures, mFonts, mPlayer, mMusic))
 , mIcon() // For development purposes only
 , mDevText() // For development purposes only
 , mDevUpdateTime() // For development purposes only

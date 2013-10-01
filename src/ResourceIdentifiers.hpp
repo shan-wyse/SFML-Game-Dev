@@ -31,6 +31,14 @@ namespace Fonts
   enum class Id { Main }; // CHANGE
 }
 
+namespace Music
+{
+  enum Id {
+    MenuTheme,
+    MissionTheme
+  };
+}
+
 template <typename Resource, typename Identifier>
 class ResourceManager;
 

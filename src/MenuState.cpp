@@ -2,12 +2,14 @@
 #include <SFML/Graphics/View.hpp>
 #include "MenuState.hpp"
 #include "ResourceManager.hpp"
+#include "MusicPlayer.hpp"
 #include "Button.hpp"
 
 MenuState::MenuState(StateStack& stack, Context context)
 : State(stack, context)
 , mGuiContainer()
 {
+  getContext().music->play(Music::MenuTheme);
   sf::Texture& texture = context.textures->getResource(Textures::Id::TitleScreen);
   mBackgroundSprite.setTexture(texture);
 
