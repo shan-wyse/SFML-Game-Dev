@@ -9,12 +9,11 @@
 #include "TextNode.hpp"
 #include "ParticleNode.hpp"
 
-World::World(sf::RenderWindow& window, FontManager& fonts)
-: mWindow(window)
-, mTarget()
+World::World(sf::RenderTarget& outputTarget, FontManager& fonts)
+: mTarget(outputTarget)
 , mSceneTexture()
 , mFonts(fonts)
-, mWorldView(window.getDefaultView())
+, mWorldView(outputTarget.getDefaultView())
 , mTextures()
 , mSceneGraph()
 , mSceneLayers()
@@ -64,8 +63,8 @@ void World::draw()
     mSceneTexture.display();
     mBloomEffect.apply(mSceneTexture, mTarget);
   } else {
-    mWindow.setView(mWorldView);
-    mWindow.draw(mSceneGraph);
+    mTarget.setView(mWorldView);
+    mTarget.draw(mSceneGraph);
   }
 }
 

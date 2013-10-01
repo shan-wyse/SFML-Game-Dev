@@ -67,11 +67,14 @@ void Animation::setFrameCount(std::size_t frameCount) { mFrameCount = frameCount
 void Animation::setDuration(sf::Time duration) { mDuration = duration; }
 void Animation::setRepeating(bool flag) { bRepeat = flag; }
 
-const sf::Texture& Animation::getTexture() const { return mSprite.getTexture(); }
+const sf::Texture* Animation::getTexture() const { return mSprite.getTexture(); }
 sf::Vector2i Animation::getFrameSize() const { return mFrameSize; }
 std::size_t Animation::getFrameCount() const { return mFrameCount; }
 sf::Time Animation::getDuration() const { return mDuration; }
-bool Animation::isRepeating() const { return mRepeat; }
+bool Animation::isRepeating() const { return bRepeat; }
+
+sf::FloatRect Animation::getLocalBounds() const { return sf::FloatRect(getOrigin(), static_cast<sf::Vector2f> (getFrameSize())); }
+sf::FloatRect Animation::getGlobalBounds() const { return getTransform().transformRect(getLocalBounds()); }
 
 void Animation::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {

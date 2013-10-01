@@ -1,7 +1,7 @@
 #ifndef RESOURCE_IDENTIFIERS_HPP
 #define RESOURCE_IDENTIFIERS_HPP
 
-namespace sf { class Texture; class Font; }
+namespace sf { class Texture; class Font; class Shader; }
 
 namespace Textures
 {

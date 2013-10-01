@@ -17,7 +17,7 @@ Aircraft::Aircraft(Type type, const TextureManager& textures, const FontManager&
 : Entity(Table[type].hitpoints)
 , mType(type)
 , mSprite(textures.getResource(Table[type].texture), Table[type].textureRect)
-, mExplosion(textures.get(Textures::Explosion))
+, mExplosion(textures.getResource(Textures::Id::Explosion))
 , mFireCommand()
 , mMissileCommand()
 , mFireCountdown(sf::Time::Zero)
@@ -36,7 +36,13 @@ Aircraft::Aircraft(Type type, const TextureManager& textures, const FontManager&
 , mMissileDisplay(nullptr)
 {
   // sf::FloatRect bounds = mSprite.getLocalBounds();
+
+  mExplosion.setFrameSize(sf::Vector2i(256, 256));
+  mExplosion.setFrameCount(16);
+  mExplosion.setDuration(sf::seconds(1));
+
   mSprite.setOrigin(mSprite.getLocalBounds().width / 2.f, mSprite.getLocalBounds().height / 2.f);
+  mExplosion.setOrigin(mExplosion.getLocalBounds().width / 2.f, mExplosion.getLocalBounds().height / 2.f);
 
   mFireCommand.category = Category::SceneAirLayer;
   mFireCommand.action = [this, &textures] (SceneNode& node, sf::Time) { createBullets(node, textures); };
@@ -60,13 +66,6 @@ Aircraft::Aircraft(Type type, const TextureManager& textures, const FontManager&
   }
 
   updateTexts();
-
-  mExplosion.setFrameSize(sf::Vector2i(256, 256));
-  mExplosion.setFrameCount(16);
-  mExplosion.setDuration(sf::seconds(1));
-  mExplosion.setCenter(mExplosion.getLocalBounds().width / 2.f, mExplosion.getLocalBounds().height / 2.f);
-
-
 }
 
 void Aircraft::updateCurrent(sf::Time delta, CommandQueue& commands)

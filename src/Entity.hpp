@@ -19,6 +19,7 @@ public:
   void            repair(int hitpoints);
   void            damage(int hitpoints);
   void            destroy();
+  virtual void    remove();
 
   int             getHitpoints() const;
   bool            isDestroyed() const;

@@ -1,3 +1,4 @@
+#include <SFML/Graphics/RenderWindow.hpp>
 #include "GameState.hpp"
 
 GameState::GameState(StateStack& stack, Context context)

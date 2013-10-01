@@ -20,7 +20,7 @@ namespace sf { class RenderTarget; }
 class World : sf::NonCopyable
 {
 public:
-  explicit                              World(sf::RenderWindow& window, FontManager& fonts);
+  explicit                              World(sf::RenderTarget& outputTarget, FontManager& fonts);
   void                                  update(sf::Time delta);
   void                                  draw(); // render
   CommandQueue&                         getCommandQueue();
@@ -55,7 +55,7 @@ private:
   sf::FloatRect                         getViewBounds() const;
   sf::FloatRect                         getBattlefieldBounds() const;
 
-  sf::RenderWindow&                     mWindow;
+  // sf::RenderWindow&                     mWindow;
   sf::RenderTarget&                     mTarget;
   sf::RenderTexture                     mSceneTexture;
   sf::View                              mWorldView;

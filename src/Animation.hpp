@@ -22,7 +22,7 @@ public:
 
   const sf::Texture*    getTexture() const;
   sf::Vector2i          getFrameSize() const;
-  std::size_t           getFrameCount const;
+  std::size_t           getFrameCount() const;
   sf::Time              getDuration() const;
   bool                  isRepeating() const;
 

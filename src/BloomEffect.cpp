@@ -8,7 +8,7 @@ BloomEffect::BloomEffect()
 {
   mShaders.loadResource(Shaders::BrightnessPass,    "media/shaders/fullpass.vert", "media/shaders/brightness.frag");
   mShaders.loadResource(Shaders::DownSamplePass,    "media/shaders/fullpass.vert", "media/shaders/down_sample.frag");
-  mShaders.loadResource(Shaders::GuassianBlurPass,  "media/shaders/fullpass.vert", "media/shaders/guassian_blur.frag");
+  mShaders.loadResource(Shaders::GaussianBlurPass,  "media/shaders/fullpass.vert", "media/shaders/guassian_blur.frag");
   mShaders.loadResource(Shaders::AddPass        ,   "media/shaders/fullpass.vert", "media/shaders/add.frag");
 }
 
@@ -47,7 +47,7 @@ void BloomEffect::prepareTextures(sf::Vector2u size)
   }
 }
 
-void BloomEffect::filterBright(const sf::RenderTexture& input, sf::RenderTarget& output)
+void BloomEffect::filterBright(const sf::RenderTexture& input, sf::RenderTexture& output)
 {
   sf::Shader& brightness = mShaders.getResource(Shaders::BrightnessPass);
 
@@ -66,7 +66,7 @@ void BloomEffect::blurMultipass(RenderTextureArray& renderTextures)
   }
 }
 
-void BloomEffect::blur(const sf::RenderTarget& input, sf::RenderTexture& output, sf::Vector2f offsetFactor)
+void BloomEffect::blur(const sf::RenderTexture& input, sf::RenderTexture& output, sf::Vector2f offsetFactor)
 {
   sf::Shader& gaussianBlur = mShaders.getResource(Shaders::GaussianBlurPass);
 
@@ -78,9 +78,9 @@ void BloomEffect::blur(const sf::RenderTarget& input, sf::RenderTexture& output,
 
 void BloomEffect::downSample(const sf::RenderTexture& input, sf::RenderTexture& output)
 {
-  sf::Shader downSampler = mShaders.getResource(Shaders::DownSamplePass);
+  sf::Shader& downSampler = mShaders.getResource(Shaders::DownSamplePass);
 
-  downSampler.setParameter("source", input.getSize());
+  downSampler.setParameter("source", input.getTexture());
   downSampler.setParameter("sourceSize", sf::Vector2f(input.getSize()));
   applyShader(downSampler, output);
   output.display();

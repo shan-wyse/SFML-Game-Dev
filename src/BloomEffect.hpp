@@ -18,13 +18,13 @@ public:
 private:
   typedef std::array<sf::RenderTexture, 2>      RenderTextureArray;
 
-  void                    prepareTexture(sf::Vector2u size);
+  void                    prepareTextures(sf::Vector2u size);
 
   void                    filterBright(const sf::RenderTexture& input, sf::RenderTexture& output);
   void                    blurMultipass(RenderTextureArray& renderTextures);
   void                    blur(const sf::RenderTexture& input, sf::RenderTexture& output, sf::Vector2f offsetFactor);
-  void                    downSample(const sf::RenderTexture input, sf::RenderTexture& output);
-  void                    add(const sf::RenderTexture& source, const sf::RenderTexture bloom, sf::RenderTarget& target);
+  void                    downSample(const sf::RenderTexture& input, sf::RenderTexture& output);
+  void                    add(const sf::RenderTexture& source, const sf::RenderTexture& bloom, sf::RenderTarget& target);
 
   ShaderManager           mShaders;
 

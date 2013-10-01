@@ -30,6 +30,7 @@ public:
 
   virtual unsigned int    getCategory() const;
   virtual sf::FloatRect   getBoundingRect() const;
+  virtual void            remove();
   virtual bool            isMarkedForRemoval() const;
 
   bool                    isAllied() const;

@@ -14,7 +14,7 @@ void PostEffect::applyShader(const sf::Shader& shader, sf::RenderTarget& output)
 
   sf::VertexArray vertices(sf::TrianglesStrip, 4);
   vertices[0] = sf::Vertex(sf::Vector2f(0.f, 0.f),          sf::Vector2f(0.f, 1.f));
-  vertices[1] = sf::Vertex(sf::Vector2f(oututSize.x, 0.f),  sf::Vector2f(1.f, 1.f));
+  vertices[1] = sf::Vertex(sf::Vector2f(outputSize.x, 0.f),  sf::Vector2f(1.f, 1.f));
   vertices[2] = sf::Vertex(sf::Vector2f(0.f, outputSize.y), sf::Vector2f(0.f, 0.f));
   vertices[3] = sf::Vertex(sf::Vector2f(outputSize),        sf::Vector2f(1.f, 0.f));
 
