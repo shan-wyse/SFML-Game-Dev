@@ -19,6 +19,8 @@ public:
   void                                setPaused(bool paused);
   void                                setVolume(float volume);
 
+  void                                transitionTo(Music::Id theme, sf::Time transitionDuration);
+
 private:
   sf::Music                           mMusic;
   std::map<Music::Id, std::string>    mFilenames;

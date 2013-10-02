@@ -9,7 +9,7 @@ MenuState::MenuState(StateStack& stack, Context context)
 : State(stack, context)
 , mGuiContainer()
 {
-  getContext().music->play(Music::MenuTheme);
+  getContext().musicPlayer->play(Music::MenuTheme);
   sf::Texture& texture = context.textures->getResource(Textures::Id::TitleScreen);
   mBackgroundSprite.setTexture(texture);
 

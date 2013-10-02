@@ -8,7 +8,7 @@
 #include "ResourceManager.hpp"
 #include "ResourceIdentifiers.hpp" // CHECK
 #include "MusicPlayer.hpp"
-// #include "SoundPlayer.hpp"
+#include "SoundPlayer.hpp"
 
 class Application
 {
@@ -35,8 +35,8 @@ private:
   TextureManager              mTextures;
   FontManager                 mFonts;
   Player                      mPlayer;
-  MusicPlayer                 mMusic;
-  // SoundPlayer                 mSounds;
+  MusicPlayer                 mMusicPlayer;
+  SoundPlayer                 mSoundPlayer;
   StateStack                  mStateStack;
 
   sf::Image                   mIcon; // For development purposes only

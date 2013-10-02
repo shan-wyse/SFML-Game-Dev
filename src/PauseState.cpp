@@ -12,7 +12,7 @@ PauseState::PauseState(StateStack& stack, Context context)
 , mPausedText()
 , mGuiContainer()
 {
-  getContext().music->setPaused(true);
+  getContext().musicPlayer->setPaused(true);
   sf::Font& font = context.fonts->getResource(Fonts::Id::Main);
   sf::Vector2f windowSize(context.window->getSize());
 
@@ -38,7 +38,7 @@ PauseState::PauseState(StateStack& stack, Context context)
 
 PauseState::~PauseState()
 {
-  getContext().music->setPaused(false);
+  getContext().musicPlayer->setPaused(false);
 }
 
 bool PauseState::processEvent(const sf::Event& event)

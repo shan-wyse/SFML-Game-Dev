@@ -11,6 +11,7 @@ namespace sf { class RenderWindow; } // CHECK
 class StateStack;
 class Player;
 class MusicPlayer;
+class SoundPlayer;
 
 class State
 {
@@ -19,14 +20,15 @@ public:
 
   struct Context
   {
-                                      Context(sf::RenderWindow& window, TextureManager& textures,
-                                              FontManager& fonts, Player& player, MusicPlayer& music);
+                                      Context(sf::RenderWindow& window, TextureManager& textures, FontManager& fonts,
+                                          Player& player, MusicPlayer& musicPlayer, SoundPlayer& soundPlayer);
 
     sf::RenderWindow*                 window;
     TextureManager*                   textures;
     FontManager*                      fonts;
     Player*                           player;
-    MusicPlayer*                      music;
+    MusicPlayer*                      musicPlayer;
+    SoundPlayer*                      soundPlayer;
   };
 
                                       State(StateStack& stack, Context context);

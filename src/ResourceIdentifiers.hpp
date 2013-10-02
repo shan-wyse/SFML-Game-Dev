@@ -1,7 +1,7 @@
 #ifndef RESOURCE_IDENTIFIERS_HPP
 #define RESOURCE_IDENTIFIERS_HPP
 
-namespace sf { class Texture; class Font; class Shader; }
+namespace sf { class Texture; class Shader; class Font; class SoundBuffer; }
 
 namespace Textures
 {
@@ -31,6 +31,19 @@ namespace Fonts
   enum class Id { Main }; // CHANGE
 }
 
+namespace SoundEffects
+{
+  enum Id {
+    AlliedGunfire,
+    EnemyGunfire,
+    Explosion1,
+    Explosion2,
+    LaunchMissile,
+    CollectPickup,
+    Button
+  };
+}
+
 namespace Music
 {
   enum Id {
@@ -45,5 +58,6 @@ class ResourceManager;
 typedef ResourceManager<sf::Texture, Textures::Id> TextureManager;
 typedef ResourceManager<sf::Shader, Shaders::Id> ShaderManager;
 typedef ResourceManager<sf::Font, Fonts::Id> FontManager;
+typedef ResourceManager<sf::SoundBuffer, SoundEffects::Id> SoundManager;
 
 #endif // RESOURCE_IDENTIFIERS_HPP

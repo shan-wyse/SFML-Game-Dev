@@ -8,7 +8,7 @@ GameState::GameState(StateStack& stack, Context context)
 , mPlayer(*context.player)
 {
   mPlayer.setMissionStatus(Player::MissionInProgress);
-  getContext().music->play(Music::MissionTheme);
+  getContext().musicPlayer->play(Music::MissionTheme);
 }
 
 bool GameState::processEvent(const sf::Event& event)
