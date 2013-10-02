@@ -14,13 +14,14 @@
 #include "CommandQueue.hpp"
 #include "Aircraft.hpp"
 #include "BloomEffect.hpp"
+#include "SoundPlayer.hpp"
 
 namespace sf { class RenderTarget; }
 
 class World : sf::NonCopyable
 {
 public:
-  explicit                              World(sf::RenderTarget& outputTarget, FontManager& fonts);
+  explicit                              World(sf::RenderTarget& outputTarget, FontManager& fonts, SoundPlayer& soundPlayer);
   void                                  update(sf::Time delta);
   void                                  draw(); // render
   CommandQueue&                         getCommandQueue();
@@ -52,6 +53,8 @@ private:
   void                                  destroyEntitiesOutsideView();
   void                                  guideMissiles();
 
+  void                                  updateSounds();
+
   sf::FloatRect                         getViewBounds() const;
   sf::FloatRect                         getBattlefieldBounds() const;
 
@@ -61,6 +64,7 @@ private:
   sf::View                              mWorldView;
   TextureManager                        mTextures;
   FontManager&                          mFonts; // remove this & for fun times
+  SoundPlayer&                          mSoundPlayer;
 
   SceneNode                             mSceneGraph;
   std::array<SceneNode*, LayerCount>    mSceneLayers;

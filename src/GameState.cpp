@@ -4,7 +4,7 @@
 
 GameState::GameState(StateStack& stack, Context context)
 : State(stack, context)
-, mWorld(*context.window, *context.fonts)
+, mWorld(*context.window, *context.fonts, *context.soundPlayer)
 , mPlayer(*context.player)
 {
   mPlayer.setMissionStatus(Player::MissionInProgress);

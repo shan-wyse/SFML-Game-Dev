@@ -7,9 +7,12 @@
 #include "Pickup.hpp"
 #include "CommandQueue.hpp"
 #include "ResourceManager.hpp"
+#include "SoundNode.hpp"
 // #include "TextNode.hpp"
 #include "Utility.hpp"
 #include "StringHelper.hpp"
+
+using namespace std::placeholders;
 
 namespace { const std::vector<AircraftData> Table = initializeAircraftData(); }
 
@@ -24,7 +27,8 @@ Aircraft::Aircraft(Type type, const TextureManager& textures, const FontManager&
 , bFiring(false)
 , bLaunchingMissile(false)
 , bShowExplosion(true)
-, mSpawnedPickup(false)
+, bSpawnedPickup(false)
+, bPlayedExplosionSound(false)
 // , bMarkedForRemoval(false)
 , mFireRateLevel(1)
 , mSpreadLevel(1)
@@ -80,6 +84,12 @@ void Aircraft::updateCurrent(sf::Time delta, CommandQueue& commands)
     checkPickupDrop(commands);
     mExplosion.update(delta);
     // bMarkedForRemoval = true;
+
+    if (!bPlayedExplosionSound) {
+      SoundEffects::Id soundEffect = (Utility::randomInt(2) == 0) ? SoundEffects::Explosion1 : SoundEffects::Explosion2;
+      playLocalSound(commands, soundEffect);
+      bPlayedExplosionSound = true;
+    }
     return;
   }
 
@@ -164,12 +174,15 @@ void Aircraft::checkProjectileLaunch(sf::Time delta, CommandQueue& commands)
     commands.push(mFireCommand);
     mFireCountdown += sf::seconds(1.f / (mFireRateLevel + 1));
     bFiring = false;
+
+    playLocalSound(commands, isAllied() ? SoundEffects::AlliedGunfire : SoundEffects::EnemyGunfire);
   } else if (mFireCountdown > sf::Time::Zero)
     mFireCountdown -= delta;
 
   if (bLaunchingMissile) {
     commands.push(mMissileCommand);
     bLaunchingMissile = false;
+    playLocalSound(commands, SoundEffects::LaunchMissile);
   }
 }
 
@@ -250,4 +263,13 @@ void Aircraft::updateRollAnimation()
 
     mSprite.setTextureRect(textureRect);
   }
+}
+
+void Aircraft::playLocalSound(CommandQueue& commands, SoundEffects::Id effect)
+{
+  Command command;
+  command.category = Category::SoundEffect;
+  command.action = derivedAction<SoundNode> (std::bind(&SoundNode::playSound, _1, effect, getWorldPosition()));
+
+  commands.push(command);
 }

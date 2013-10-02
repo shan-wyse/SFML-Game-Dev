@@ -8,11 +8,13 @@
 #include "Pickup.hpp"
 #include "TextNode.hpp"
 #include "ParticleNode.hpp"
+#include "SoundNode.hpp"
 
-World::World(sf::RenderTarget& outputTarget, FontManager& fonts)
+World::World(sf::RenderTarget& outputTarget, FontManager& fonts, SoundPlayer& soundPlayer)
 : mTarget(outputTarget)
 , mSceneTexture()
 , mFonts(fonts)
+, mSoundPlayer(soundPlayer)
 , mWorldView(outputTarget.getDefaultView())
 , mTextures()
 , mSceneGraph()
@@ -117,6 +119,9 @@ void World::buildScene()
 
   std::unique_ptr<ParticleNode> propellantNode(new ParticleNode(Particle::Propellant, mTextures));
   mSceneLayers[Foreground]->attachChild(std::move(propellantNode)); // lower foreground
+
+  std::unique_ptr<SoundNode> soundNode(new SoundNode(mSoundPlayer));
+  mSceneGraph.attachChild(std::move(soundNode));
 
   std::unique_ptr<Aircraft> player(new Aircraft(Aircraft::Type::Eagle, mTextures, mFonts));
   mPlayerAircraft = player.get();
@@ -270,6 +275,7 @@ void World::processCollisions()
 
       pickup.apply(player);
       pickup.destroy();
+      player.playLocalSound(mCommandQueue, SoundEffects::CollectPickup);
     } else if (matchesCategories(pair, Category::EnemyAircraft, Category::AlliedProjectile) ||
                matchesCategories(pair, Category::PlayerAircraft, Category::EnemyProjectile)) {
       auto& aircraft = static_cast<Aircraft&> (*pair.first);
@@ -306,6 +312,12 @@ sf::FloatRect World::getBattlefieldBounds() const
   bounds.height += 100.f;
 
   return bounds;
+}
+
+void World::updateSounds()
+{
+  mSoundPlayer.setListenerPosition(mPlayerAircraft->getWorldPosition());
+  mSoundPlayer.removeStoppedSounds();
 }
 
 World::SpawnPoint::SpawnPoint(Aircraft::Type type, float xPos, float yPos)

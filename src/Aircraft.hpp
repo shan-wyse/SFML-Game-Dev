@@ -43,6 +43,8 @@ public:
   void                    fire();
   void                    launchMissile();
 
+  void                    playLocalSound(CommandQueue& commands, SoundEffects::Id effect);
+
 private:
   void                    updateMovementPattern(sf::Time delta);
   void                    checkPickupDrop(CommandQueue& commands);
@@ -67,7 +69,7 @@ private:
 
   bool                    bFiring;
   bool                    bLaunchingMissile;
-  bool                    mSpawnedPickup;
+  bool                    bSpawnedPickup;
   // bool                    bMarkedForRemoval;
 
   int                     mFireRateLevel;
@@ -83,6 +85,8 @@ private:
 
   Animation               mExplosion;
   bool                    bShowExplosion;
+
+  bool                    bPlayedExplosionSound;
 };
 
 // struct SpawnPoint
