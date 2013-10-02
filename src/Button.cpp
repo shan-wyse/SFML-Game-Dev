@@ -2,14 +2,17 @@
 #include <SFML/Graphics/RenderTarget.hpp>
 #include <SFML/Graphics/RenderStates.hpp>
 #include "Button.hpp"
+#include "ResourceManager.hpp"
+#include "SoundPlayer.hpp"
 
 namespace Gui
 {
 
-Button::Button(const TextureManager& textures, const FontManager& fonts)
+Button::Button(State::Context context)
 : mCallback()
-, mSprite(textures.getResource(Textures::Id::Buttons))
-, mText("", fonts.getResource(Fonts::Id::Main), 16)
+, mSprite(context.textures->getResource(Textures::Id::Buttons))
+, mText("", context.fonts->getResource(Fonts::Id::Main), 16)
+, mSoundPlayer(*context.soundPlayer)
 , mIsToggle(false)
 {
   changeTexture(Deselected);
@@ -37,6 +40,8 @@ void Button::setActive(bool active)
   Component::setActive(active);
 
   if (active) {
+    Component::setActive(true);
+
     if (mIsToggle)
       changeTexture(Pressed);
     if (!mIsToggle)
@@ -51,6 +56,8 @@ void Button::setActive(bool active)
         changeTexture(Deselected);
     }
   }
+
+  mSoundPlayer.play(SoundEffects::Button);
 }
 
 void Button::processEvent(const sf::Event& event)

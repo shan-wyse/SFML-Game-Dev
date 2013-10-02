@@ -13,30 +13,30 @@ MenuState::MenuState(StateStack& stack, Context context)
   sf::Texture& texture = context.textures->getResource(Textures::Id::TitleScreen);
   mBackgroundSprite.setTexture(texture);
 
-  auto playButton = std::make_shared<Gui::Button> (*context.textures, *context.fonts);
+  auto playButton = std::make_shared<Gui::Button> (context);
   playButton->setPosition(100, 250);
   playButton->setText("Play");
   playButton->setCallback([this] ()
   {
     requestStackPop();
     requestStackPush(States::Loading);
-  });
+  } );
 
-  auto settingsButton = std::make_shared<Gui::Button> (*context.textures, *context.fonts);
+  auto settingsButton = std::make_shared<Gui::Button> (context);
   settingsButton->setPosition(100, 300);
   settingsButton->setText("Settings");
   settingsButton->setCallback([this] ()
   {
     requestStackPush(States::Settings);
-  });
+  } );
 
-  auto exitButton = std::make_shared<Gui::Button> (*context.textures, *context.fonts);
+  auto exitButton = std::make_shared<Gui::Button> (context);
   exitButton->setPosition(100, 350);
   exitButton->setText("Exit");
   exitButton->setCallback([this] ()
   {
     requestStackPop();
-  });
+  } );
 
   mGuiContainer.pack(playButton);
   mGuiContainer.pack(settingsButton);

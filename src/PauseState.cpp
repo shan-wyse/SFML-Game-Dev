@@ -22,12 +22,12 @@ PauseState::PauseState(StateStack& stack, Context context)
   mPausedText.setOrigin(mPausedText.getLocalBounds().width / 2.f, mPausedText.getLocalBounds().height / 2.f);
   mPausedText.setPosition(0.5f * windowSize.x, 0.4f * windowSize.y);
 
-  auto returnButton = std::make_shared<Gui::Button> (*context.textures, *context.fonts);
+  auto returnButton = std::make_shared<Gui::Button> (context);
   returnButton->setPosition(0.5f * windowSize.x - 100, 0.4f * windowSize.y + 75);
   returnButton->setText("Return");
   returnButton->setCallback([this] () { requestStackPop(); });
 
-  auto backToMenuButton = std::make_shared<Gui::Button> (*context.textures, *context.fonts);
+  auto backToMenuButton = std::make_shared<Gui::Button> (context);
   backToMenuButton->setPosition(0.5f * windowSize.x - 100, 0.4f * windowSize.y + 125);
   backToMenuButton->setText("Back to Menu");
   backToMenuButton->setCallback([this] () { requestStateClear(); requestStackPush(States::Menu); });

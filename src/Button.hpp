@@ -8,7 +8,7 @@
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/Text.hpp>
 #include "Component.hpp"
-#include "ResourceManager.hpp"
+#include "State.hpp"
 #include "ResourceIdentifiers.hpp"
 
 namespace Gui
@@ -22,7 +22,7 @@ public:
 
   enum                                Type { Deselected, Selected, Pressed, Count };
 
-                                      Button(const TextureManager& textures, const FontManager& fonts);
+                                      Button(State::Context context);
 
   virtual bool                        isSelectable() const;
   virtual void                        setSelected(bool selected);
@@ -44,6 +44,7 @@ private:
   // const sf::Texture&                  mPressedTexture;
   sf::Sprite                          mSprite;
   sf::Text                            mText;
+  SoundPlayer&                        mSoundPlayer;
   bool                                mIsToggle;
 };
 
