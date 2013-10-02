@@ -2,6 +2,14 @@
 #include <SFML/Audio/Listener.hpp>
 #include "SoundPlayer.hpp"
 
+namespace
+{
+  const float Z_LISTENER      = 300.f;
+  const float ATTENUATION     = 8.f;
+  const float MIN_DISTANCE_2D = 200.f;
+  const float MIN_DISTANCE_3D = std::sqrt(MIN_DISTANCE_2D * MIN_DISTANCE_2D + Z_LISTENER * Z_LISTENER);
+}
+
 SoundPlayer::SoundPlayer()
 : mSoundManager()
 , mSounds()
@@ -17,11 +25,33 @@ SoundPlayer::SoundPlayer()
 
 void SoundPlayer::play(SoundEffects::Id effect)
 {
+  play(effect, getListenerPosition());
+}
+
+void SoundPlayer::play(SoundEffects::Id effect, sf::Vector2f position)
+{
   mSounds.push_back(sf::Sound(mSoundManager.getResource(effect)));
-  mSounds.back().play();
+  sf::Sound& sound = mSounds.back();
+
+  sound.setPosition(position.x, position.y, 0.f);
+  sound.setAttenuation(ATTENUATION);
+  sound.setMinDistance(MIN_DISTANCE_3D);
+
+  sound.play();
 }
 
 void SoundPlayer::removeStoppedSounds()
 {
   mSounds.remove_if([] (const sf::Sound& sound) { return sound.getStatus() == sf::Sound::Stopped; } );
+}
+
+void SoundPlayer::setListenerPosition(sf::Vector2f position)
+{
+  sf::Listener::setPosition(position.x, -position.y, Z_LISTENER);
+}
+
+sf::Vector2f SoundPlayer::getListenerPosition() const
+{
+  sf::Vector3f position = sf::Listener::getPosition();
+  return sf::Vector2f(position.x, -position.y);
 }
