@@ -36,7 +36,7 @@ Aircraft::Aircraft(Type type, const TextureManager& textures, const FontManager&
 , mDropPickupCommand()
 , mTravelledDistance(0.f)
 , mDirectionIndex(0)
-, mHealthDisplay(nullptr)
+// , mHealthDisplay(nullptr)
 , mMissileDisplay(nullptr)
 {
   // sf::FloatRect bounds = mSprite.getLocalBounds();
@@ -162,8 +162,10 @@ void Aircraft::updateMovementPattern(sf::Time delta)
 
 void Aircraft::checkPickupDrop(CommandQueue& commands)
 {
-  if (!isAllied() && Utility::randomInt(3) == 0)
+  if (!isAllied() && Utility::randomInt(3) == 0 && !bSpawnedPickup)
     commands.push(mDropPickupCommand);
+
+  bSpawnedPickup = true;
 }
 
 void Aircraft::checkProjectileLaunch(sf::Time delta, CommandQueue& commands)
@@ -239,12 +241,16 @@ void Aircraft::createPickup(SceneNode& node, const TextureManager& textures) con
 
 void Aircraft::updateTexts()
 {
-  mHealthDisplay->setString(toString(getHitpoints()) + " HP");
+  if (isDestroyed())
+    mHealthDisplay->setString("");
+  else
+    mHealthDisplay->setString(toString(getHitpoints()) + " HP");
+
   mHealthDisplay->setPosition(0.f, 50.f);
   mHealthDisplay->setRotation(-getRotation());
 
   if (mMissileDisplay) {
-    if (mMissileAmmo == 0)
+    if (mMissileAmmo == 0 || isDestroyed())
       mMissileDisplay->setString("");
     else
       mMissileDisplay->setString("M: " + toString(mMissileAmmo));

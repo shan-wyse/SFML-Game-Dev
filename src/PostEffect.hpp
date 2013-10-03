@@ -10,7 +10,7 @@ namespace sf
   class Shader;
 }
 
-class PostEffect
+class PostEffect : private sf::NonCopyable
 {
 public:
   virtual           ~PostEffect();

@@ -9,7 +9,7 @@ BloomEffect::BloomEffect()
   mShaders.loadResource(Shaders::BrightnessPass,    "media/shaders/fullpass.vert", "media/shaders/brightness.frag");
   mShaders.loadResource(Shaders::DownSamplePass,    "media/shaders/fullpass.vert", "media/shaders/down_sample.frag");
   mShaders.loadResource(Shaders::GaussianBlurPass,  "media/shaders/fullpass.vert", "media/shaders/guassian_blur.frag");
-  mShaders.loadResource(Shaders::AddPass        ,   "media/shaders/fullpass.vert", "media/shaders/add.frag");
+  mShaders.loadResource(Shaders::AddPass,           "media/shaders/fullpass.vert", "media/shaders/add.frag");
 }
 
 void BloomEffect::apply(const sf::RenderTexture& input, sf::RenderTarget& output)
@@ -60,9 +60,9 @@ void BloomEffect::blurMultipass(RenderTextureArray& renderTextures)
 {
   sf::Vector2u textureSize = renderTextures[0].getSize();
 
-  for (std::size_t count = 0; count < 2; count++) {
+  for (std::size_t count = 0; count < 2; ++count) {
     blur(renderTextures[0], renderTextures[1], sf::Vector2f(0.f, 1.f / textureSize.y));
-    blur(renderTextures[1], renderTextures[0], sf::Vector2f(1.f / textureSize.y, 0.f));
+    blur(renderTextures[1], renderTextures[0], sf::Vector2f(1.f / textureSize.x, 0.f));
   }
 }
 

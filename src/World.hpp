@@ -18,7 +18,7 @@
 
 namespace sf { class RenderTarget; }
 
-class World : sf::NonCopyable
+class World : private sf::NonCopyable
 {
 public:
   explicit                              World(sf::RenderTarget& outputTarget, FontManager& fonts, SoundPlayer& soundPlayer);

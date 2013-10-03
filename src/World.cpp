@@ -1,7 +1,7 @@
 #include <cmath>
 #include <algorithm>
 #include <limits>
-#include <SFML/Graphics/RenderWindow.hpp>
+// #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Graphics/RenderTarget.hpp>
 #include "World.hpp"
 #include "Projectile.hpp"
@@ -9,6 +9,7 @@
 #include "TextNode.hpp"
 #include "ParticleNode.hpp"
 #include "SoundNode.hpp"
+#include <iostream>
 
 World::World(sf::RenderTarget& outputTarget, FontManager& fonts, SoundPlayer& soundPlayer)
 : mTarget(outputTarget)
@@ -19,7 +20,7 @@ World::World(sf::RenderTarget& outputTarget, FontManager& fonts, SoundPlayer& so
 , mTextures()
 , mSceneGraph()
 , mSceneLayers()
-, mCommandQueue()
+// , mCommandQueue()
 , mWorldBounds(0.f, 0.f, mWorldView.getSize().x, 20000.f)
 , mSpawnPosition(mWorldView.getSize().x / 2.f, mWorldBounds.height - mWorldView.getSize().y / 2.f)
 , mScrollSpeed(-100.f)
@@ -27,6 +28,7 @@ World::World(sf::RenderTarget& outputTarget, FontManager& fonts, SoundPlayer& so
 , mEnemySpawnPoints()
 , mActiveEnemies()
 {
+  std::cout << "HU";
   mSceneTexture.create(mTarget.getSize().x, mTarget.getSize().y);
 
   loadTextures();
@@ -54,6 +56,8 @@ void World::update(sf::Time delta)
 
   mSceneGraph.update(delta, mCommandQueue);
   adaptPlayerPosition();
+
+  updateSounds();
 }
 
 void World::draw()

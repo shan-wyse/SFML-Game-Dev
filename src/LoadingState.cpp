@@ -2,6 +2,7 @@
 #include <SFML/Graphics/View.hpp> // remove if not refactoring
 #include "LoadingState.hpp"
 #include "ResourceManager.hpp"
+#include <iostream>
 
 LoadingState::LoadingState(StateStack& stack, Context context)
 : State(stack, context)
@@ -9,6 +10,7 @@ LoadingState::LoadingState(StateStack& stack, Context context)
 , mProgressBarBackground()
 , mProgressBarFill()
 {
+  std::cout << "HO";
   mLoadingText.setFont(context.fonts->getResource(Fonts::Id::Main)); // add local variables
   mLoadingText.setString("Loading resources");
   mLoadingText.setOrigin(mLoadingText.getLocalBounds().width / 2.f, mLoadingText.getLocalBounds().height / 2.f);

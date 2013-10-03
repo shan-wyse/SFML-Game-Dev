@@ -13,7 +13,7 @@ void MusicPlayer::play(Music::Id theme)
 {
   std::string filename = mFilenames[theme];
 
-  if (!mMusic.openFromFile("media/music/mission_theme.ogg"))
+  if (!mMusic.openFromFile(filename))
     throw std::runtime_error("Music theme " + filename + " could not be loaded.");
 
   mMusic.setVolume(mVolume);
