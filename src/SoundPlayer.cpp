@@ -21,6 +21,8 @@ SoundPlayer::SoundPlayer()
   mSoundManager.loadResource(SoundEffects::LaunchMissile,   "media/sounds/launch_missile.wav");
   mSoundManager.loadResource(SoundEffects::CollectPickup,   "media/sounds/collect_pickup.wav");
   mSoundManager.loadResource(SoundEffects::Button,          "media/sounds/button.wav");
+
+  sf::Listener::setDirection(0.f, 0.f, -1.f);
 }
 
 void SoundPlayer::play(SoundEffects::Id effect)
@@ -30,9 +32,10 @@ void SoundPlayer::play(SoundEffects::Id effect)
 
 void SoundPlayer::play(SoundEffects::Id effect, sf::Vector2f position)
 {
-  mSounds.push_back(sf::Sound(mSoundManager.getResource(effect)));
+  mSounds.push_back(sf::Sound());
   sf::Sound& sound = mSounds.back();
 
+  sound.setBuffer(mSoundManager.getResource(effect));
   sound.setPosition(position.x, position.y, 0.f);
   sound.setAttenuation(ATTENUATION);
   sound.setMinDistance(MIN_DISTANCE_3D);

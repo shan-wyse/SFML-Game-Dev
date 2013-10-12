@@ -1,14 +1,12 @@
 #include <SFML/Graphics/RenderWindow.hpp>
 #include "GameState.hpp"
 #include "MusicPlayer.hpp"
-#include <iostream>
 
 GameState::GameState(StateStack& stack, Context context)
 : State(stack, context)
 , mWorld(*context.window, *context.fonts, *context.soundPlayer)
 , mPlayer(*context.player)
 {
-  std::cout << "HI";
   mPlayer.setMissionStatus(Player::MissionInProgress);
   getContext().musicPlayer->play(Music::MissionTheme);
 }

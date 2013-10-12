@@ -273,9 +273,14 @@ void Aircraft::updateRollAnimation()
 
 void Aircraft::playLocalSound(CommandQueue& commands, SoundEffects::Id effect)
 {
+  sf::Vector2f worldPosition = getWorldPosition();
+
   Command command;
   command.category = Category::SoundEffect;
-  command.action = derivedAction<SoundNode> (std::bind(&SoundNode::playSound, _1, effect, getWorldPosition()));
+  command.action = derivedAction<SoundNode> ([effect, worldPosition] (SoundNode& node, sf::Time)
+    {
+      node.playSound(effect, worldPosition);
+    } );
 
   commands.push(command);
 }

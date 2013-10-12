@@ -9,7 +9,6 @@
 #include "TextNode.hpp"
 #include "ParticleNode.hpp"
 #include "SoundNode.hpp"
-#include <iostream>
 
 World::World(sf::RenderTarget& outputTarget, FontManager& fonts, SoundPlayer& soundPlayer)
 : mTarget(outputTarget)
@@ -28,7 +27,6 @@ World::World(sf::RenderTarget& outputTarget, FontManager& fonts, SoundPlayer& so
 , mEnemySpawnPoints()
 , mActiveEnemies()
 {
-  std::cout << "HU";
   mSceneTexture.create(mTarget.getSize().x, mTarget.getSize().y);
 
   loadTextures();

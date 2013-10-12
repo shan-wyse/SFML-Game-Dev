@@ -2,4 +2,4 @@
 - add one missile under each wing that disappears after launching (+possible reload animation)
 - add constant hum sound effect to represent engine
 - increase pitch of engine him when plane is moving forwards, decrease when slowing down
-- 
+- slow fade in from black at start of mission (~3 seconds)
