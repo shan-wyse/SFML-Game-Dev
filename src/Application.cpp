@@ -1,29 +1,34 @@
+// Application.cpp
+
+
 #include "Application.hpp"
+#include "GameState.hpp"
+#include "GameOverState.hpp"
+#include "LoadingState.hpp"
+#include "MenuState.hpp"
+#include "PauseState.hpp"
+#include "SettingsState.hpp"
 #include "State.hpp"
 #include "StateIdentifiers.hpp"
 #include "TitleState.hpp"
-#include "MenuState.hpp"
-#include "SettingsState.hpp"
-#include "LoadingState.hpp"
-#include "GameState.hpp"
-#include "PauseState.hpp"
-#include "GameOverState.hpp"
 
 #include "StringHelper.hpp"
 
+
 const sf::Time Application::FRAME_DURATION = sf::seconds(1.f / 60.f);
 
-Application::Application(int argc, char** argv)
+
+Application::Application(int argc, const char** argv)
 : mArgC(argc)
 , mArgV(argv)
 , mWindow(sf::VideoMode(640, 720), "Desert Bloom 2000", sf::Style::Close)
+, mIcon() // For development purposes only
+, mStateStack(State::Context(mWindow, mTextures, mFonts, mPlayer, mMusicPlayer, mSoundPlayer))
+, mPlayer()
 , mTextures()
 , mFonts()
-, mPlayer()
 , mMusicPlayer()
 , mSoundPlayer()
-, mStateStack(State::Context(mWindow, mTextures, mFonts, mPlayer, mMusicPlayer, mSoundPlayer))
-, mIcon() // For development purposes only
 , mDevText() // For development purposes only
 , mDevUpdateTime() // For development purposes only
 , mDevFrameCount(0) // For development purposes only
@@ -95,7 +100,7 @@ void Application::render()
   mStateStack.render();
 
   mWindow.setView(mWindow.getDefaultView());
-  if (!(mArgC >= 2 && std::string(mArgV[1]) == "-nodev")) // For development purposes only
+  if (!(mArgC >= 2 && std::string(mArgV[1]) == "--no-dev-text")) // For development purposes only
     mWindow.draw(mDevText); // For development purposes only
 
   mWindow.display();

@@ -1,8 +1,12 @@
+// Application.hpp
+
+
 #ifndef APPLICATION_HPP
 #define APPLICATION_HPP
 
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Graphics/Text.hpp>
+
 #include "StateStack.hpp"
 #include "Player.hpp"
 #include "ResourceManager.hpp"
@@ -10,10 +14,11 @@
 #include "MusicPlayer.hpp"
 #include "SoundPlayer.hpp"
 
+
 class Application
 {
 public:
-                              Application(int argc, char** argv);
+                              Application(int argc, const char** argv);
   void                        run();
 
 private:
@@ -21,7 +26,6 @@ private:
   void                        processInput();
   void                        update(sf::Time frameDuration);
   void                        render();
-
   void                        registerStates();
 
   void                        updateDevOutput(sf::Time elapsedTime);
@@ -29,17 +33,15 @@ private:
   static const sf::Time       FRAME_DURATION;
 
   int                         mArgC;
-  char**                      mArgV;
-
+  const char**                mArgV;
   sf::RenderWindow            mWindow;
+  sf::Image                   mIcon; // For development purposes only
+  StateStack                  mStateStack;
+  Player                      mPlayer;
   TextureManager              mTextures;
   FontManager                 mFonts;
-  Player                      mPlayer;
   MusicPlayer                 mMusicPlayer;
   SoundPlayer                 mSoundPlayer;
-  StateStack                  mStateStack;
-
-  sf::Image                   mIcon; // For development purposes only
 
   sf::Text                    mDevText; // For development purposes only
   sf::Time                    mDevUpdateTime; // For development purposes only

@@ -1,26 +1,29 @@
 CC=clang++
 SOURCES=src/*.cpp
-OBJECTS=build/*.o # $(SOURCES:.cpp=.o)
+OBJECTS=build/*.o
 SOURCEDIR=src
 OBJECTDIR=build
 STDLIBS=-std=c++11 -stdlib=libc++
-LIBS=-std=c++11 -stdlib=libc++ -lsfml-graphics -lsfml-audio -lsfml-window -lsfml-system
-EXECUTABLE=./Game
+SFMLLIBS=-lsfml-graphics -lsfml-audio -lsfml-window -lsfml-system
+EXECUTABLE=Game
 LDFLAGS=-lm
 
 all: $(EXECUTABLE)
+	@echo "Compilation and linking successful."
 
 $(EXECUTABLE): $(OBJECTS)
-	$(CC) $(STDLIBS) $(OBJECTS) -o $(EXECUTABLE) $(LDFLAGS) $(LIBS)
+	@echo "- Linking object files and libraries..."
+	$(CC) $(STDLIBS) $(OBJECTS) -o $(EXECUTABLE) $(SFMLLIBS)
 
 $(OBJECTDIR)/%.o: $(SOURCEDIR)/%.cpp
-	$(CC) -c -o $@ $< $(STDLIBS)
+	@echo "- Creating object file ->" $@
+	$(CC) $(STDLIBS) -c $< -o $@
 
 fallback:
-	$(CC) $(SOURCES) -o $(EXECUTABLE) $(LIBS)
+	$(CC) $(SOURCES) -o $(EXECUTABLE) $(SFMLLIBS)
 
 %.o: %.cpp
-	$(CC) -c $< $@ $(LIBS)
+	$(CC) $< -c $@ $(LIBS)
 
 
 install: $(EXECUTABLE)
