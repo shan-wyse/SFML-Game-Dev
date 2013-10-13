@@ -36,7 +36,7 @@ void SoundPlayer::play(SoundEffects::Id effect, sf::Vector2f position)
   sf::Sound& sound = mSounds.back();
 
   sound.setBuffer(mSoundManager.getResource(effect));
-  sound.setPosition(position.x, position.y, 0.f);
+  sound.setPosition(position.x, -position.y, 0.f);
   sound.setAttenuation(ATTENUATION);
   sound.setMinDistance(MIN_DISTANCE_3D);
 

@@ -20,9 +20,9 @@ World::World(sf::RenderTarget& outputTarget, FontManager& fonts, SoundPlayer& so
 , mSceneGraph()
 , mSceneLayers()
 // , mCommandQueue()
-, mWorldBounds(0.f, 0.f, mWorldView.getSize().x, 4000.f)
+, mWorldBounds(0.f, 0.f, mWorldView.getSize().x, 20000.f)
 , mSpawnPosition(mWorldView.getSize().x / 2.f, mWorldBounds.height - mWorldView.getSize().y / 2.f)
-, mScrollSpeed(-400.f)
+, mScrollSpeed(-200.f)
 , mPlayerAircraft(nullptr)
 , mEnemySpawnPoints()
 , mActiveEnemies()
@@ -318,8 +318,7 @@ sf::FloatRect World::getBattlefieldBounds() const
 
 void World::updateSounds()
 {
-  // mSoundPlayer.setListenerPosition(mPlayerAircraft->getWorldPosition());
-  // mSoundPlayer.play(SoundEffects::LaunchMissile);
+  mSoundPlayer.setListenerPosition(mPlayerAircraft->getWorldPosition());
   mSoundPlayer.removeStoppedSounds();
 }
 
