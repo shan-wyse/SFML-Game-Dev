@@ -273,7 +273,7 @@ void Aircraft::updateRollAnimation()
 
 void Aircraft::playLocalSound(CommandQueue& commands, SoundEffects::Id effect)
 {
-  sf::Vector2f worldPosition = getWorldPosition();
+  sf::Vector2f worldPosition = getPosition();
 
   Command command;
   command.category = Category::SoundEffect;

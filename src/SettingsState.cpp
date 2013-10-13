@@ -1,6 +1,7 @@
 #include <SFML/Graphics/RenderWindow.hpp>
 #include "SettingsState.hpp"
 #include "ResourceManager.hpp"
+#include "Utility.hpp"
 #include "StringHelper.hpp"
 
 SettingsState::SettingsState(StateStack& stack, Context context)
@@ -69,7 +70,7 @@ void SettingsState::updateLabels()
 
   for (std::size_t i = 0; i < Player::Count; ++i) {
     sf::Keyboard::Key key = player.getAssignedKey(static_cast<Player::Action>(i));
-    mBindingLabels[i]->setText(toString(key));
+    mBindingLabels[i]->setText(Utility::toString(key));
   }
 }
 

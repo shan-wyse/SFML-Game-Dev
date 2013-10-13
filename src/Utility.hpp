@@ -16,6 +16,7 @@ class Utility
 public:
   static int              randomInt(int exclusiveMax);
 
+  static std::string      toString(sf::Keyboard::Key key);
   static float            toDegree(float radian);
   static float            toRadian(float degree);
 
