@@ -10,6 +10,11 @@
 #include "Button.hpp"
 #include "Label.hpp"
 
+struct KeyBinding
+{
+  // check
+};
+
 class SettingsState : public State
 {
 public:

@@ -32,7 +32,7 @@ public:
                                             MissionFailure
                                           };
 
-                                          Player();
+                                          Player(sf::TcpSocket* socket, sf::Int32 identifer, const KeyBinding* keyBinding);
 
   void                                    handleRealtimeInput(CommandQueue& commands); // process
   void                                    handleEvent(const sf::Event& event, CommandQueue& commands);

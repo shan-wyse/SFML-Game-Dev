@@ -3,7 +3,7 @@
 
 namespace States
 {
-  enum Id { None, Title, Menu, Settings, Loading, Game, Pause, GameOver };
+  enum Id { None, Title, Menu, Settings, Loading, Game, Pause, NetworkPause, HostGame, JoinGame, GameOver };
 }
 
 #endif // STATE_IDENTIFIERS_HPP

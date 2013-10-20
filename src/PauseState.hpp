@@ -9,7 +9,7 @@
 class PauseState : public State
 {
 public:
-                    PauseState(StateStack& stack, Context context);
+                    PauseState(StateStack& stack, Context context, bool flag);
                     ~PauseState();
 
   virtual bool      processEvent(const sf::Event& event);

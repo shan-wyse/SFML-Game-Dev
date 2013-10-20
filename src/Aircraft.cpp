@@ -91,6 +91,14 @@ void Aircraft::updateCurrent(sf::Time delta, CommandQueue& commands)
       bPlayedExplosionSound = true;
     }
     return;
+
+    // Network
+    Command command;
+    command.category = Category::Network;
+    command.action = derivedAction<NetworkNode> ([position] (NetworkNode& node, sf::Time)
+    {
+      node.notifyGameAction(GameActions::EnemyExplode, position);
+    } );
   }
 
   checkProjectileLaunch(delta,commands);

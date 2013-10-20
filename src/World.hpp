@@ -29,6 +29,8 @@ public:
   bool                                  hasAlivePlayer() const;
   bool                                  hasPlayerReachedEnd() const;
 
+  bool                                  pollGameAction(); // check
+
 private:
   enum                                  Layer { Background, Foreground, LayerCount };
 
@@ -79,6 +81,8 @@ private:
   std::vector<Aircraft*>                mActiveEnemies;
 
   BloomEffect                           mBloomEffect;
+
+  NetworkNode                           mNetworkNode;
 };
 
 #endif // WORLD_HPP

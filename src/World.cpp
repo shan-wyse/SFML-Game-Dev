@@ -56,6 +56,10 @@ void World::update(sf::Time delta)
   adaptPlayerPosition();
 
   updateSounds();
+
+  // Network
+  mWorldView.move(0.f, mScrollSpeed * delta.asSeconds() * mScrollSpeedCompensation);
+  mWorld.setWorldScrollCompensation(currentViewPosition / currentWorldPosition);
 }
 
 void World::draw()
@@ -328,4 +332,9 @@ World::SpawnPoint::SpawnPoint(Aircraft::Type type, float xPos, float yPos)
 , yPos(yPos)
 {
   // empty
+}
+
+World::pollGameAction()
+{
+  // check
 }

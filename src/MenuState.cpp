@@ -22,8 +22,26 @@ MenuState::MenuState(StateStack& stack, Context context)
     requestStackPush(States::Loading);
   } );
 
+  auto hostPlayButton = std::make_shared<Gui::Button> (context);
+  hostPlayButton->setPosition(100, 300);
+  hostPlayButton->setText("Host");
+  hostPlayButton->setCallback([this] ()
+  {
+    requestStackPop();
+    requestStackPush(States::HostGame);
+  } );
+
+  auto joinPlayButton = std::make_shared<Gui::Button> (context);
+  joinPlayButton->setPosition(100, 350);
+  joinPlayButton->setText("Join");
+  joinPlayButton->setCallback([this] ()
+  {
+    requestStackPop();
+    requestStackPush(States::JoinGame);
+  } );
+
   auto settingsButton = std::make_shared<Gui::Button> (context);
-  settingsButton->setPosition(100, 300);
+  settingsButton->setPosition(100, 400);
   settingsButton->setText("Settings");
   settingsButton->setCallback([this] ()
   {
@@ -31,7 +49,7 @@ MenuState::MenuState(StateStack& stack, Context context)
   } );
 
   auto exitButton = std::make_shared<Gui::Button> (context);
-  exitButton->setPosition(100, 350);
+  exitButton->setPosition(100, 450);
   exitButton->setText("Exit");
   exitButton->setCallback([this] ()
   {
@@ -39,6 +57,8 @@ MenuState::MenuState(StateStack& stack, Context context)
   } );
 
   mGuiContainer.pack(playButton);
+  mGuiContainer.pack(hostPlayButton);
+  mGuiContainer.pack(joinPlayButton);
   mGuiContainer.pack(settingsButton);
   mGuiContainer.pack(exitButton);
 }
